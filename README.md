@@ -20,7 +20,7 @@ This led me to start this project, a free alternative that would be:
 
 - **Flexible:** Offers a modeling backend and reporting features that would fit diffrent business use cases, from small companies with a minimal network architecture, to large organizations with networks spread across multiple zones and affiliates.
 
-- **Extensive compbatibility:** Covers as many vendors as possible through an arsenal of parsers and a dedicated data structure.
+- **Extensive compbatibility:** Covers as many vendors as possible (Cisco ASA, Fortinet, Zyxell, CheckPoint, Juniper ...) through an arsenal of parsers and a dedicated data structure.
 
 - **Thourough features:** Provide comprehensive network security analysis features and algorithms.
 
