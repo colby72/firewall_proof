@@ -8,6 +8,14 @@ To put it straight, a Firewall whose only rule **allows** flows from **all** sou
 
 For an efficient secure network filtering, a Firewall shall at least be configured with a set of rules that ensure network segregation between different object groups and network zones, following a block-all allow-required basis. These rules can further enhanced by restricting network subnets or tunneling sensitive communications (using IPSec for example).
 
+## Installation
+
+*TODO*
+
+## Usage
+
+*TODO*
+
 ## Why I started this project ?
 
 There are several Firewall auditing solutions out there. And having practiced some of them myself, they can deliver a very decent performance in some cases.
@@ -25,3 +33,5 @@ This led me to start this project, a free alternative that would be:
 - **Thourough features:** Provide comprehensive network security analysis features and algorithms.
 
 - **Free:** Available for large corporations, but also to small and mid-size companies who rarely have financial and human resources for a dedicated cyber security team.
+
+But most importantly, I'm doing it to learn, sharpen my programming skills, practice my hobby  ... and to have fun.
