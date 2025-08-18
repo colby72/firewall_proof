@@ -13,5 +13,3 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - A first prototype of the software, using CLI (no GUI yet) and sample test data.
-
-test token
