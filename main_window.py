@@ -8,6 +8,7 @@ from PyQt6.QtCore import *
 # import GUI components
 from gui.home import *
 from gui.default import *
+from gui.core.company import *
 
 from gui.about.information import *
 from gui.about.developers import *
@@ -32,13 +33,18 @@ class FWProofGUI(QMainWindow):
         self.height = 600
         self.toolbar_icon_size = 30
         self.init_ui()
+        self.init_data()
 
         # Related sub windows
         self.windows = QStackedWidget()
         self.setCentralWidget(self.windows)
-        self.default = Default()
+        self.default = DefaultGUI(self)
         self.windows.addWidget(self.default)
         #self.home = Home(self, fw_proof)
+
+    # related FW Proof data
+    def init_data(self):
+        self.company = None
 
     def init_ui(self, parent=None):
         # General layout
@@ -184,6 +190,12 @@ class FWProofGUI(QMainWindow):
         self.widget_shortcuts = Shortcuts()
         self.widget_shortcuts.show()
     
+    ''' X- Call functions for Test Widgets '''
+    def display_company(self):
+        print(f"display company '{self.comapny.name}'")
+        company_gui = CompanyGUI(self)
+        self.windows.addWidget(company_gui)
+        self.windows.setCurrentWidget(company_gui)
 
 app = QApplication(sys.argv)
 title = "Firewall Proof v0.1-beta"
