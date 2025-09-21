@@ -11,6 +11,7 @@ from gui.default import *
 
 from gui.about.information import *
 from gui.about.developers import *
+from gui.about.shortcuts import *
 
 # import software's core resources
 from core.company import *
@@ -180,7 +181,8 @@ class FWProofGUI(QMainWindow):
         self.widget_developers.show()
     
     def show_shortcuts(self):
-        pass
+        self.widget_shortcuts = Shortcuts()
+        self.widget_shortcuts.show()
     
 
 app = QApplication(sys.argv)
