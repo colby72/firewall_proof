@@ -1,45 +1,39 @@
-from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QLabel, QTabBar, QWidget
+from PyQt6.QtWidgets import *
 
 
-class Information(QMainWindow):
+class Information(QWidget):
     def __init__(self):
         super().__init__()
         self.information()
-        self.setWindowTitle("Information")
-        self.resize(410, 210)
+        self.setWindowTitle("About Firewall Proof")
+        self.resize(510, 310)
     
     def information(self):
         # init global layout and  and tab bar
         layout = QVBoxLayout()
-        tabs = QTabBar()
+        self.setLayout(layout)
+        tabs = QTabWidget()
+        layout.addWidget(tabs)
+        
         # software presentation
         presentation = QWidget()
-        p_layout = QVBoxLayout()
-        presentation.setLayout(p_layout)
+        pres_layout = QVBoxLayout()
+        pres_layout.addWidget(QLabel("This is a presentation"))
+        presentation.setLayout(pres_layout)
+
         # used libraries
         libraries = QWidget()
+        libraries_layout = QVBoxLayout()
+        libraries_layout.addWidget(QLabel("This is a list of libraries"))
+        libraries.setLayout(libraries_layout)
+        
         # software detailed description
         description = QWidget()
+        description_layout = QVBoxLayout()
+        description_layout.addWidget(QLabel("Detailed description"))
+        description.setLayout(description_layout)
+        
         # add tabs to global layout
-        tabs.addTab("Firewall Proof")
-        tabs.addTab("Libraries")
-        tabs.addTab("Software details")
-        layout.addWidget(tabs)
-        self.setLayout(layout)
-
-
-    def developers(self):
-        vbox = QVBoxLayout()
-        developer_1 = QLabel('-- CHEMAK Ramy', self)
-        developer_1.move(30, 20)
-        developer_1.setFixedWidth(260)
-        developer_2 = QLabel('Arabelle Solutions', self)
-        developer_2.move(30, 50)
-        developer_2.setFixedWidth(260)
-
-        vbox.addWidget(developer_1)
-        vbox.addWidget(developer_2)
-
-        self.setLayout(vbox)
-        self.setWindowTitle("About developers")
-        self.resize(410, 210)
+        tabs.addTab(presentation, "Firewall Proof")
+        tabs.addTab(libraries, "Libraries")
+        tabs.addTab(description, "Software details")
