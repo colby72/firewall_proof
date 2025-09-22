@@ -9,6 +9,7 @@ from PyQt6.QtCore import *
 from gui.home import *
 from gui.default import *
 from gui.core.company import *
+from gui.core.firewall import *
 from gui.core.host import *
 
 from gui.about.information import *
@@ -34,8 +35,8 @@ class FWProofGUI(QMainWindow):
         self.title = title
         self.left = 60
         self.top = 60
-        self.width = 1100
-        self.height = 600
+        self.width = 1500
+        self.height = 900
         self.toolbar_icon_size = 30
         self.init_ui()
         self.init_data()
@@ -208,7 +209,16 @@ class FWProofGUI(QMainWindow):
         self.windows.setCurrentWidget(company_gui)
     
     def display_firewall(self):
-        company
+        company = parse_fwp_json('test_data/space_y.json')
+        policy = parse_policy('test_data/policy.json')
+        for fw in company.fw_inventory:
+            apply_policy(fw, policy)
+        self.company = company
+        # choose a random firewall to display
+        fw = self.company.fw_inventory[0]
+        firewall_gui = FirewallGUI(self, fw)
+        self.windows.addWidget(firewall_gui)
+        self.windows.setCurrentWidget(firewall_gui)
     
     def display_host(self):
         company = parse_fwp_json('test_data/space_y.json')

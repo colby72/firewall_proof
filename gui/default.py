@@ -64,7 +64,7 @@ class DefaultGUI(QWidget):
         self.main_window.display_company()
     
     def test_firewall(self):
-        pass
+        self.main_window.display_firewall()
     
     def test_host(self):
         self.main_window.display_host()
