@@ -8,8 +8,8 @@ class CompanyGUI(QWidget):
     def __init__(self, main_window):
         QWidget.__init__(self)
         self.main_window = main_window
-        self.comapny = self.main_window.comapny
-        #print(f"Main window's company : '{self.main_window.comapny.name}'")
+        self.company = self.main_window.company
+        #print(f"Main window's company : '{self.main_window.company.name}'")
         layout = QVBoxLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(20)
@@ -20,11 +20,11 @@ class CompanyGUI(QWidget):
         summary_layout.setContentsMargins(10, 10, 10, 10)
         summary_layout.setSpacing(10)
         summary_layout.addWidget(QLabel("Name : "), 0, 0)
-        summary_layout.addWidget(QLabel(self.comapny.name), 0, 1)
+        summary_layout.addWidget(QLabel(self.company.name), 0, 1)
         summary_layout.addWidget(QLabel("Zones : "), 1, 0)
-        summary_layout.addWidget(QLabel(str(len(self.comapny.zones))), 1, 1)
+        summary_layout.addWidget(QLabel(str(len(self.company.zones))), 1, 1)
         summary_layout.addWidget(QLabel("Firewalls : "), 2, 0)
-        summary_layout.addWidget(QLabel(str(len(self.comapny.fw_inventory))), 2, 1)
+        summary_layout.addWidget(QLabel(str(len(self.company.fw_inventory))), 2, 1)
         summary.setLayout(summary_layout)
 
         # zones box
@@ -36,8 +36,8 @@ class CompanyGUI(QWidget):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
             zone_layout.addWidget(label, 0, i)
-        for i in range(len(self.comapny.zones)):
-            z = self.comapny.zones[i]
+        for i in range(len(self.company.zones)):
+            z = self.company.zones[i]
             zone_layout.addWidget(QLabel(z.name), i+1, 0)
             zone_layout.addWidget(QLabel(str(z.level)), i+1, 1)
             zone_layout.addWidget(QLabel(z.description), i+1, 2)
@@ -51,8 +51,8 @@ class CompanyGUI(QWidget):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
             firewall_layout.addWidget(label, 0, i)
-        for i in range(len(self.comapny.fw_inventory)):
-            fw = self.comapny.fw_inventory[i]
+        for i in range(len(self.company.fw_inventory)):
+            fw = self.company.fw_inventory[i]
             firewall_layout.addWidget(QLabel(fw.name), i+1, 0)
             firewall_layout.addWidget(QLabel(fw.vendor), i+1, 1)
             firewall_layout.addWidget(QLabel(fw.address), i+1, 2)
