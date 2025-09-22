@@ -9,6 +9,7 @@ from PyQt6.QtCore import *
 from gui.home import *
 from gui.default import *
 from gui.core.company import *
+from gui.core.host import *
 
 from gui.about.information import *
 from gui.about.developers import *
@@ -20,6 +21,10 @@ from core.firewall import *
 from core.host import *
 from core.rule import *
 from core.zone import *
+
+# import data algorithms
+from algorithms.parse_policy import *
+from algorithms.policy_check import *
 
 
 class FWProofGUI(QMainWindow):
@@ -192,10 +197,30 @@ class FWProofGUI(QMainWindow):
     
     ''' X- Call functions for Test Widgets '''
     def display_company(self):
-        print(f"display company '{self.comapny.name}'")
+        company = parse_fwp_json('test_data/space_y.json')
+        policy = parse_policy('test_data/policy.json')
+        for fw in company.fw_inventory:
+            apply_policy(fw, policy)
+        self.comapny = company
+        #print(f"display company '{self.comapny.name}'")
         company_gui = CompanyGUI(self)
         self.windows.addWidget(company_gui)
         self.windows.setCurrentWidget(company_gui)
+    
+    def display_host(self):
+        company = parse_fwp_json('test_data/space_y.json')
+        policy = parse_policy('test_data/policy.json')
+        for fw in company.fw_inventory:
+            apply_policy(fw, policy)
+        self.comapny = company
+        # choose a random host to display
+        print(f"len = {len(self.comapny.fw_inventory[0].hosts)}")
+        print(f"type = {type(self.comapny.fw_inventory[0].hosts[0])}")
+        host = self.comapny.fw_inventory[0].hosts[4]
+        host_gui = HostGUI(self, host)
+        self.windows.addWidget(host_gui)
+        self.windows.setCurrentWidget(host_gui)
+
 
 app = QApplication(sys.argv)
 title = "Firewall Proof v0.1-beta"

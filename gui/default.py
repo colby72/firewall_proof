@@ -59,16 +59,12 @@ class DefaultGUI(QWidget):
         print_success(f"Firewall policy '{policy.name}' succssfully defined !")
     
     def test_company(self):
-        company = parse_fwp_json('test_data/space_y.json')
-        print_success(f"Company '{company.name}' succssfully created !")
-        self.main_window.comapny = company
+        #company = parse_fwp_json('test_data/space_y.json')
+        #self.main_window.comapny = company
         self.main_window.display_company()
-        #self.main_window.company_widget = CompanyGUI(self.main_window)
-        #self.main_window.windows.addWidget(self.main_window.company_widget)
-        #self.main_window.setCurrentWidget(self.main_window.company_widget)
     
     def test_firewall(self):
         pass
     
     def test_host(self):
-        pass
+        self.main_window.display_host()
