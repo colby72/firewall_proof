@@ -5,6 +5,8 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+from project import *
+
 # import GUI components
 from gui.home import *
 from gui.default import *
@@ -50,6 +52,7 @@ class FWProofGUI(QMainWindow):
 
     # related FW Proof data
     def init_data(self):
+        self.project = None
         self.company = None
 
     def init_ui(self, parent=None):
@@ -178,10 +181,9 @@ class FWProofGUI(QMainWindow):
         pass
     
     def quit(self):
-        if QMessageBox.question(self, "FW Checker", "Do you want to exit?", QMessageBox.No | QMessageBox.Yes) == QMessageBox.Yes:
+        if QMessageBox.question(self,"Exit Firewall Proof", "Do you want to exit?",
+                                QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes) == QMessageBox.StandardButton.Yes:
             self.close()
-    def quit(self):
-        self.close()
     
     ''' 5- Call functions for Menu: About '''
     def show_software_info(self):
@@ -197,6 +199,19 @@ class FWProofGUI(QMainWindow):
         self.widget_shortcuts.show()
     
     ''' X- Call functions for Test Widgets '''
+    def display_home(self):
+        company = parse_fwp_json('test_data/space_y.json')
+        policy = parse_policy('test_data/policy.json')
+        for fw in company.fw_inventory:
+            apply_policy(fw, policy)
+        self.project = Project("Test project")
+        self.project.add_company(company)
+        self.company = company
+        # display the project
+        home = HomeGUI(self, self.project)
+        self.windows.addWidget(home)
+        self.windows.setCurrentWidget(home)
+
     def display_company(self):
         company = parse_fwp_json('test_data/space_y.json')
         policy = parse_policy('test_data/policy.json')

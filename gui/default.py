@@ -45,6 +45,10 @@ class DefaultGUI(QWidget):
         self.host_button.clicked.connect(self.test_host)
         layout.addWidget(self.host_button, 5, 1, 1, 1)
 
+        self.project_button = QPushButton("Test Project")
+        self.project_button.clicked.connect(self.test_project)
+        layout.addWidget(self.project_button, 6, 1, 1, 1)
+
         layout.setRowStretch(layout.rowCount(), 1)
         self.setLayout(layout)
 
@@ -68,3 +72,6 @@ class DefaultGUI(QWidget):
     
     def test_host(self):
         self.main_window.display_host()
+    
+    def test_project(self):
+        self.main_window.display_home()
