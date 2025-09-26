@@ -53,14 +53,10 @@ class DefaultGUI(QWidget):
         self.setLayout(layout)
 
     def new_project(self):
-        pass
+        self.main_window.new_project()
     
     def open_project(self):
-        company = parse_fwp_json('test_data/space_y.json')
-        print_success(f"Company '{company.name}' succssfully created !")
-
-        policy = parse_policy('test_data/policy.json')
-        print_success(f"Firewall policy '{policy.name}' succssfully defined !")
+        self.main_window.open_project()
     
     def test_company(self):
         #company = parse_fwp_json('test_data/space_y.json')

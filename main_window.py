@@ -1,5 +1,5 @@
 # import software's GUI resources
-import sys
+import sys, os
 from PyQt6 import QtGui, QtCore
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
@@ -24,6 +24,10 @@ from core.firewall import *
 from core.host import *
 from core.rule import *
 from core.zone import *
+
+# import file processing functions
+from file.save_file import *
+from file.open_file import *
 
 # import data algorithms
 from algorithms.parse_policy import *
@@ -52,6 +56,8 @@ class FWProofGUI(QMainWindow):
 
     # related FW Proof data
     def init_data(self):
+        self.file_path = None
+        self.file_name = None
         self.project = None
         self.company = None
 
@@ -89,6 +95,11 @@ class FWProofGUI(QMainWindow):
         save_action.setStatusTip("Save project")
         save_action.triggered.connect(self.save_project)
 
+        self.close_action = QAction(QtGui.QIcon("img/close_remove_icon.png"), "Close project", self)
+        self.close_action.setShortcut("Ctrl+X")
+        self.close_action.setStatusTip("Close project")
+        self.close_action.triggered.connect(self.close_project)
+
         quit_action = QAction(QtGui.QIcon("img/shutdown_red.png"), "Quit", self)
         quit_action.setShortcut("Ctrl+Q")
         quit_action.setStatusTip("Quit")
@@ -97,6 +108,7 @@ class FWProofGUI(QMainWindow):
         file_menu.addAction(new_action)
         file_menu.addAction(open_action)
         file_menu.addAction(save_action)
+        file_menu.addAction(self.close_action)
         file_menu.addAction(quit_action)
 
         """ Create actions for edit menu """
@@ -172,13 +184,59 @@ class FWProofGUI(QMainWindow):
     ''' ### Menu call functions ### '''
     ''' 1- Call functions for Menu: File '''
     def new_project(self):
-        pass
+        project_title, ok_pressed = QInputDialog.getText(self, "New project", "Project name")
+        if ok_pressed and project_title:
+            # create new project
+            self.project = Project(project_title)
+            # show project's home
+            home = HomeGUI(self, self.project)
+            self.windows.addWidget(home)
+            self.windows.setCurrentWidget(home)
+        elif ok_pressed and (project_title==""):
+            alert = QMessageBox.critical(self, "New project", "Project name cannot be empty !", buttons=QMessageBox.StandardButton.Ok)
+        else:
+            alert = QMessageBox.critical(self, "New project", "Project name entered invalid !", buttons=QMessageBox.StandardButton.Ok)
     
     def open_project(self):
-        pass
+        self.open_file_dialog = QFileDialog.getOpenFileName(self, "Open project ...", "", "FwProof files (*.fwp);;All files (*)")
+        selected_file = self.open_file_dialog[0]
+        if selected_file:
+            # read opened file
+            file_path, file_name = os.path.split(selected_file)
+            project = open_file(file_name, file_path)
+            # set main window's data variables 
+            self.file_path = file_path
+            self.file_name = file_name
+            self.project = project
+            # show project's home
+            home = HomeGUI(self, self.project)
+            self.windows.addWidget(home)
+            self.windows.setCurrentWidget(home)
     
     def save_project(self):
-        pass
+        if not (self.file_name and self.file_path):
+            self.save_project_as()
+        else:
+            save_file(self.project, self.file_name, self.file_path)
+    
+    def save_project_as(self):
+        if not self.project:
+            pass # alert box
+            return None
+        self.save_file_dialog = QFileDialog.getSaveFileName(self, "Save project ...", self.project.name.replace(' ', '_').lower(), "FwProof files (*.fwp);;All files (*)")
+        target_file = self.save_file_dialog[0]
+        if target_file:
+            file_path, file_name = os.path.split(target_file)
+            save_file(self.project, file_name, file_path)
+            self.file_path = file_path
+            self.file_name = file_name
+    
+    def close_project(self):
+        confirm_close = QMessageBox.question(self, "Close project", "Are you sure you want to close current project ?\nChanges unsaved will be lost.", buttons=QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+        defaultButton=QMessageBox.StandardButton.No)
+        if confirm_close == QMessageBox.StandardButton.Yes:
+            self.init_data()
+            self.windows.setCurrentWidget(self.default)
     
     def quit(self):
         if QMessageBox.question(self,"Exit Firewall Proof", "Do you want to exit?",
