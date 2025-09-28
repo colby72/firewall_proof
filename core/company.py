@@ -13,6 +13,7 @@ class Company():
         self.name = name # comapny's name
         self.fw_inventory = [] # list of refs to company's Firewalls
         self.zones = [] # list of refs to company's zones
+        self.policies = [] # list of refs to company's policies
     
     # company management
     def set_name(self, name):

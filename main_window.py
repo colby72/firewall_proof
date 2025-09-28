@@ -60,6 +60,9 @@ class FWProofGUI(QMainWindow):
         self.file_name = None
         self.project = None
         self.company = None
+        self.firewall = None
+        self.zone = None
+        self.host = None
 
     def init_ui(self, parent=None):
         # General layout
@@ -96,7 +99,7 @@ class FWProofGUI(QMainWindow):
         save_action.triggered.connect(self.save_project)
 
         self.close_action = QAction(QtGui.QIcon("img/close_remove_icon.png"), "Close project", self)
-        self.close_action.setShortcut("Ctrl+X")
+        self.close_action.setShortcut("Ctrl+W")
         self.close_action.setStatusTip("Close project")
         self.close_action.triggered.connect(self.close_project)
 
