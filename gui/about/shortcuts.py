@@ -14,7 +14,12 @@ class Shortcuts(QWidget):
         layout.setSpacing(15)
 
         shortcut_list = {
-            "Save": "Ctrl+S",
+            "New project": "Ctrl+N",
+            "Open project": "Ctrl+O",
+            "Save project": "Ctrl+S",
+            "Close project": "Ctrl+W",
+            "Quit": "Ctrl+Q",
+            "Project home": "Ctrl+H",
             "About software": "F1",
             "Developers list": "F2",
             "Shortcuts list": "F3"

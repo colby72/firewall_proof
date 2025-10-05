@@ -63,6 +63,7 @@ class FWProofGUI(QMainWindow):
         self.firewall = None
         self.zone = None
         self.host = None
+        self.policy = None
 
     def init_ui(self, parent=None):
         # General layout
@@ -77,7 +78,7 @@ class FWProofGUI(QMainWindow):
         # Create a root menu
         file_menu = menu.addMenu('File')
         edit_menu = menu.addMenu('Edit')
-        fw_menu = menu.addMenu('Firewall')
+        project_menu = menu.addMenu('Project')
         dumb_ai_menu = menu.addMenu('Dumb AI')
         report_menu = menu.addMenu('Report')
         about_menu = menu.addMenu('About')
@@ -131,6 +132,26 @@ class FWProofGUI(QMainWindow):
         edit_menu.addAction(undo_action)
         edit_menu.addAction(redo_action)
 
+        """ Create actions for project menu """
+        home_action = QAction(QtGui.QIcon("img/homepage_icon.png"), "Project home", self)
+        home_action.setShortcut('Ctrl+H')
+        home_action.setStatusTip('Project home')
+        home_action.triggered.connect(self.show_home)
+
+        company_action = QAction(QtGui.QIcon("img/company_icon.png"), "Back to Company", self)
+        #company_action.setShortcut('Ctrl+H')
+        company_action.setStatusTip('Company')
+        company_action.triggered.connect(self.show_company)
+
+        firewall_action = QAction(QtGui.QIcon("img/firewall_blue_icon.png"), "Back to Firewall", self)
+        #firewall_action.setShortcut('Ctrl+H')
+        firewall_action.setStatusTip('Company')
+        firewall_action.triggered.connect(self.show_firewall)
+
+        project_menu.addAction(home_action)
+        project_menu.addAction(company_action)
+        project_menu.addAction(firewall_action)
+
         """ Create actions for about menu """
         info_action = QAction(QtGui.QIcon("img/info_grey_icon.png"), "About software", self)
         info_action.setShortcut("F1")
@@ -159,6 +180,8 @@ class FWProofGUI(QMainWindow):
         self.toolbar = self.addToolBar("ToolBar")
 
         # Add The Actions To Tool Bar
+        self.toolbar.addAction(home_action)
+        self.toolbar.addSeparator()
         self.toolbar.addAction(new_action)
         self.toolbar.addSeparator()
         self.toolbar.addAction(open_action)
@@ -246,6 +269,39 @@ class FWProofGUI(QMainWindow):
                                 QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes) == QMessageBox.StandardButton.Yes:
             self.close()
     
+    ''' 3- Call functions for Menu: Project '''
+    def show_home(self):
+        if self.project:
+            home = HomeGUI(self, self.project)
+            self.windows.addWidget(home)
+            self.windows.setCurrentWidget(home)
+    
+    def show_company(self):
+        #self.company = company
+        if self.company:
+            company_gui = CompanyGUI(self)
+            self.windows.addWidget(company_gui)
+            self.windows.setCurrentWidget(company_gui)
+    
+    def show_firewall(self):
+        #self.firewall = firewall
+        if self.firewall:
+            firewall_gui = FirewallGUI(self, self.firewall)
+            self.windows.addWidget(firewall_gui)
+            self.windows.setCurrentWidget(firewall_gui)
+    
+    def show_host(self):
+        #self.host = host
+        if self.host:
+            host_gui = HostGUI(self, host)
+            self.windows.addWidget(host_gui)
+            self.windows.setCurrentWidget(host_gui)
+    
+    def show_policy(self, policy):
+        self.policy = policy
+
+    ''' 4- Call functions for Menu: DumbAI '''
+    
     ''' 5- Call functions for Menu: About '''
     def show_software_info(self):
         self.widget_software_info = Information()
@@ -263,6 +319,7 @@ class FWProofGUI(QMainWindow):
     def display_home(self):
         company = parse_fwp_json('test_data/space_y.json')
         policy = parse_policy('test_data/policy.json')
+        company.add_policy(policy)
         for fw in company.fw_inventory:
             apply_policy(fw, policy)
         self.project = Project("Test project")

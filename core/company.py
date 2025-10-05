@@ -42,3 +42,14 @@ class Company():
         self.fw_inventory.append(firewall)
         print_info(f"Firewall '{firewall.name}' added to company '{self.name}'")
         return firewall
+    
+    def add_policy(self, policy):
+        # verify if policy already exists
+        for pol in self.policies:
+            if pol.name == policy.name:
+                print_warning(f"Policy '{pol.name}' already exists for company '{self.name}'")
+                return None
+        # add policy
+        self.policies.append(policy)
+        print_info(f"Policy '{policy.name}' added to company '{self.name}'")
+        return policy

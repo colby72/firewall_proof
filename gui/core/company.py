@@ -29,7 +29,9 @@ class CompanyGUI(QWidget):
 
         # zones box
         zone = QGroupBox("Zones")
+        zone.setFlat(False)
         zone_layout = QGridLayout()
+        zone_layout.setSpacing(10)
         zone.setLayout(zone_layout)
         headers = ["Name","PURDUE level", "Description"]
         for i in range(len(headers)):
@@ -38,9 +40,11 @@ class CompanyGUI(QWidget):
             zone_layout.addWidget(label, 0, i)
         for i in range(len(self.company.zones)):
             z = self.company.zones[i]
-            zone_layout.addWidget(QLabel(z.name), i+1, 0)
-            zone_layout.addWidget(QLabel(str(z.level)), i+1, 1)
-            zone_layout.addWidget(QLabel(z.description), i+1, 2)
+            zone_layout.addWidget(QLabel(z.name), i+1, 0, 1, 1)
+            zone_layout.addWidget(QLabel(str(z.level)), i+1, 1, 1, 1)
+            zone_layout.addWidget(QLabel(z.description), i+1, 2, 1, 1)
+        #zone_layout.setRowStretch(zone_layout.rowCount(), 1)
+        #zone_layout.setColumnStretch(zone_layout.columnCount(), 1)
 
         # frewalls box
         firewall = QGroupBox("Firewalls")
@@ -50,16 +54,28 @@ class CompanyGUI(QWidget):
         for i in range(len(headers)):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
-            firewall_layout.addWidget(label, 0, i)
+            #label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            firewall_layout.addWidget(label, 0, i*3)
         for i in range(len(self.company.fw_inventory)):
             fw = self.company.fw_inventory[i]
-            firewall_layout.addWidget(QLabel(fw.name), i+1, 0)
-            firewall_layout.addWidget(QLabel(fw.vendor), i+1, 1)
-            firewall_layout.addWidget(QLabel(fw.address), i+1, 2)
-            firewall_layout.addWidget(QLabel(str(fw.policy)), i+1, 3)
+            flabel = QLabel(fw.name)
+            firewall_layout.addWidget(flabel, i+1, 0, 1, 3)
+            firewall_layout.addWidget(QLabel(fw.vendor), i+1, 3, 1, 3)
+            firewall_layout.addWidget(QLabel(fw.address), i+1, 6, 1, 3)
+            firewall_layout.addWidget(QLabel(str(fw.policy)), i+1, 9, 1, 3)
+            view_button = QPushButton("View")
+            view_button.clicked.connect(
+                lambda checked, f=fw:
+                self.view_firewall(f)
+            )
+            firewall_layout.addWidget(view_button, i+1, 12, 1, 1)
 
         layout.addWidget(summary)
         layout.addWidget(zone)
         layout.addWidget(firewall)
         layout.addStretch()
         self.setLayout(layout)
+    
+    def view_firewall(self, fw):
+        self.main_window.firewall = fw
+        self.main_window.show_firewall()

@@ -20,7 +20,7 @@ class HomeGUI(QWidget):
 
         # project companies
         for c in self.project.companies:
-            company =QGroupBox("")
+            company = QGroupBox("")
             company_layout = QGridLayout()
             company_layout.setContentsMargins(10, 10, 10, 10)
             company_layout.setSpacing(10)
@@ -30,8 +30,16 @@ class HomeGUI(QWidget):
             company_layout.addWidget(QLabel("Firewalls : "), 1, 0)
             company_layout.addWidget(QLabel(str(len(c.fw_inventory))), 1, 1)
             view_button = QPushButton("View")
+            view_button.clicked.connect(
+                lambda checked:
+                self.view_company(c)
+            )
             company_layout.addWidget(view_button, 2, 3)
             layout.addWidget(company)
 
         layout.addStretch()
+    
+    def view_company(self, company):
+        self.main_window.company = company
+        self.main_window.show_company()
         

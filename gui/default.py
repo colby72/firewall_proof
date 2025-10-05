@@ -60,7 +60,7 @@ class DefaultGUI(QWidget):
     
     def test_company(self):
         #company = parse_fwp_json('test_data/space_y.json')
-        #self.main_window.comapny = company
+        #self.main_window.company = company
         self.main_window.display_company()
     
     def test_firewall(self):
