@@ -3,6 +3,8 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+from core.company import *
+
 
 class HomeGUI(QWidget):
     def __init__(self, main_window, project):
@@ -31,15 +33,26 @@ class HomeGUI(QWidget):
             company_layout.addWidget(QLabel(str(len(c.fw_inventory))), 1, 1)
             view_button = QPushButton("View")
             view_button.clicked.connect(
-                lambda checked:
-                self.view_company(c)
+                lambda checked, comp=c:
+                self.view_company(comp)
             )
             company_layout.addWidget(view_button, 2, 3)
             layout.addWidget(company)
+        
+        # add company
+        add_button = QPushButton("Add Company")
+        add_button.clicked.connect(self.add_company)
+        layout.addWidget(add_button, stretch=2)
 
         layout.addStretch()
     
     def view_company(self, company):
         self.main_window.company = company
         self.main_window.show_company()
-        
+    
+    def add_company(self, name):
+        company_name, ok_pressed = QInputDialog.getText(self, "Add Company", "Company name")
+        if ok_pressed and company_name:
+            company = Company(company_name)
+            self.project.add_company(company)
+            self.main_window.show_home()
