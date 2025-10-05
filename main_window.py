@@ -11,6 +11,7 @@ from project import *
 from gui.home import *
 from gui.default import *
 from gui.core.company import *
+from gui.core.policy import *
 from gui.core.firewall import *
 from gui.core.host import *
 
@@ -297,8 +298,11 @@ class FWProofGUI(QMainWindow):
             self.windows.addWidget(host_gui)
             self.windows.setCurrentWidget(host_gui)
     
-    def show_policy(self, policy):
-        self.policy = policy
+    def show_policy(self):
+        if self.policy:
+            policy_gui = PolicyGUI(self, self.policy)
+            self.windows.addWidget(policy_gui)
+            self.windows.setCurrentWidget(policy_gui)
 
     ''' 4- Call functions for Menu: DumbAI '''
     

@@ -46,6 +46,28 @@ class CompanyGUI(QWidget):
         #zone_layout.setRowStretch(zone_layout.rowCount(), 1)
         #zone_layout.setColumnStretch(zone_layout.columnCount(), 1)
 
+        # policies box
+        policies = QGroupBox("Company policies")
+        policies_layout = QGridLayout()
+        policies_layout.setSpacing(10)
+        policies.setLayout(policies_layout)
+        headers = ["Name", "Default", "# Rules"]
+        for i in range(len(headers)):
+            label = QLabel(headers[i])
+            label.setStyleSheet("font-weight: bold;")
+            policies_layout.addWidget(label, 0, i)
+        for i in range(len(self.company.policies)):
+            p = self.company.policies[i]
+            policies_layout.addWidget(QLabel(p.name), i+1, 0, 1, 1)
+            policies_layout.addWidget(QLabel(str(p.default)), i+1, 1, 1, 1)
+            policies_layout.addWidget(QLabel(str(len(p.rules))), i+1, 2, 1, 1)
+            view_button = QPushButton("View")
+            view_button.clicked.connect(
+                lambda checked, pol=p:
+                self.view_policy(pol)
+            )
+            policies_layout.addWidget(view_button, i+1, 3, 1, 1)
+
         # frewalls box
         firewall = QGroupBox("Firewalls")
         firewall_layout = QGridLayout()
@@ -58,8 +80,7 @@ class CompanyGUI(QWidget):
             firewall_layout.addWidget(label, 0, i*3)
         for i in range(len(self.company.fw_inventory)):
             fw = self.company.fw_inventory[i]
-            flabel = QLabel(fw.name)
-            firewall_layout.addWidget(flabel, i+1, 0, 1, 3)
+            firewall_layout.addWidget(QLabel(fw.name), i+1, 0, 1, 3)
             firewall_layout.addWidget(QLabel(fw.vendor), i+1, 3, 1, 3)
             firewall_layout.addWidget(QLabel(fw.address), i+1, 6, 1, 3)
             firewall_layout.addWidget(QLabel(str(fw.policy)), i+1, 9, 1, 3)
@@ -72,9 +93,14 @@ class CompanyGUI(QWidget):
 
         layout.addWidget(summary)
         layout.addWidget(zone)
+        layout.addWidget(policies)
         layout.addWidget(firewall)
         layout.addStretch()
         self.setLayout(layout)
+    
+    def view_policy(self, policy):
+        self.main_window.policy = policy
+        self.main_window.show_policy()
     
     def view_firewall(self, fw):
         self.main_window.firewall = fw
