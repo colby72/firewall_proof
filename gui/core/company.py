@@ -3,6 +3,8 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+from gui.dialogs.add_policy import *
+
 
 class CompanyGUI(QWidget):
     def __init__(self, main_window):
@@ -67,6 +69,8 @@ class CompanyGUI(QWidget):
                 self.view_policy(pol)
             )
             policies_layout.addWidget(view_button, i+1, 3, 1, 1)
+        add_policy_button = QPushButton("Add Policy")
+        add_policy_button.clicked.connect(self.add_policy)
 
         # frewalls box
         firewall = QGroupBox("Firewalls")
@@ -94,6 +98,7 @@ class CompanyGUI(QWidget):
         layout.addWidget(summary)
         layout.addWidget(zone)
         layout.addWidget(policies)
+        layout.addWidget(add_policy_button)
         layout.addWidget(firewall)
         layout.addStretch()
         self.setLayout(layout)
@@ -105,3 +110,8 @@ class CompanyGUI(QWidget):
     def view_firewall(self, fw):
         self.main_window.firewall = fw
         self.main_window.show_firewall()
+    
+    def add_policy(self):
+        self.add_policy_dialog = DialogAddPolicy(self.main_window, self.company)
+        self.add_policy_dialog.exec()
+        self.main_window.show_company()
