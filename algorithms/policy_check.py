@@ -10,7 +10,7 @@ def apply_policy(firewall, policy):
     """
     print_info(f"Applying policy '{policy.name}' to the Firewall '{firewall.name}' ...")
     print_info(f"All rules will be set set to policy default value: {policy.default}")
-    firewall.policy = policy.name
+    firewall.policy = policy
     for fw_rule in firewall.rules:
         # set status to default value
         fw_rule.set_status(policy.default)

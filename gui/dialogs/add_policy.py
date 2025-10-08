@@ -30,12 +30,12 @@ class DialogAddPolicy(QDialog):
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         self.buttons.accepted.connect(self.when_ok)
         self.buttons.rejected.connect(self.when_cancel)
-        layout.addWidget(self.buttons)
+        layout.addWidget(self.buttons, 2, 1)
     
     def when_ok(self):
-        name_value = self.policy_name.text()
-        default_value = self.policy_default.currentText()
-        new_policy = FWPolicy(name_value, default_value)
+        policy_name = self.policy_name.text()
+        policy_default = self.policy_default.currentText()
+        new_policy = FWPolicy(self.company, policy_name, policy_default)
         self.company.add_policy(new_policy)
         self.close()
     

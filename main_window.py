@@ -50,10 +50,12 @@ class FWProofGUI(QMainWindow):
 
         # Related sub windows
         self.windows = QStackedWidget()
-        self.setCentralWidget(self.windows)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setWidget(self.windows)
+        self.setCentralWidget(self.scroll_area)
         self.default = DefaultGUI(self)
         self.windows.addWidget(self.default)
-        #self.home = Home(self, fw_proof)
 
     # related FW Proof data
     def init_data(self):
@@ -322,7 +324,7 @@ class FWProofGUI(QMainWindow):
     ''' X- Call functions for Test Widgets '''
     def display_home(self):
         company = parse_fwp_json('test_data/space_y.json')
-        policy = parse_policy('test_data/policy.json')
+        policy = parse_policy(company, 'test_data/policy.json')
         company.add_policy(policy)
         for fw in company.fw_inventory:
             apply_policy(fw, policy)

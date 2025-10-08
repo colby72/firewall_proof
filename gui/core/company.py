@@ -3,7 +3,9 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+from gui.dialogs.add_zone import *
 from gui.dialogs.add_policy import *
+from gui.dialogs.add_firewall import *
 
 
 class CompanyGUI(QWidget):
@@ -45,8 +47,8 @@ class CompanyGUI(QWidget):
             zone_layout.addWidget(QLabel(z.name), i+1, 0, 1, 1)
             zone_layout.addWidget(QLabel(str(z.level)), i+1, 1, 1, 1)
             zone_layout.addWidget(QLabel(z.description), i+1, 2, 1, 1)
-        #zone_layout.setRowStretch(zone_layout.rowCount(), 1)
-        #zone_layout.setColumnStretch(zone_layout.columnCount(), 1)
+        add_zone_button = QPushButton("Add Zone")
+        add_zone_button.clicked.connect(self.add_zone)
 
         # policies box
         policies = QGroupBox("Company policies")
@@ -87,19 +89,23 @@ class CompanyGUI(QWidget):
             firewall_layout.addWidget(QLabel(fw.name), i+1, 0, 1, 3)
             firewall_layout.addWidget(QLabel(fw.vendor), i+1, 3, 1, 3)
             firewall_layout.addWidget(QLabel(fw.address), i+1, 6, 1, 3)
-            firewall_layout.addWidget(QLabel(str(fw.policy)), i+1, 9, 1, 3)
+            firewall_layout.addWidget(QLabel(fw.policy.name), i+1, 9, 1, 3)
             view_button = QPushButton("View")
             view_button.clicked.connect(
                 lambda checked, f=fw:
                 self.view_firewall(f)
             )
             firewall_layout.addWidget(view_button, i+1, 12, 1, 1)
+        add_fw_button = QPushButton("Add Firewall")
+        add_fw_button.clicked.connect(self.add_firewall)
 
         layout.addWidget(summary)
         layout.addWidget(zone)
+        layout.addWidget(add_zone_button)
         layout.addWidget(policies)
         layout.addWidget(add_policy_button)
         layout.addWidget(firewall)
+        layout.addWidget(add_fw_button)
         layout.addStretch()
         self.setLayout(layout)
     
@@ -111,7 +117,17 @@ class CompanyGUI(QWidget):
         self.main_window.firewall = fw
         self.main_window.show_firewall()
     
+    def add_zone(self):
+        self.add_zone_dialog = DialogAddZone(self.main_window, self.company)
+        self.add_zone_dialog.exec()
+        self.main_window.show_company()
+    
     def add_policy(self):
         self.add_policy_dialog = DialogAddPolicy(self.main_window, self.company)
         self.add_policy_dialog.exec()
+        self.main_window.show_company()
+    
+    def add_firewall(self):
+        self.add_fw_dialog = DialogAddFirewall(self.main_window, self.company)
+        self.add_fw_dialog.exec()
         self.main_window.show_company()

@@ -31,7 +31,7 @@ def parse_fwp_json(conf_file):
     # parse Firewall inventory
     fw_count = 0
     for fw in data['fw_inventory']:
-        firewall = Firewall(fw['name'], fw['vendor'], fw['address'])
+        firewall = Firewall(company, fw['name'], fw['vendor'], fw['address'])
         e = company.add_firewall(firewall)
         if e:
             fw_count += 1
@@ -40,7 +40,7 @@ def parse_fwp_json(conf_file):
             firewall.add_interface(interface['name'], interface['address'])
         # parse Firewall hosts
         for h in fw['hosts']:
-            host = Host(h['name'], h['zone'], h['address'])
+            host = Host(fw, h['name'], h['zone'], h['address'])
             firewall.add_host(host)
         # parse Firewall groups
         for g in fw['groups']:

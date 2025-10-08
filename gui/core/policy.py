@@ -3,6 +3,8 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+from gui.dialogs.add_policy_rule import *
+
 
 class PolicyGUI(QWidget):
     def __init__(self, main_window, policy):
@@ -37,6 +39,16 @@ class PolicyGUI(QWidget):
             rules_layout.addWidget(QLabel(services), i+1, 2)
             rules_layout.addWidget(QLabel(r['status']), i+1, 3)
         
+        # add policy rule button
+        add_policy_rule_button = QPushButton("Add Policy Rule")
+        add_policy_rule_button.clicked.connect(self.add_policy_rule)
+        
         layout.addWidget(rules, 2, 0, 1, 3)
         layout.addWidget(QLabel(), 2, 3, 1, 1)
+        layout.addWidget(add_policy_rule_button, 3, 0, 1, 1)
         layout.setRowStretch(layout.rowCount(), 1)
+    
+    def add_policy_rule(self):
+        self.add_policy_rule_dialog = DialogAddPolicyRule(self.main_window, self.policy)
+        self.add_policy_rule_dialog.exec()
+        self.main_window.show_policy()

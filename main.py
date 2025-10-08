@@ -34,7 +34,7 @@ def create_data():
     company = parse_fwp_json('test_data/space_y.json')
     print_success(f"Company '{company.name}' succssfully created !")
 
-    policy = parse_policy('test_data/policy.json')
+    policy = parse_policy(company, 'test_data/policy.json')
     print_success(f"Firewall policy '{policy.name}' succssfully defined !")
 
     for fw in company.fw_inventory:

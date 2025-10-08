@@ -8,10 +8,10 @@ from cli.logger import *
 
 
 class Firewall():
-    def __init__(self, name, vendor, address):
+    def __init__(self, company, name, vendor, address):
         self.id = 0
         self.name = name
-        self.company = None
+        self.company = company
         self.vendor = vendor
         self.address = address
 

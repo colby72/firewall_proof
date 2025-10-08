@@ -8,9 +8,10 @@ from cli.logger import *
 
 
 class Host():
-    def __init__(self, name, zone, address=["127.0.0.1/32"]):
+    def __init__(self, firewall, name, zone, address=["127.0.0.1/32"]):
         self.id = 0 # not used yet
         self.name = name
+        self.firewall = firewall # ref to parent Firewall
         self.zone = zone # ref to zone
         self.address = address # list of host IP addresses (format: xxx.xxx.xxx.xxx/range)
         self.nat = None # not used yet
