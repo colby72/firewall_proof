@@ -19,11 +19,11 @@ from parsers.fwp_json import *
 
 
 def main_banner():
-    print("###################################")
-    print("##                               ##")
-    print("##      Firewall Proof v0.1      ##")
-    print("##                               ##")
-    print("###################################")
+    print("############################################")
+    print("##                                        ##")
+    print("##      Firewall Proof v1.0.0-alpha1      ##")
+    print("##                                        ##")
+    print("############################################")
     print("\n\n")
 
 

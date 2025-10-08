@@ -9,6 +9,7 @@ class HostGUI(QWidget):
         QWidget.__init__(self)
         self.main_window = main_window
         self.host = host
+        self.main_window.setWindowTitle(f"{self.host.name} - Firewall Proof {self.main_window.version}")
         layout = QGridLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(10)

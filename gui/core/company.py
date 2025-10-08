@@ -13,7 +13,7 @@ class CompanyGUI(QWidget):
         QWidget.__init__(self)
         self.main_window = main_window
         self.company = self.main_window.company
-        #print(f"Main window's company : '{self.main_window.company.name}'")
+        self.main_window.setWindowTitle(f"{self.company.name} - Firewall Proof {self.main_window.version}")
         layout = QVBoxLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(20)

@@ -11,6 +11,7 @@ class HomeGUI(QWidget):
         QWidget.__init__(self)
         self.main_window = main_window
         self.project = project
+        self.main_window.setWindowTitle(f"{self.project.name} - Firewall Proof {self.main_window.version}")
         layout = QVBoxLayout()
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(10)

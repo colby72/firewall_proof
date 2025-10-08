@@ -13,6 +13,7 @@ class FirewallGUI(QWidget):
         QWidget.__init__(self)
         self.main_window = main_window
         self.fw = fw
+        self.main_window.setWindowTitle(f"{self.fw.name} - Firewall Proof {self.main_window.version}")
         layout = QVBoxLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(20)

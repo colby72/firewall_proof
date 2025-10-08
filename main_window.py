@@ -36,10 +36,10 @@ from algorithms.policy_check import *
 
 
 class FWProofGUI(QMainWindow):
-    def __init__(self, title):
+    def __init__(self):
         super().__init__()
         self.setWindowIcon(QtGui.QIcon('img/firewall_lock_red_icon.png'))
-        self.title = title
+        self.version = "v1.0.0-alpha1"
         self.left = 60
         self.top = 60
         self.width = 1500
@@ -70,7 +70,7 @@ class FWProofGUI(QMainWindow):
 
     def init_ui(self, parent=None):
         # General layout
-        self.setWindowTitle(self.title)
+        self.setWindowTitle(f"Firewall Proof {self.version}")
         #self.setGeometry(self.left, self.top, self.width, self.height)
         self.setMinimumWidth(self.width)
         self.setMinimumHeight(self.height)
@@ -375,7 +375,6 @@ class FWProofGUI(QMainWindow):
 
 
 app = QApplication(sys.argv)
-title = "Firewall Proof v0.1-beta"
 
-main_window = FWProofGUI(title)
+main_window = FWProofGUI()
 sys.exit(app.exec())
