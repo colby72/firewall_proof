@@ -6,6 +6,7 @@
             "src_zone": "EIS",
             "dest_zone": "DMZ-OT",
             "services": ["TCP/3389", "TCP/443"],
+            "vpn": false,
             "status": "OK"
         },
         {

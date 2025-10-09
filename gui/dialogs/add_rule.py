@@ -66,11 +66,16 @@ class DialogAddRule(QDialog):
         service_layout.addWidget(self.add_udp, 1, 1, 1, 1)
         service_layout.addWidget(self.add_icmp, 1, 2, 1, 1)
         layout.addWidget(service_box, 3, 0)
+        # rule vpn
+        layout.addWidget(QLabel("VPN tunnel : "), 4, 0)
+        self.rule_vpn = QComboBox()
+        self.rule_vpn.addItems(["No", "Yes"])
+        layout.addWidget(self.rule_vpn, 4, 1)
 
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         self.buttons.accepted.connect(self.when_ok)
         self.buttons.rejected.connect(self.when_cancel)
-        layout.addWidget(self.buttons, 4, 1)
+        layout.addWidget(self.buttons, 5, 1)
     
     def add_service(self, proto):
         self.port = None
@@ -87,7 +92,8 @@ class DialogAddRule(QDialog):
         rule_number = self.rule_number.value()
         rule_src = [self.hosts_list[item.text()] for item in self.rule_src.selectedItems()]
         rule_dest = [self.hosts_list[item.text()] for item in self.rule_dest.selectedItems()]
-        new_rule = Rule(rule_number, rule_src, rule_dest, self.services)
+        rule_vpn = True if self.rule_vpn.currentText()=="Yes" else False
+        new_rule = Rule(rule_number, rule_src, rule_dest, self.services, rule_vpn)
         self.fw.add_rule(new_rule)
         apply_policy(self.fw, self.fw.policy)
         self.close()

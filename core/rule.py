@@ -10,14 +10,14 @@ import time
 
 
 class Rule():
-    def __init__(self, number, src, dest, services):
+    def __init__(self, number, src, dest, services, vpn=False):
         # filled in by user
         self.id = 0 # not used yet
         self.number = number # rule's number
         self.src = src # list of refs to source hosts
         self.dest = dest # list of refs to destination hosts
         self.services = services # list of authorized ports and services for this flow
-        self.vpn = None # not used yet
+        self.vpn = vpn # not used yet
         self.disabled = False # set to True only if rule is DISABLED
 
         # filled in by software

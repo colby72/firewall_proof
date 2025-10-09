@@ -64,7 +64,7 @@ class FirewallGUI(QWidget):
         rules = QGroupBox("Firewall rules")
         rules_layout = QGridLayout()
         rules.setLayout(rules_layout)
-        headers = ["ID", "Source", "Destination", "Service", "Status"]
+        headers = ["ID", "Source", "Destination", "Service", "VPN", "Status"]
         for i in range(len(headers)):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
@@ -76,8 +76,10 @@ class FirewallGUI(QWidget):
             rules_layout.addWidget(QLabel(src), i+1, 1)
             dest = '\n'.join([host.name for host in r.dest])
             rules_layout.addWidget(QLabel(dest), i+1, 2)
-            rules_layout.addWidget(QLabel('\n'.join(r.services)), i+1, 3)
-            rules_layout.addWidget(QLabel(str(r.status)), i+1, 4)
+            services = '\n'.join(r.services) if r.services else "all"
+            rules_layout.addWidget(QLabel(services), i+1, 3)
+            rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)
+            rules_layout.addWidget(QLabel(str(r.status)), i+1, 5)
         add_rule_button = QPushButton("Add Rule")
         add_rule_button.clicked.connect(self.add_rule)
 

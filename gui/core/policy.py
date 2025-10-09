@@ -27,7 +27,7 @@ class PolicyGUI(QWidget):
         rules = QGroupBox("Policy rules")
         rules_layout = QGridLayout()
         rules.setLayout(rules_layout)
-        headers = ["Source zone", "Destination zone", "Services", "Status"]
+        headers = ["Source zone", "Destination zone", "Services", "VPN", "Status"]
         for i in range(len(headers)):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
@@ -38,7 +38,8 @@ class PolicyGUI(QWidget):
             rules_layout.addWidget(QLabel(r['dest_zone']), i+1, 1)
             services = '\n'.join(r['services']) if r['services'] else "all"
             rules_layout.addWidget(QLabel(services), i+1, 2)
-            rules_layout.addWidget(QLabel(r['status']), i+1, 3)
+            rules_layout.addWidget(QLabel(str(r['vpn'])), i+1, 3)
+            rules_layout.addWidget(QLabel(r['status']), i+1, 4)
         
         # add policy rule button
         add_policy_rule_button = QPushButton("Add Policy Rule")
