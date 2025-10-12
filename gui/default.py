@@ -34,21 +34,9 @@ class DefaultGUI(QWidget):
         self.open_button.clicked.connect(self.open_project)
         layout.addWidget(self.open_button, 2, 1, 1, 1)
 
-        self.company_button = QPushButton("Test Company")
-        self.company_button.clicked.connect(self.test_company)
-        layout.addWidget(self.company_button, 3, 1, 1, 1)
-
-        self.firewall_button = QPushButton("Test Firewall")
-        self.firewall_button.clicked.connect(self.test_firewall)
-        layout.addWidget(self.firewall_button, 4, 1, 1, 1)
-
-        self.host_button = QPushButton("Test Host")
-        self.host_button.clicked.connect(self.test_host)
-        layout.addWidget(self.host_button, 5, 1, 1, 1)
-
         self.project_button = QPushButton("Test Project")
         self.project_button.clicked.connect(self.test_project)
-        layout.addWidget(self.project_button, 6, 1, 1, 1)
+        layout.addWidget(self.project_button, 3, 1, 1, 1)
 
         layout.setRowStretch(layout.rowCount(), 1)
         self.setLayout(layout)

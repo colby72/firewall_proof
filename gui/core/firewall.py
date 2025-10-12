@@ -73,18 +73,38 @@ class FirewallGUI(QWidget):
         for i in range(len(headers)):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
+            #label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             rules_layout.addWidget(label, 0, i)
         for i in range(len(self.fw.rules)):
             r = self.fw.rules[i]
             rules_layout.addWidget(QLabel(str(r.number)), i+1, 0)
             src = '\n'.join([host.name for host in r.src])
+            #src = '</br>'.join([f"<span style='color:{host.zone.color};'>{host.name}</span>" for host in r.src])
             rules_layout.addWidget(QLabel(src), i+1, 1)
             dest = '\n'.join([host.name for host in r.dest])
             rules_layout.addWidget(QLabel(dest), i+1, 2)
             services = '\n'.join(r.services) if r.services else "all"
             rules_layout.addWidget(QLabel(services), i+1, 3)
             rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)
-            rules_layout.addWidget(QLabel(str(r.status)), i+1, 5)
+            status = QLabel(str(r.status))
+            if str(r.status)=="OK":
+                status.setStyleSheet("""
+                    color: #1ba91c;
+                    font-weight: bold;
+                """)
+            elif str(r.status)=="WARNING":
+                status.setStyleSheet("""
+                    color: #f4bf14;
+                    font-weight: bold;
+                """)
+            elif str(r.status)=="NOK":
+                status.setStyleSheet("""
+                    color: #e83232;
+                    font-weight: bold;
+                """)
+            else:
+                pass
+            rules_layout.addWidget(status, i+1, 5)
         add_rule_button = QPushButton("Add Rule")
         add_rule_button.clicked.connect(self.add_rule)
 
