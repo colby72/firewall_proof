@@ -19,6 +19,7 @@ class DefaultGUI(QWidget):
     def __init__(self, main_window):
         QWidget.__init__(self)
         self.main_window = main_window
+        self.main_window.setWindowTitle(f"Firewall Proof {self.main_window.version}")
         layout = QGridLayout()
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(15)

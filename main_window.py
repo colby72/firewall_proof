@@ -70,7 +70,7 @@ class FWProofGUI(QMainWindow):
 
     def init_ui(self, parent=None):
         # General layout
-        self.setWindowTitle(f"Firewall Proof {self.version}")
+        #self.setWindowTitle(f"Firewall Proof {self.version}")
         #self.setGeometry(self.left, self.top, self.width, self.height)
         self.setMinimumWidth(self.width)
         self.setMinimumHeight(self.height)
@@ -364,6 +364,7 @@ class FWProofGUI(QMainWindow):
             ]
             self.disable_actions(disbaled_actions)
             # show default widget
+            self.setWindowTitle(f"Firewall Proof {self.version}")
             self.windows.setCurrentWidget(self.default)
     
     def quit(self):
