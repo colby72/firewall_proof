@@ -14,6 +14,13 @@ class CompanyGUI(QWidget):
         self.main_window = main_window
         self.company = self.main_window.company
         self.main_window.setWindowTitle(f"{self.company.name} - Firewall Proof {self.main_window.version}")
+        # update menu actions
+        enabled_actions = [self.main_window.company_submenu]
+        self.main_window.enable_actions(enabled_actions)
+        disabled_actions = [self.main_window.firewall_submenu]
+        self.main_window.disable_actions(disabled_actions)
+
+        # widget design
         layout = QVBoxLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(20)

@@ -14,7 +14,7 @@ from gui.core.company import *
 from gui.core.policy import *
 from gui.core.firewall import *
 from gui.core.host import *
-
+from gui.dialogs.add_firewall import *
 from gui.about.information import *
 from gui.about.developers import *
 from gui.about.shortcuts import *
@@ -87,73 +87,136 @@ class FWProofGUI(QMainWindow):
         about_menu = menu.addMenu('About')
 
         """ Create actions for file menu """
-        new_action = QAction(QtGui.QIcon("img/file_new_blue_icon.png"), "New project", self)
-        new_action.setShortcut('Ctrl+N')
-        new_action.setStatusTip('New project')
-        new_action.triggered.connect(self.new_project)
+        self.new_action = QAction(QtGui.QIcon("img/file_new_blue_icon.png"), "New project", self)
+        self.new_action.setShortcut('Ctrl+N')
+        self.new_action.setStatusTip('New project')
+        self.new_action.triggered.connect(self.new_project)
 
-        open_action = QAction(QtGui.QIcon("img/file_open_icon.png"), "Open project", self)
-        open_action.setShortcut("Ctrl+O")
-        open_action.setStatusTip("Open project")
-        open_action.triggered.connect(self.open_project)
+        self.open_action = QAction(QtGui.QIcon("img/file_open_icon.png"), "Open project", self)
+        self.open_action.setShortcut("Ctrl+O")
+        self.open_action.setStatusTip("Open project")
+        self.open_action.triggered.connect(self.open_project)
 
-        save_action = QAction(QtGui.QIcon("img/save_file_icon.png"), "Save project", self)
-        save_action.setShortcut("Ctrl+S")
-        save_action.setStatusTip("Save project")
-        save_action.triggered.connect(self.save_project)
+        self.save_as_action = QAction(QtGui.QIcon("img/save_file_icon.png"), "Save project as", self)
+        #self.save_as_action.setShortcut("Ctrl+S")
+        self.save_as_action.setStatusTip("Save project as")
+        self.save_as_action.triggered.connect(self.save_project_as)
+        self.save_as_action.setDisabled(True)
+
+        self.save_action = QAction(QtGui.QIcon("img/save_file_icon.png"), "Save project", self)
+        self.save_action.setShortcut("Ctrl+S")
+        self.save_action.setStatusTip("Save project")
+        self.save_action.triggered.connect(self.save_project)
+        self.save_action.setDisabled(True)
 
         self.close_action = QAction(QtGui.QIcon("img/close_remove_icon.png"), "Close project", self)
         self.close_action.setShortcut("Ctrl+W")
         self.close_action.setStatusTip("Close project")
         self.close_action.triggered.connect(self.close_project)
+        self.close_action.setDisabled(True)
 
         quit_action = QAction(QtGui.QIcon("img/shutdown_red.png"), "Quit", self)
         quit_action.setShortcut("Ctrl+Q")
         quit_action.setStatusTip("Quit")
         quit_action.triggered.connect(self.quit)
 
-        file_menu.addAction(new_action)
-        file_menu.addAction(open_action)
-        file_menu.addAction(save_action)
+        file_menu.addAction(self.new_action)
+        file_menu.addAction(self.open_action)
+        file_menu.addAction(self.save_action)
+        file_menu.addAction(self.save_as_action)
         file_menu.addAction(self.close_action)
         file_menu.addAction(quit_action)
 
         """ Create actions for edit menu """
-        settings_action = QAction(QtGui.QIcon("img/settings_software_icon.png"), "Settings", self)
-        #settings_action.setShortcut("Ctrl+Q")
-        settings_action.setStatusTip("Settings")
+        self.settings_action = QAction(QtGui.QIcon("img/settings_software_icon.png"), "Settings", self)
+        #self.settings_action.setShortcut("Ctrl+Q")
+        self.settings_action.setStatusTip("Settings")
 
-        undo_action = QAction(QtGui.QIcon("img/undo.jpg"), "Undo", self)
-        undo_action.setShortcut("Ctrl+Z")
-        undo_action.setStatusTip("Undo last action")
+        self.undo_action = QAction(QtGui.QIcon("img/undo.jpg"), "Undo", self)
+        self.undo_action.setShortcut("Ctrl+Z")
+        self.undo_action.setStatusTip("Undo last action")
 
-        redo_action = QAction(QtGui.QIcon("img/redo.jpg"), "Redo", self)
-        redo_action.setShortcut("Ctrl+A")
-        redo_action.setStatusTip("Redo last action")
+        self.redo_action = QAction(QtGui.QIcon("img/redo.jpg"), "Redo", self)
+        self.redo_action.setShortcut("Ctrl+A")
+        self.redo_action.setStatusTip("Redo last action")
 
-        edit_menu.addAction(settings_action)
-        edit_menu.addAction(undo_action)
-        edit_menu.addAction(redo_action)
+        edit_menu.addAction(self.settings_action)
+        edit_menu.addAction(self.undo_action)
+        edit_menu.addAction(self.redo_action)
 
         """ Create actions for project menu """
-        home_action = QAction(QtGui.QIcon("img/homepage_icon.png"), "Project home", self)
-        home_action.setShortcut('Ctrl+H')
-        home_action.setStatusTip('Project home')
-        home_action.triggered.connect(self.show_home)
+        self.home_action = QAction(QtGui.QIcon("img/homepage_icon.png"), "Project home", self)
+        self.home_action.setShortcut('Ctrl+H')
+        self.home_action.setStatusTip('Project home')
+        self.home_action.triggered.connect(self.show_home)
+        self.home_action.setDisabled(True)
 
-        company_action = QAction(QtGui.QIcon("img/company_icon.png"), "Back to Company", self)
-        #company_action.setShortcut('Ctrl+H')
-        company_action.setStatusTip('Company')
-        company_action.triggered.connect(self.show_company)
+        self.add_company_action = QAction(QtGui.QIcon("img/shortcut_icon.png"), "Add new Company", self)
+        #self.add_company_action.setShortcut('Ctrl+H')
+        self.add_company_action.setStatusTip('New Company')
+        self.add_company_action.triggered.connect(self.add_company)
+        self.add_company_action.setDisabled(True)
 
-        firewall_action = QAction(QtGui.QIcon("img/firewall_blue_icon.png"), "Back to Firewall", self)
-        #firewall_action.setShortcut('Ctrl+H')
-        firewall_action.setStatusTip('Company')
-        firewall_action.triggered.connect(self.show_firewall)
+        self.company_action = QAction(QtGui.QIcon("img/company_icon2.png"), "Show Company", self)
+        #self.company_action.setShortcut('Ctrl+H')
+        self.company_action.setStatusTip('Show Company')
+        self.company_action.triggered.connect(self.show_company)
+        self.company_action.setDisabled(True)
 
-        project_menu.addAction(home_action)
-        project_menu.addAction(company_action)
-        project_menu.addAction(firewall_action)
+        self.add_firewall_action = QAction(QtGui.QIcon("img/firewall_add_icon.png"), "Add new Firewall", self)
+        #self.add_firewall_action.setShortcut('Ctrl+H')
+        self.add_firewall_action.setStatusTip('New Firewall')
+        self.add_firewall_action.triggered.connect(self.add_firewall)
+        self.add_firewall_action.setDisabled(True)
+
+        self.add_zone_action = QAction(QtGui.QIcon("img/shortcut_icon.png"), "Add new Zone", self)
+        #self.add_zone_action.setShortcut('Ctrl+H')
+        self.add_zone_action.setStatusTip('New Zone')
+        self.add_zone_action.triggered.connect(self.add_zone)
+        self.add_zone_action.setDisabled(True)
+
+        self.add_policy_action = QAction(QtGui.QIcon("img/shortcut_icon.png"), "Add new Policy", self)
+        #self.add_policy_action.setShortcut('Ctrl+H')
+        self.add_policy_action.setStatusTip('New Policy')
+        self.add_policy_action.triggered.connect(self.add_policy)
+        self.add_policy_action.setDisabled(True)
+
+        self.firewall_action = QAction(QtGui.QIcon("img/firewall_blue_icon.png"), "Show Firewall", self)
+        #self.firewall_action.setShortcut('Ctrl+H')
+        self.firewall_action.setStatusTip('Show Firewall')
+        self.firewall_action.triggered.connect(self.show_firewall)
+        self.firewall_action.setDisabled(True)
+
+        self.add_interface_action = QAction(QtGui.QIcon("img/shortcut_icon.png"), "Add new Interface", self)
+        #self.add_interface_action.setShortcut('Ctrl+H')
+        self.add_interface_action.setStatusTip('New Interface')
+        self.add_interface_action.triggered.connect(self.add_interface)
+        self.add_interface_action.setDisabled(True)
+
+        self.add_host_action = QAction(QtGui.QIcon("img/shortcut_icon.png"), "Add new Host", self)
+        #self.add_host_action.setShortcut('Ctrl+H')
+        self.add_host_action.setStatusTip('New Host')
+        self.add_host_action.triggered.connect(self.add_host)
+        self.add_host_action.setDisabled(True)
+
+        self.add_rule_action = QAction(QtGui.QIcon("img/shortcut_icon.png"), "Add new Rule", self)
+        #self.add_rule_action.setShortcut('Ctrl+H')
+        self.add_rule_action.setStatusTip('New Rule')
+        self.add_rule_action.triggered.connect(self.add_rule)
+        self.add_rule_action.setDisabled(True)
+
+        project_menu.addAction(self.home_action)
+        project_menu.addAction(self.add_company_action)
+        self.company_submenu = project_menu.addMenu("Company")
+        self.company_submenu.addAction(self.company_action)
+        self.company_submenu.addAction(self.add_firewall_action)
+        self.company_submenu.addAction(self.add_zone_action)
+        self.company_submenu.addAction(self.add_policy_action)
+        self.firewall_submenu = project_menu.addMenu("Firewall")
+        self.firewall_submenu.addAction(self.firewall_action)
+        self.firewall_submenu.addAction(self.add_interface_action)
+        self.firewall_submenu.addAction(self.add_host_action)
+        self.firewall_submenu.addAction(self.add_rule_action)
 
         """ Create actions for about menu """
         info_action = QAction(QtGui.QIcon("img/info_grey_icon.png"), "About software", self)
@@ -183,13 +246,17 @@ class FWProofGUI(QMainWindow):
         self.toolbar = self.addToolBar("ToolBar")
 
         # Add The Actions To Tool Bar
-        self.toolbar.addAction(home_action)
+        self.toolbar.addAction(self.home_action)
         self.toolbar.addSeparator()
-        self.toolbar.addAction(new_action)
+        self.toolbar.addAction(self.new_action)
         self.toolbar.addSeparator()
-        self.toolbar.addAction(open_action)
+        self.toolbar.addAction(self.open_action)
         self.toolbar.addSeparator()
-        self.toolbar.addAction(save_action)
+        self.toolbar.addAction(self.save_action)
+        self.toolbar.addSeparator()
+        self.toolbar.addAction(self.company_action)
+        self.toolbar.addSeparator()
+        self.toolbar.addAction(self.firewall_action)
         self.toolbar.addSeparator()
         self.toolbar.addAction(info_action)
         self.toolbar.addSeparator()
@@ -211,12 +278,31 @@ class FWProofGUI(QMainWindow):
         self.show()
 
     ''' ### Menu call functions ### '''
+    def enable_actions(self, action_list):
+        for a in action_list:
+            if isinstance(a, QAction):
+                a.setDisabled(False)
+            elif isinstance(a, QMenu):
+                for sub_a in a.actions():
+                    sub_a.setDisabled(False)
+    
+    def disable_actions(self, action_list):
+        for a in action_list:
+            if isinstance(a, QAction):
+                a.setDisabled(True)
+            elif isinstance(a, QMenu):
+                for sub_a in a.actions():
+                    sub_a.setDisabled(True)
+
     ''' 1- Call functions for Menu: File '''
     def new_project(self):
         project_title, ok_pressed = QInputDialog.getText(self, "New project", "Project name")
         if ok_pressed and project_title:
             # create new project
             self.project = Project(project_title)
+            # update menu actions
+            enabled_actions = [self.save_action, self.close_action]
+            self.enable_actions(enabled_actions)
             # show project's home
             home = HomeGUI(self, self.project)
             self.windows.addWidget(home)
@@ -261,16 +347,31 @@ class FWProofGUI(QMainWindow):
             self.file_name = file_name
     
     def close_project(self):
+        self.save_action.setDisabled(True)
         confirm_close = QMessageBox.question(self, "Close project", "Are you sure you want to close current project ?\nChanges unsaved will be lost.", buttons=QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         defaultButton=QMessageBox.StandardButton.No)
         if confirm_close == QMessageBox.StandardButton.Yes:
             self.init_data()
+            # update menu actions
+            disbaled_actions = [
+                self.save_action,
+                self.save_as_action,
+                self.close_action,
+                self.home_action,
+                self.add_company_action,
+                self.company_submenu,
+                self.firewall_submenu
+            ]
+            self.disable_actions(disbaled_actions)
+            # show default widget
             self.windows.setCurrentWidget(self.default)
     
     def quit(self):
         if QMessageBox.question(self,"Exit Firewall Proof", "Do you want to exit?",
                                 QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes) == QMessageBox.StandardButton.Yes:
             self.close()
+    
+    ''' 2- Call functions for Menu: Edit '''
     
     ''' 3- Call functions for Menu: Project '''
     def show_home(self):
@@ -279,20 +380,62 @@ class FWProofGUI(QMainWindow):
             self.windows.addWidget(home)
             self.windows.setCurrentWidget(home)
     
+    def add_company(self):
+        if self.project:
+            company_name, ok_pressed = QInputDialog.getText(self, "Add Company", "Company name")
+            if ok_pressed and company_name:
+                company = Company(company_name)
+                self.project.add_company(company)
+                self.show_home()
+
     def show_company(self):
-        #self.company = company
         if self.company:
             company_gui = CompanyGUI(self)
             self.windows.addWidget(company_gui)
             self.windows.setCurrentWidget(company_gui)
     
+    def add_firewall(self):
+        if self.company:
+            self.add_fw_dialog = DialogAddFirewall(self, self.company)
+            self.add_fw_dialog.exec()
+            self.show_company()
+    
+    def add_zone(self):
+        if self.company:
+            self.add_zone_dialog = DialogAddZone(self, self.company)
+            self.add_zone_dialog.exec()
+            self.show_company()
+    
+    def add_policy(self):
+        if self.company:
+            self.add_policy_dialog = DialogAddPolicy(self, self.company)
+            self.add_policy_dialog.exec()
+            self.show_company()
+    
     def show_firewall(self):
-        #self.firewall = firewall
         if self.firewall:
             firewall_gui = FirewallGUI(self, self.firewall)
             self.windows.addWidget(firewall_gui)
             self.windows.setCurrentWidget(firewall_gui)
     
+    def add_interface(self):
+        if self.firewall:
+            self.add_iface_dialog = DialogAddInterface(self, self.firewall)
+            self.add_iface_dialog.exec()
+            self.show_firewall()
+    
+    def add_host(self):
+        if self.firewall:
+            self.add_host_dialog = DialogAddHost(self, self.firewall)
+            self.add_host_dialog.exec()
+            self.show_firewall()
+    
+    def add_rule(self):
+        if self.firewall:
+            self.add_rule_dialog = DialogAddRule(self, self.firewall)
+            self.add_rule_dialog.exec()
+            self.show_firewall()
+
     def show_host(self):
         #self.host = host
         if self.host:
@@ -330,7 +473,9 @@ class FWProofGUI(QMainWindow):
             apply_policy(fw, policy)
         self.project = Project("Test project")
         self.project.add_company(company)
-        self.company = company
+        # update menu actions
+        self.save_action.setDisabled(False)
+        self.close_action.setDisabled(False)
         # display the project
         home = HomeGUI(self, self.project)
         self.windows.addWidget(home)

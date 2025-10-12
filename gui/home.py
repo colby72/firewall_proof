@@ -12,6 +12,22 @@ class HomeGUI(QWidget):
         self.main_window = main_window
         self.project = project
         self.main_window.setWindowTitle(f"{self.project.name} - Firewall Proof {self.main_window.version}")
+        # update menu actions
+        enabled_actions = [
+            self.main_window.save_action,
+            self.main_window.save_as_action,
+            self.main_window.close_action,
+            self.main_window.home_action,
+            self.main_window.add_company_action
+        ]
+        self.main_window.enable_actions(enabled_actions)
+        disabled_actions = [
+            self.main_window.company_submenu,
+            self.main_window.firewall_submenu
+        ]
+        self.main_window.disable_actions(disabled_actions)
+        
+        # widget design
         layout = QVBoxLayout()
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(10)
