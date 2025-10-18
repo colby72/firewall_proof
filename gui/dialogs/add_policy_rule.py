@@ -3,6 +3,8 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+from utils import *
+
 
 class DialogAddPolicyRule(QDialog):
     def __init__(self, main_window, policy):
@@ -82,11 +84,13 @@ class DialogAddPolicyRule(QDialog):
             self.services_list.addItem(new_service)
 
     def when_ok(self):
+        src_zone = get_zone_by_name(self.policy.company, self.src_zone.currentText())
+        dest_zone = get_zone_by_name(self.policy.company, self.dest_zone.currentText())
         services = self.services[:] if self.services else None
         vpn = True if self.vpn.currentText()=="Yes" else False
         new_policy_rule = {
-            "src_zone": self.src_zone.currentText(),
-            "dest_zone": self.dest_zone.currentText(),
+            "src_zone": src_zone,
+            "dest_zone": dest_zone,
             "services": services,
             "vpn": vpn,
             "status": self.status.currentText()

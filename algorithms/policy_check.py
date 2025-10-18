@@ -16,22 +16,22 @@ def apply_policy(firewall, policy):
         fw_rule.set_status(policy.default)
         
         # get rule's data to be analyzed
-        src_zones = [h.zone for h in fw_rule.src]
-        dest_zones = [h.zone for h in fw_rule.dest]
+        src_zones = [h.zone.name for h in fw_rule.src]
+        dest_zones = [h.zone.name for h in fw_rule.dest]
         services = fw_rule.services
         
         # enumerate and look for applicable rules
         for pol_rule in policy.rules:
             # is src applicable ?
             src_applicable = False
-            if (pol_rule['src_zone']==None) or (pol_rule['src_zone'] in src_zones):
+            if (pol_rule['src_zone']==None) or (pol_rule['src_zone'].name in src_zones):
                 src_applicable = True
             else:
                 continue
             
             # is dest applicable ?
             dest_applicable = False
-            if (pol_rule['dest_zone']==None) or (pol_rule['dest_zone'] in dest_zones):
+            if (pol_rule['dest_zone']==None) or (pol_rule['dest_zone'].name in dest_zones):
                 dest_applicable = True
             else:
                 continue

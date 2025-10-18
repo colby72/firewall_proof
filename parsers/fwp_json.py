@@ -1,3 +1,4 @@
+from utils import *
 from core.company import *
 from core.firewall import *
 from core.host import *
@@ -22,10 +23,9 @@ def parse_fwp_json(conf_file):
     zone_count = 0
     print_info(f"Parsing zones for company '{company.name}' ...")
     for z in data['zones']:
-        zone = Zone(z['name'], z['level'], z['description'])
+        zone = Zone(z['name'], z['level'], z['description'], z['color'])
         e = company.add_zone(zone)
-        if e:
-            zone_count += 1
+        if e: zone_count += 1
     print_info(f"{zone_count} Zones added to company '{company.name}'")
 
     # parse Firewall inventory
@@ -33,14 +33,14 @@ def parse_fwp_json(conf_file):
     for fw in data['fw_inventory']:
         firewall = Firewall(company, fw['name'], fw['vendor'], fw['address'])
         e = company.add_firewall(firewall)
-        if e:
-            fw_count += 1
+        if e: fw_count += 1
         # parse Firewall interfacess
         for interface in fw['interfaces']:
             firewall.add_interface(interface['name'], interface['address'])
         # parse Firewall hosts
         for h in fw['hosts']:
-            host = Host(fw, h['name'], h['zone'], h['address'])
+            zone = get_zone_by_name(company, h['zone'])
+            host = Host(fw, h['name'], zone, h['address'])
             firewall.add_host(host)
         # parse Firewall groups
         for g in fw['groups']:

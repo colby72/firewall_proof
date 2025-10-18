@@ -34,8 +34,12 @@ class PolicyGUI(QWidget):
             rules_layout.addWidget(label, 0, i)
         for i in range(len(self.policy.rules)):
             r = self.policy.rules[i]
-            rules_layout.addWidget(QLabel(r['src_zone']), i+1, 0)
-            rules_layout.addWidget(QLabel(r['dest_zone']), i+1, 1)
+            src_zone = QLabel(r['src_zone'].name)
+            src_zone.setStyleSheet(f"color: {r['src_zone'].color}")
+            rules_layout.addWidget(src_zone, i+1, 0)
+            dest_zone = QLabel(r['dest_zone'].name)
+            dest_zone.setStyleSheet(f"color: {r['dest_zone'].color}")
+            rules_layout.addWidget(dest_zone, i+1, 1)
             services = '\n'.join(r['services']) if r['services'] else "all"
             rules_layout.addWidget(QLabel(services), i+1, 2)
             rules_layout.addWidget(QLabel(str(r['vpn'])), i+1, 3)

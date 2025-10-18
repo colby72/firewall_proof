@@ -51,7 +51,9 @@ class CompanyGUI(QWidget):
             zone_layout.addWidget(label, 0, i)
         for i in range(len(self.company.zones)):
             z = self.company.zones[i]
-            zone_layout.addWidget(QLabel(z.name), i+1, 0, 1, 1)
+            zone_label = QLabel(z.name)
+            zone_label.setStyleSheet(f"color: {z.color}")
+            zone_layout.addWidget(zone_label, i+1, 0, 1, 1)
             zone_layout.addWidget(QLabel(str(z.level)), i+1, 1, 1, 1)
             zone_layout.addWidget(QLabel(z.description), i+1, 2, 1, 1)
         add_zone_button = QPushButton("Add Zone")

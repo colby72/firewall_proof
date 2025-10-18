@@ -78,11 +78,25 @@ class FirewallGUI(QWidget):
         for i in range(len(self.fw.rules)):
             r = self.fw.rules[i]
             rules_layout.addWidget(QLabel(str(r.number)), i+1, 0)
-            src = '\n'.join([host.name for host in r.src])
+            src = QWidget()
+            src_layout = QVBoxLayout()
+            src.setLayout(src_layout)
+            for host in r.src:
+                label = QLabel(host.name)
+                label.setToolTip(f"{host.address}")
+                label.setStyleSheet(f"color: {host.zone.color}")
+                src_layout.addWidget(label)
             #src = '</br>'.join([f"<span style='color:{host.zone.color};'>{host.name}</span>" for host in r.src])
-            rules_layout.addWidget(QLabel(src), i+1, 1)
-            dest = '\n'.join([host.name for host in r.dest])
-            rules_layout.addWidget(QLabel(dest), i+1, 2)
+            rules_layout.addWidget(src, i+1, 1)
+            dest = QWidget()
+            dest_layout = QVBoxLayout()
+            dest.setLayout(dest_layout)
+            for host in r.dest:
+                label = QLabel(host.name)
+                label.setToolTip(f"{host.address}")
+                label.setStyleSheet(f"color: {host.zone.color}")
+                dest_layout.addWidget(label)
+            rules_layout.addWidget(dest, i+1, 2)
             services = '\n'.join(r.services) if r.services else "all"
             rules_layout.addWidget(QLabel(services), i+1, 3)
             rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)

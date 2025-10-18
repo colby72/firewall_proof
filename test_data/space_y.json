@@ -142,27 +142,32 @@
         {
             "name": "EIS",
             "level": 4,
-            "description": "Enterprise network"
+            "description": "Enterprise network",
+            "color": "#26D189"
         },
         {
             "name": "DMZ-OT",
             "level": 3.5,
-            "description": "DMZ segregating IT and OT domains"
+            "description": "DMZ segregating IT and OT domains",
+            "color": "#A5B34B"
         },
         {
             "name": "IIS-SL1",
             "level": 3,
-            "description": "OT HMI assets - Security Level 1"
+            "description": "OT HMI assets - Security Level 1",
+            "color": "#174EFF"
         },
         {
             "name": "IIS-SL2",
             "level": 3,
-            "description": "OT C&C assets - Security Level 2"
+            "description": "OT C&C assets - Security Level 2",
+            "color": "#D79AE6"
         },
         {
             "name": "IIS-SL3",
             "level": 2,
-            "description": "PLC assets - Security Level 3"
+            "description": "PLC assets - Security Level 3",
+            "color": "#FF17E4"
         }
     ]
 }

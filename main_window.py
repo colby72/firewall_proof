@@ -14,7 +14,13 @@ from gui.core.company import *
 from gui.core.policy import *
 from gui.core.firewall import *
 from gui.core.host import *
+from gui.dialogs.add_zone import *
+from gui.dialogs.add_policy import *
 from gui.dialogs.add_firewall import *
+from gui.dialogs.add_interface import *
+from gui.dialogs.add_host import *
+from gui.dialogs.add_rule import *
+from gui.dialogs.add_policy_rule import *
 from gui.about.information import *
 from gui.about.developers import *
 from gui.about.shortcuts import *

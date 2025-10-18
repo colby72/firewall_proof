@@ -1,3 +1,4 @@
+from utils import *
 from cli.logger import *
 from core.policy import *
 
@@ -14,5 +15,16 @@ def parse_policy(company, policy_file):
     # parse data
     policy = FWPolicy(company, data['name'], data['default'])
     print_info(f"Firewall policy '{policy.name}' initiated ...")
-    policy.rules = data['rules'][:]
+    #policy.rules = data['rules'][:]
+    for rule in data['rules']:
+        src_zone = get_zone_by_name(company, rule['src_zone'])
+        dest_zone = get_zone_by_name(company, rule['dest_zone'])
+        pol_rule = {
+            "src_zone": src_zone,
+            "dest_zone": dest_zone,
+            "services": rule['services'],
+            "vpn": rule['vpn'],
+            "status": rule['status']
+        }
+        policy.rules.append(pol_rule)
     return policy
