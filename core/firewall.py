@@ -38,12 +38,12 @@ class Firewall():
     
     # Firewall operations
     def add_interface(self, name, address):
-        # update interface's address if it already exists
-        for interface in self.interfaces:
-            if interface['name'] == name:
-                interface['address'] = address
-        # add interface if new
-        self.interfaces.append({'name': name, 'address': address})
+        interface = FwInterface(name, address)
+        self.interfaces.append(interface)
+    
+    def edit_interface(self, interface, name, address):
+        interface.name = name
+        interface.address = address
     
     def add_host(self, host):
         # verify if host already exists
@@ -88,3 +88,9 @@ class Firewall():
                     self.nok_count += 1
                 elif rule.status == "WARNING":
                     self.warning_count += 1
+
+
+class FwInterface():
+    def __init__(self, name, address):
+        self.name = name
+        self.address = address

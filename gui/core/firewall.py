@@ -4,6 +4,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
 from gui.dialogs.add_interface import *
+from gui.dialogs.edit_interface import *
 from gui.dialogs.add_host import *
 from gui.dialogs.add_rule import *
 
@@ -56,9 +57,15 @@ class FirewallGUI(QWidget):
             interface_layout.addWidget(label, 0, i)
         for i in range(len(self.fw.interfaces)):
             ifce = self.fw.interfaces[i]
-            interface_layout.addWidget(QLabel(ifce['name']), i+1, 0)
-            interface_layout.addWidget(QLabel(ifce['address']), i+1, 1)
+            interface_layout.addWidget(QLabel(ifce.name), i+1, 0)
+            interface_layout.addWidget(QLabel(ifce.address), i+1, 1)
             interface_layout.addWidget(QLabel("n/a"), i+1, 2)
+            edit_button = QPushButton("Edit")
+            edit_button.clicked.connect(
+                lambda checked, interface=ifce:
+                self.edit_interface(interface)
+            )
+            interface_layout.addWidget(edit_button, i+1, 3)
         add_iface_button = QPushButton("Add Interface")
         add_iface_button.clicked.connect(self.add_interface)
 
@@ -133,6 +140,11 @@ class FirewallGUI(QWidget):
     def add_interface(self):
         self.add_iface_dialog = DialogAddInterface(self.main_window, self.fw)
         self.add_iface_dialog.exec()
+        self.main_window.show_firewall()
+    
+    def edit_interface(self, interface):
+        self.edit_iface_dialog = DialogEditInterface(self.main_window, self.fw, interface)
+        self.edit_iface_dialog.exec()
         self.main_window.show_firewall()
     
     def add_host(self):
