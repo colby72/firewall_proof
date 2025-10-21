@@ -107,24 +107,11 @@ class FirewallGUI(QWidget):
             services = '\n'.join(r.services) if r.services else "all"
             rules_layout.addWidget(QLabel(services), i+1, 3)
             rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)
-            status = QLabel(str(r.status))
-            if str(r.status)=="OK":
-                status.setStyleSheet("""
-                    color: #1ba91c;
-                    font-weight: bold;
-                """)
-            elif str(r.status)=="WARNING":
-                status.setStyleSheet("""
-                    color: #f4bf14;
-                    font-weight: bold;
-                """)
-            elif str(r.status)=="NOK":
-                status.setStyleSheet("""
-                    color: #e83232;
-                    font-weight: bold;
-                """)
-            else:
-                pass
+            status = QLabel(str(r.status.label))
+            status.setStyleSheet(f"""
+                color: {r.status.color};
+                font-weight: bold;
+            """)
             rules_layout.addWidget(status, i+1, 5)
         add_rule_button = QPushButton("Add Rule")
         add_rule_button.clicked.connect(self.add_rule)

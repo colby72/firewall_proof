@@ -41,10 +41,6 @@ class Firewall():
         interface = FwInterface(name, address)
         self.interfaces.append(interface)
     
-    def edit_interface(self, interface, name, address):
-        interface.name = name
-        interface.address = address
-    
     def add_host(self, host):
         # verify if host already exists
         for h in self.hosts:
@@ -93,4 +89,10 @@ class Firewall():
 class FwInterface():
     def __init__(self, name, address):
         self.name = name
+        self.address = address
+    
+    def set_name(self,name):
+        self.name = name
+    
+    def set_address(self, address):
         self.address = address

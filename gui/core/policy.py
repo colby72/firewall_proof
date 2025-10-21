@@ -21,7 +21,7 @@ class PolicyGUI(QWidget):
         layout.addWidget(QLabel("Name : "), 0, 0, 1, 1)
         layout.addWidget(QLabel(self.policy.name), 0, 1, 1, 1)
         layout.addWidget(QLabel("Default : "), 1, 0, 1, 1)
-        layout.addWidget(QLabel(self.policy.default), 1, 1, 1, 1)
+        layout.addWidget(QLabel(self.policy.default.label), 1, 1, 1, 1)
 
         # rules box
         rules = QGroupBox("Policy rules")
@@ -43,7 +43,7 @@ class PolicyGUI(QWidget):
             services = '\n'.join(r['services']) if r['services'] else "all"
             rules_layout.addWidget(QLabel(services), i+1, 2)
             rules_layout.addWidget(QLabel(str(r['vpn'])), i+1, 3)
-            rules_layout.addWidget(QLabel(r['status']), i+1, 4)
+            rules_layout.addWidget(QLabel(r['status'].label), i+1, 4)
         
         # add policy rule button
         add_policy_rule_button = QPushButton("Add Policy Rule")

@@ -138,6 +138,20 @@
             "rules": []
         }
     ],
+    "status": [
+        {
+            "label": "OK",
+            "color": "#1ba91c"
+        },
+        {
+            "label": "WARNING",
+            "color": "#f4bf14"
+        },
+        {
+            "label": "NOK",
+            "color": "#e83232"
+        }
+    ],
     "zones": [
         {
             "name": "EIS",

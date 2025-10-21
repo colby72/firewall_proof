@@ -5,6 +5,7 @@ from PyQt6.QtCore import *
 
 from gui.dialogs.add_zone import *
 from gui.dialogs.add_policy import *
+from gui.dialogs.edit_policy import *
 from gui.dialogs.add_firewall import *
 
 
@@ -72,7 +73,7 @@ class CompanyGUI(QWidget):
         for i in range(len(self.company.policies)):
             p = self.company.policies[i]
             policies_layout.addWidget(QLabel(p.name), i+1, 0, 1, 1)
-            policies_layout.addWidget(QLabel(str(p.default)), i+1, 1, 1, 1)
+            policies_layout.addWidget(QLabel(str(p.default.label)), i+1, 1, 1, 1)
             policies_layout.addWidget(QLabel(str(len(p.rules))), i+1, 2, 1, 1)
             view_button = QPushButton("View")
             view_button.clicked.connect(
@@ -80,6 +81,12 @@ class CompanyGUI(QWidget):
                 self.view_policy(pol)
             )
             policies_layout.addWidget(view_button, i+1, 3, 1, 1)
+            edit_button = QPushButton("Edit")
+            edit_button.clicked.connect(
+                lambda checked, pol=p:
+                self.edit_policy(pol)
+            )
+            policies_layout.addWidget(edit_button, i+1, 4, 1, 1)
         add_policy_button = QPushButton("Add Policy")
         add_policy_button.clicked.connect(self.add_policy)
 
@@ -121,6 +128,11 @@ class CompanyGUI(QWidget):
     def view_policy(self, policy):
         self.main_window.policy = policy
         self.main_window.show_policy()
+    
+    def edit_policy(self, policy):
+        self.edit_policy_dialog = DialogEditPolicy(self.main_window, self.company, policy)
+        self.edit_policy_dialog.exec()
+        self.main_window.show_company()
     
     def view_firewall(self, fw):
         self.main_window.firewall = fw

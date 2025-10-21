@@ -13,18 +13,19 @@ def parse_policy(company, policy_file):
     f.close()
 
     # parse data
-    policy = FWPolicy(company, data['name'], data['default'])
+    default = get_status_by_label(company, data['default'])
+    policy = FWPolicy(company, data['name'], default)
     print_info(f"Firewall policy '{policy.name}' initiated ...")
-    #policy.rules = data['rules'][:]
     for rule in data['rules']:
         src_zone = get_zone_by_name(company, rule['src_zone'])
         dest_zone = get_zone_by_name(company, rule['dest_zone'])
+        status = get_status_by_label(company, rule['status'])
         pol_rule = {
             "src_zone": src_zone,
             "dest_zone": dest_zone,
             "services": rule['services'],
             "vpn": rule['vpn'],
-            "status": rule['status']
+            "status": status
         }
         policy.rules.append(pol_rule)
     return policy

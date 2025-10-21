@@ -28,6 +28,11 @@ def parse_fwp_json(conf_file):
         if e: zone_count += 1
     print_info(f"{zone_count} Zones added to company '{company.name}'")
 
+    # parse Firewall status list
+    for s in data['status']:
+        status = RuleStatus(s['label'], s['color'])
+        company.add_status(status)
+
     # parse Firewall inventory
     fw_count = 0
     for fw in data['fw_inventory']:

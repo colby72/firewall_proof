@@ -14,6 +14,7 @@ class Company():
         self.fw_inventory = [] # list of refs to company's Firewalls
         self.zones = [] # list of refs to company's zones
         self.policies = [] # list of refs to company's policies
+        self.status_list = [] # list of refs to RuleStatus
     
     # company management
     def set_name(self, name):
@@ -53,3 +54,26 @@ class Company():
         self.policies.append(policy)
         print_info(f"Policy '{policy.name}' added to company '{self.name}'")
         return policy
+    
+    def add_status(self, status):
+        # verify if status already exists
+        for st in self.status_list:
+            if st.label == status.label:
+                print_warning(f"Status '{st.label}' already exists for company '{self.name}'")
+                return None
+        # add status
+        self.status_list.append(status)
+        print_info(f"Status '{status.label}' added to company '{self.name}'")
+        return status
+
+
+class RuleStatus():
+    def __init__(self, label, color="#00FF00"):
+        self.label = label
+        self.color = color
+    
+    def set_label(self, label):
+        self.label = label
+    
+    def set_color(self, color):
+        self.color

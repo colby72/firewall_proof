@@ -37,7 +37,8 @@ class DialogEditInterface(QDialog):
     def when_ok(self):
         iface_name = self.iface_name.text()
         iface_address = self.iface_address.text()
-        self.fw.edit_interface(self.interface, iface_name, iface_address)
+        self.interface.set_name(iface_name)
+        self.interface.set_address(iface_address)
         self.close()
     
     def when_cancel(self):

@@ -12,3 +12,9 @@ class FWPolicy():
         self.name = name # policy's name for referencing purpose
         self.default = default # deault status if no policy matches
         self.rules = []
+    
+    def set_name(self, name):
+        self.name = name
+    
+    def set_default(self, default):
+        self.default = default

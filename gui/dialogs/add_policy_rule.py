@@ -88,12 +88,13 @@ class DialogAddPolicyRule(QDialog):
         dest_zone = get_zone_by_name(self.policy.company, self.dest_zone.currentText())
         services = self.services[:] if self.services else None
         vpn = True if self.vpn.currentText()=="Yes" else False
+        status = get_status_by_label(self.policy.company, self.status.currentText())
         new_policy_rule = {
             "src_zone": src_zone,
             "dest_zone": dest_zone,
             "services": services,
             "vpn": vpn,
-            "status": self.status.currentText()
+            "status": status
         }
         self.policy.rules.append(new_policy_rule)
         self.close()
