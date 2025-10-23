@@ -4,6 +4,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
 from utils import *
+from core.policy import *
 
 
 class DialogAddPolicyRule(QDialog):
@@ -31,11 +32,11 @@ class DialogAddPolicyRule(QDialog):
         self.dest_zone.addItems(self.zones_list)
         layout.addWidget(self.dest_zone, 1, 1)
         # rule services
-        self.services = []
         service_box = QGroupBox("Services")
         service_layout = QGridLayout()
         service_box.setLayout(service_layout)
         self.services_list = QListWidget()
+        self.services_list.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
         self.add_tcp = QPushButton("+ TCP")
         self.add_tcp.clicked.connect(
             lambda checked, proto="TCP":
@@ -51,26 +52,33 @@ class DialogAddPolicyRule(QDialog):
             lambda checked, proto="ICMP":
             self.add_service(proto)
         )
-        service_layout.addWidget(self.services_list, 0, 0, 1, 3)
-        service_layout.addWidget(self.add_tcp, 1, 0, 1, 1)
-        service_layout.addWidget(self.add_udp, 1, 1, 1, 1)
-        service_layout.addWidget(self.add_icmp, 1, 2, 1, 1)
-        layout.addWidget(service_box, 2, 0)
+        service_layout.addWidget(self.services_list, 0, 0, 3, 3)
+        service_layout.addWidget(self.add_tcp, 3, 0, 1, 1)
+        service_layout.addWidget(self.add_udp, 3, 1, 1, 1)
+        service_layout.addWidget(self.add_icmp, 3, 2, 1, 1)
+        self.remove_select_button = QPushButton("- Remove")
+        self.remove_select_button.clicked.connect(self.remove_selected_services)
+        self.clear_all_button = QPushButton("- Clear")
+        self.clear_all_button.clicked.connect(self.clear_all_services)
+        service_layout.addWidget(self.remove_select_button, 0, 4, 1, 1)
+        service_layout.addWidget(self.clear_all_button, 1, 4, 1, 1)
+        layout.addWidget(service_box, 2, 0, 2, 2)
         # rule vpn tunnel
-        layout.addWidget(QLabel("VPN tunnel : "), 3, 0)
+        layout.addWidget(QLabel("VPN tunnel : "), 4, 0)
         self.vpn = QComboBox()
         self.vpn.addItems(["Yes", "No"])
-        layout.addWidget(self.vpn, 3, 1)
+        layout.addWidget(self.vpn, 4, 1)
         # rule status
-        layout.addWidget(QLabel("Status : "), 4, 0)
+        layout.addWidget(QLabel("Status : "), 5, 0)
         self.status = QComboBox()
-        self.status.addItems(["OK", "WARNING", "NOK"])
-        layout.addWidget(self.status, 4, 1)
+        status_labels = [s.label for s in self.policy.company.status_list]
+        self.status.addItems(status_labels)
+        layout.addWidget(self.status, 5, 1)
 
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         self.buttons.accepted.connect(self.when_ok)
         self.buttons.rejected.connect(self.when_cancel)
-        layout.addWidget(self.buttons, 5, 1)
+        layout.addWidget(self.buttons, 6, 1)
     
     def add_service(self, proto):
         self.port = None
@@ -80,22 +88,23 @@ class DialogAddPolicyRule(QDialog):
         # add + display new service
         if self.port:
             new_service = f"{proto}/{self.port}"
-            self.services.append(new_service)
             self.services_list.addItem(new_service)
+    
+    def remove_selected_services(self):
+        for item in self.services_list.selectedItems():
+            self.services_list.takeItem(self.services_list.row(item))
+    
+    def clear_all_services(self):
+        self.services_list.clear()
+        self.services = []
 
     def when_ok(self):
         src_zone = get_zone_by_name(self.policy.company, self.src_zone.currentText())
         dest_zone = get_zone_by_name(self.policy.company, self.dest_zone.currentText())
-        services = self.services[:] if self.services else None
+        services = [self.services_list.item(i).text() for i in range(self.services_list.count())]
         vpn = True if self.vpn.currentText()=="Yes" else False
         status = get_status_by_label(self.policy.company, self.status.currentText())
-        new_policy_rule = {
-            "src_zone": src_zone,
-            "dest_zone": dest_zone,
-            "services": services,
-            "vpn": vpn,
-            "status": status
-        }
+        new_policy_rule = PolicyRule(src_zone, dest_zone, services, vpn, status)
         self.policy.rules.append(new_policy_rule)
         self.close()
     

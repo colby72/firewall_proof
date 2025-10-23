@@ -12,7 +12,7 @@ class DialogAddRule(QDialog):
         super().__init__()
         self.main_window = main_window
         self.fw = fw
-        self.setWindowTitle("Add new Host")
+        self.setWindowTitle("Add new Firewall rule")
         layout = QGridLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(20)
@@ -41,11 +41,11 @@ class DialogAddRule(QDialog):
         self.rule_dest.addItems(self.hosts_list.keys())
         layout.addWidget(self.rule_dest, 2, 1)
         # rule services
-        self.services = []
         service_box = QGroupBox("Services")
         service_layout = QGridLayout()
         service_box.setLayout(service_layout)
         self.services_list = QListWidget()
+        self.services_list.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
         self.add_tcp = QPushButton("+ TCP")
         self.add_tcp.clicked.connect(
             lambda checked, proto="TCP":
@@ -61,11 +61,17 @@ class DialogAddRule(QDialog):
             lambda checked, proto="ICMP":
             self.add_service(proto)
         )
-        service_layout.addWidget(self.services_list, 0, 0, 1, 3)
-        service_layout.addWidget(self.add_tcp, 1, 0, 1, 1)
-        service_layout.addWidget(self.add_udp, 1, 1, 1, 1)
-        service_layout.addWidget(self.add_icmp, 1, 2, 1, 1)
-        layout.addWidget(service_box, 3, 0)
+        service_layout.addWidget(self.services_list, 0, 0, 3, 3)
+        service_layout.addWidget(self.add_tcp, 3, 0, 1, 1)
+        service_layout.addWidget(self.add_udp, 3, 1, 1, 1)
+        service_layout.addWidget(self.add_icmp, 3, 2, 1, 1)
+        self.remove_select_button = QPushButton("- Remove")
+        self.remove_select_button.clicked.connect(self.remove_selected_services)
+        self.clear_all_button = QPushButton("- Clear")
+        self.clear_all_button.clicked.connect(self.clear_all_services)
+        service_layout.addWidget(self.remove_select_button, 0, 4, 1, 1)
+        service_layout.addWidget(self.clear_all_button, 1, 4, 1, 1)
+        layout.addWidget(service_box, 3, 0, 1, 1)
         # rule vpn
         layout.addWidget(QLabel("VPN tunnel : "), 4, 0)
         self.rule_vpn = QComboBox()
@@ -85,15 +91,23 @@ class DialogAddRule(QDialog):
         # add + display new service
         if self.port:
             new_service = f"{proto}/{self.port}"
-            self.services.append(new_service)
             self.services_list.addItem(new_service)
+    
+    def remove_selected_services(self):
+        for item in self.services_list.selectedItems():
+            self.services_list.takeItem(self.services_list.row(item))
+    
+    def clear_all_services(self):
+        self.services_list.clear()
+        self.services = []
 
     def when_ok(self):
         rule_number = self.rule_number.value()
         rule_src = [self.hosts_list[item.text()] for item in self.rule_src.selectedItems()]
         rule_dest = [self.hosts_list[item.text()] for item in self.rule_dest.selectedItems()]
+        rule_services = [self.services_list.item(i).text() for i in range(self.services_list.count())]
         rule_vpn = True if self.rule_vpn.currentText()=="Yes" else False
-        new_rule = Rule(rule_number, rule_src, rule_dest, self.services, rule_vpn)
+        new_rule = Rule(rule_number, rule_src, rule_dest, rule_services, rule_vpn)
         self.fw.add_rule(new_rule)
         apply_policy(self.fw, self.fw.policy)
         self.close()

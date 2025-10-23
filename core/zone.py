@@ -22,3 +22,9 @@ class Zone():
     
     def set_level(self, level):
         self.level = level
+    
+    def set_description(self, description):
+        self.description = description
+    
+    def set_color(self, color):
+        self.color = color

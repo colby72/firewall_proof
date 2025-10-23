@@ -4,6 +4,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
 from gui.dialogs.add_zone import *
+from gui.dialogs.edit_zone import *
 from gui.dialogs.add_policy import *
 from gui.dialogs.edit_policy import *
 from gui.dialogs.add_firewall import *
@@ -57,8 +58,15 @@ class CompanyGUI(QWidget):
             zone_layout.addWidget(zone_label, i+1, 0, 1, 1)
             zone_layout.addWidget(QLabel(str(z.level)), i+1, 1, 1, 1)
             zone_layout.addWidget(QLabel(z.description), i+1, 2, 1, 1)
+            edit_button = QPushButton("Edit")
+            edit_button.clicked.connect(
+                lambda checked, zparam=z:
+                self.edit_zone(zparam)
+            )
+            zone_layout.addWidget(edit_button, i+1, 3)
         add_zone_button = QPushButton("Add Zone")
         add_zone_button.clicked.connect(self.add_zone)
+        zone_layout.addWidget(add_zone_button, len(self.company.zones)+1, 0)
 
         # policies box
         policies = QGroupBox("Company policies")
@@ -89,6 +97,7 @@ class CompanyGUI(QWidget):
             policies_layout.addWidget(edit_button, i+1, 4, 1, 1)
         add_policy_button = QPushButton("Add Policy")
         add_policy_button.clicked.connect(self.add_policy)
+        policies_layout.addWidget(add_policy_button, len(self.company.policies)+1, 0)
 
         # frewalls box
         firewall = QGroupBox("Firewalls")
@@ -114,14 +123,12 @@ class CompanyGUI(QWidget):
             firewall_layout.addWidget(view_button, i+1, 12, 1, 1)
         add_fw_button = QPushButton("Add Firewall")
         add_fw_button.clicked.connect(self.add_firewall)
+        firewall_layout.addWidget(add_fw_button, len(self.company.fw_inventory)+1 ,0)
 
         layout.addWidget(summary)
         layout.addWidget(zone)
-        layout.addWidget(add_zone_button)
         layout.addWidget(policies)
-        layout.addWidget(add_policy_button)
         layout.addWidget(firewall)
-        layout.addWidget(add_fw_button)
         layout.addStretch()
         self.setLayout(layout)
     
@@ -141,6 +148,11 @@ class CompanyGUI(QWidget):
     def add_zone(self):
         self.add_zone_dialog = DialogAddZone(self.main_window, self.company)
         self.add_zone_dialog.exec()
+        self.main_window.show_company()
+    
+    def edit_zone(self, zone):
+        self.edit_zone_dialog = DialogEditZone(self.main_window, self.company, zone)
+        self.edit_zone_dialog.exec()
         self.main_window.show_company()
     
     def add_policy(self):

@@ -24,28 +24,28 @@ def apply_policy(firewall, policy):
         for pol_rule in policy.rules:
             # is src applicable ?
             src_applicable = False
-            if (pol_rule['src_zone']==None) or (pol_rule['src_zone'].name in src_zones):
+            if (pol_rule.src_zone==None) or (pol_rule.src_zone.name in src_zones):
                 src_applicable = True
             else:
                 continue
             
             # is dest applicable ?
             dest_applicable = False
-            if (pol_rule['dest_zone']==None) or (pol_rule['dest_zone'].name in dest_zones):
+            if (pol_rule.dest_zone==None) or (pol_rule.dest_zone.name in dest_zones):
                 dest_applicable = True
             else:
                 continue
 
             # is services applicable ?
             service_applicable = False
-            if pol_rule['services'] == None:
+            if pol_rule.services == None:
                 service_applicable = True
             else:
-                for s in pol_rule['services']:
+                for s in pol_rule.services:
                     if s in fw_rule.services:
                         service_applicable = True
 
             # apply rule
             if service_applicable:
-                fw_rule.set_status(pol_rule['status'])
+                fw_rule.set_status(pol_rule.status)
                 print_info(f"Rule #{fw_rule.number} set to: {fw_rule.status.label}")

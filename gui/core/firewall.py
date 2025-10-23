@@ -7,6 +7,7 @@ from gui.dialogs.add_interface import *
 from gui.dialogs.edit_interface import *
 from gui.dialogs.add_host import *
 from gui.dialogs.add_rule import *
+from gui.dialogs.edit_rule import *
 
 
 class FirewallGUI(QWidget):
@@ -68,6 +69,7 @@ class FirewallGUI(QWidget):
             interface_layout.addWidget(edit_button, i+1, 3)
         add_iface_button = QPushButton("Add Interface")
         add_iface_button.clicked.connect(self.add_interface)
+        interface_layout.addWidget(add_iface_button, len(self.fw.interfaces)+1, 0)
 
         add_host_button = QPushButton("Add Host")
         add_host_button.clicked.connect(self.add_host)
@@ -93,7 +95,6 @@ class FirewallGUI(QWidget):
                 label.setToolTip(f"{host.address}")
                 label.setStyleSheet(f"color: {host.zone.color}")
                 src_layout.addWidget(label)
-            #src = '</br>'.join([f"<span style='color:{host.zone.color};'>{host.name}</span>" for host in r.src])
             rules_layout.addWidget(src, i+1, 1)
             dest = QWidget()
             dest_layout = QVBoxLayout()
@@ -113,15 +114,20 @@ class FirewallGUI(QWidget):
                 font-weight: bold;
             """)
             rules_layout.addWidget(status, i+1, 5)
+            edit_button = QPushButton('Edit')
+            edit_button.clicked.connect(
+                lambda checked, rule=r:
+                self.edit_rule(rule)
+            )
+            rules_layout.addWidget(edit_button, i+1, 6)
         add_rule_button = QPushButton("Add Rule")
         add_rule_button.clicked.connect(self.add_rule)
+        rules_layout.addWidget(add_rule_button, len(self.fw.rules)+2, 0)
 
         layout.addWidget(summary)
         layout.addWidget(interface)
-        layout.addWidget(add_iface_button)
         layout.addWidget(add_host_button)
         layout.addWidget(rules)
-        layout.addWidget(add_rule_button)
         layout.addStretch()
     
     def add_interface(self):
@@ -142,4 +148,9 @@ class FirewallGUI(QWidget):
     def add_rule(self):
         self.add_rule_dialog = DialogAddRule(self.main_window, self.fw)
         self.add_rule_dialog.exec()
+        self.main_window.show_firewall()
+    
+    def edit_rule(self, rule):
+        self.edit_rule_dialog = DialogEditRule(self.main_window, self.fw, rule)
+        self.edit_rule_dialog.exec()
         self.main_window.show_firewall()

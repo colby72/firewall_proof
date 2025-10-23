@@ -35,6 +35,10 @@ class Rule():
     def set_services(self, services):
         self.services = services
         self.date = time.strftime("%B %d. %Y")
+    
+    def set_vpn(self, vpn):
+        self.vpn = vpn
+        self.date = time.strftime("%B %d. %Y")
 
     def set_status(self, status):
         self.status = status

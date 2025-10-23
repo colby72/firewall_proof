@@ -4,6 +4,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
 from gui.dialogs.add_policy_rule import *
+from gui.dialogs.edit_policy_rule import *
 
 
 class PolicyGUI(QWidget):
@@ -21,7 +22,12 @@ class PolicyGUI(QWidget):
         layout.addWidget(QLabel("Name : "), 0, 0, 1, 1)
         layout.addWidget(QLabel(self.policy.name), 0, 1, 1, 1)
         layout.addWidget(QLabel("Default : "), 1, 0, 1, 1)
-        layout.addWidget(QLabel(self.policy.default.label), 1, 1, 1, 1)
+        default_label = QLabel(str(self.policy.default.label))
+        default_label.setStyleSheet(f"""
+            color: {self.policy.default.color};
+            font-weight: bold;
+        """)
+        layout.addWidget(default_label, 1, 1, 1, 1)
 
         # rules box
         rules = QGroupBox("Policy rules")
@@ -34,16 +40,27 @@ class PolicyGUI(QWidget):
             rules_layout.addWidget(label, 0, i)
         for i in range(len(self.policy.rules)):
             r = self.policy.rules[i]
-            src_zone = QLabel(r['src_zone'].name)
-            src_zone.setStyleSheet(f"color: {r['src_zone'].color}")
+            src_zone = QLabel(r.src_zone.name)
+            src_zone.setStyleSheet(f"color: {r.src_zone.color}")
             rules_layout.addWidget(src_zone, i+1, 0)
-            dest_zone = QLabel(r['dest_zone'].name)
-            dest_zone.setStyleSheet(f"color: {r['dest_zone'].color}")
+            dest_zone = QLabel(r.dest_zone.name)
+            dest_zone.setStyleSheet(f"color: {r.dest_zone.color}")
             rules_layout.addWidget(dest_zone, i+1, 1)
-            services = '\n'.join(r['services']) if r['services'] else "all"
+            services = '\n'.join(r.services) if r.services else "all"
             rules_layout.addWidget(QLabel(services), i+1, 2)
-            rules_layout.addWidget(QLabel(str(r['vpn'])), i+1, 3)
-            rules_layout.addWidget(QLabel(r['status'].label), i+1, 4)
+            rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 3)
+            status_label = QLabel(str(r.status.label))
+            status_label.setStyleSheet(f"""
+                color: {r.status.color};
+                font-weight: bold;
+            """)
+            rules_layout.addWidget(status_label, i+1, 4)
+            edit_button = QPushButton('Edit')
+            edit_button.clicked.connect(
+                lambda checked, rule=r:
+                self.edit_policy_rule(rule)
+            )
+            rules_layout.addWidget(edit_button, i+1, 5)
         
         # add policy rule button
         add_policy_rule_button = QPushButton("Add Policy Rule")
@@ -57,4 +74,9 @@ class PolicyGUI(QWidget):
     def add_policy_rule(self):
         self.add_policy_rule_dialog = DialogAddPolicyRule(self.main_window, self.policy)
         self.add_policy_rule_dialog.exec()
+        self.main_window.show_policy()
+    
+    def edit_policy_rule(self, policy_rule):
+        self.edit_policy_rule_dialog = DialogEditPolicyRule(self.main_window, self.policy, policy_rule)
+        self.edit_policy_rule_dialog.exec()
         self.main_window.show_policy()

@@ -26,7 +26,9 @@ class DialogEditPolicy(QDialog):
         layout.addWidget(self.policy_name, 0, 1)
         layout.addWidget(QLabel("Default status : "), 1, 0)
         self.policy_default = QComboBox()
-        self.policy_default.addItems(["OK", "WARNING", "NOK"])
+        labels = [status.label for status in company.status_list]
+        self.policy_default.addItems(labels)
+        self.policy_default.setCurrentText(self.policy.default.label)
         layout.addWidget(self.policy_default, 1, 1)
 
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
