@@ -36,6 +36,9 @@ class Firewall():
     def set_vendor(self, vendor):
         self.vendor = vendor
     
+    def set_address(self, address):
+        self.address = address
+    
     # Firewall operations
     def add_interface(self, name, address):
         interface = FwInterface(name, address)

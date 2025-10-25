@@ -6,6 +6,8 @@ from PyQt6.QtCore import *
 from gui.dialogs.add_interface import *
 from gui.dialogs.edit_interface import *
 from gui.dialogs.add_host import *
+from gui.dialogs.edit_host import *
+from gui.dialogs.show_host import *
 from gui.dialogs.add_rule import *
 from gui.dialogs.edit_rule import *
 
@@ -88,22 +90,62 @@ class FirewallGUI(QWidget):
             r = self.fw.rules[i]
             rules_layout.addWidget(QLabel(str(r.number)), i+1, 0)
             src = QWidget()
-            src_layout = QVBoxLayout()
+            src_layout = QGridLayout()
             src.setLayout(src_layout)
-            for host in r.src:
+            for j, host in enumerate(r.src):
+                view_button = QPushButton('')
+                view_button.setIcon(QIcon("img/eye_vision_icon.png"))
+                view_button.setIconSize(QSize(16, 16))
+                view_button.setFixedSize(16, 16)
+                view_button.setToolTip("View Host")
+                view_button.clicked.connect(
+                    lambda checked, h=host:
+                    self.show_host(h)
+                )
+                edit_button = QPushButton('')
+                edit_button.setIcon(QIcon("img/edit_blue_icon.png"))
+                edit_button.setIconSize(QSize(16, 16))
+                edit_button.setFixedSize(16, 16)
+                edit_button.setToolTip("Edit Host")
+                edit_button.clicked.connect(
+                    lambda checked, h=host:
+                    self.edit_host(h)
+                )
                 label = QLabel(host.name)
                 label.setToolTip(f"{host.address}")
                 label.setStyleSheet(f"color: {host.zone.color}")
-                src_layout.addWidget(label)
+                src_layout.addWidget(view_button, j, 0)
+                src_layout.addWidget(edit_button, j, 1)
+                src_layout.addWidget(label, j, 2)
             rules_layout.addWidget(src, i+1, 1)
             dest = QWidget()
-            dest_layout = QVBoxLayout()
+            dest_layout = QGridLayout()
             dest.setLayout(dest_layout)
-            for host in r.dest:
+            for j, host in enumerate(r.dest):
+                view_button = QPushButton('')
+                view_button.setIcon(QIcon("img/eye_vision_icon.png"))
+                view_button.setIconSize(QSize(16, 16))
+                view_button.setFixedSize(16, 16)
+                view_button.setToolTip("View Host")
+                view_button.clicked.connect(
+                    lambda checked, h=host:
+                    self.show_host(h)
+                )
+                edit_button = QPushButton('')
+                edit_button.setIcon(QIcon("img/edit_blue_icon.png"))
+                edit_button.setIconSize(QSize(16, 16))
+                edit_button.setFixedSize(16, 16)
+                edit_button.setToolTip("Edit Host")
+                edit_button.clicked.connect(
+                    lambda checked, h=host:
+                    self.edit_host(h)
+                )
                 label = QLabel(host.name)
                 label.setToolTip(f"{host.address}")
                 label.setStyleSheet(f"color: {host.zone.color}")
-                dest_layout.addWidget(label)
+                dest_layout.addWidget(view_button, j, 0)
+                dest_layout.addWidget(edit_button, j, 1)
+                dest_layout.addWidget(label, j, 2)
             rules_layout.addWidget(dest, i+1, 2)
             services = '\n'.join(r.services) if r.services else "all"
             rules_layout.addWidget(QLabel(services), i+1, 3)
@@ -143,6 +185,16 @@ class FirewallGUI(QWidget):
     def add_host(self):
         self.add_host_dialog = DialogAddHost(self.main_window, self.fw)
         self.add_host_dialog.exec()
+        self.main_window.show_firewall()
+    
+    def show_host(self, host):
+        self.show_host_dialog = DialogShowHost(self.main_window, host)
+        self.show_host_dialog.exec()
+        self.main_window.show_firewall()
+    
+    def edit_host(self, host):
+        self.edit_host_dialog = DialogEditHost(self.main_window, self.fw, host)
+        self.edit_host_dialog.exec()
         self.main_window.show_firewall()
     
     def add_rule(self):

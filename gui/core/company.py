@@ -8,6 +8,7 @@ from gui.dialogs.edit_zone import *
 from gui.dialogs.add_policy import *
 from gui.dialogs.edit_policy import *
 from gui.dialogs.add_firewall import *
+from gui.dialogs.edit_firewall import *
 
 
 class CompanyGUI(QWidget):
@@ -121,6 +122,12 @@ class CompanyGUI(QWidget):
                 self.view_firewall(f)
             )
             firewall_layout.addWidget(view_button, i+1, 12, 1, 1)
+            edit_button = QPushButton("Edit")
+            edit_button.clicked.connect(
+                lambda checked, f=fw:
+                self.edit_firewall(f)
+            )
+            firewall_layout.addWidget(edit_button, i+1, 15, 1, 1)
         add_fw_button = QPushButton("Add Firewall")
         add_fw_button.clicked.connect(self.add_firewall)
         firewall_layout.addWidget(add_fw_button, len(self.company.fw_inventory)+1 ,0)
@@ -163,4 +170,9 @@ class CompanyGUI(QWidget):
     def add_firewall(self):
         self.add_fw_dialog = DialogAddFirewall(self.main_window, self.company)
         self.add_fw_dialog.exec()
+        self.main_window.show_company()
+    
+    def edit_firewall(self, fw):
+        self.edit_fw_dialog = DialogEditFirewall(self.main_window, self.company, fw)
+        self.edit_fw_dialog.exec()
         self.main_window.show_company()
