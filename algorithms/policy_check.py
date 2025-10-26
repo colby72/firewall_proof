@@ -36,16 +36,21 @@ def apply_policy(firewall, policy):
             else:
                 continue
 
-            # is services applicable ?
-            service_applicable = False
-            if pol_rule.services == None:
-                service_applicable = True
+            # is VPN setting coompliant ?
+            if (not pol_rule.vpn) or (pol_rule.vpn and fw_rule.vpn):
+                vpn_compliant = True
             else:
-                for s in pol_rule.services:
-                    if s in fw_rule.services:
-                        service_applicable = True
+                vpn_compliant = False
+            
+            # are services compliant ?
+            service_compliant = True
+            if pol_rule.services: # verify policy 'services' is not set to 'all' 
+                for s in fw_rule.services:
+                    if not (s in pol_rule.services):
+                        service_compliant = False
+                        break
 
             # apply rule
-            if service_applicable:
+            if vpn_compliant and service_compliant:
                 fw_rule.set_status(pol_rule.status)
                 print_info(f"Rule #{fw_rule.number} set to: {fw_rule.status.label}")
