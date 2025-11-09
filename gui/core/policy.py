@@ -13,6 +13,11 @@ class PolicyGUI(QWidget):
         self.main_window = main_window
         self.policy = policy
         self.main_window.setWindowTitle(f"{self.policy.name} - Firewall Proof {self.main_window.version}")
+        # update menu actions
+        enabled_actions = [self.main_window.policy_submenu]
+        self.main_window.enable_actions(enabled_actions)
+        
+        # widget design
         layout = QGridLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(20)

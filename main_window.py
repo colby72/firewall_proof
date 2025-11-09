@@ -92,7 +92,7 @@ class FWProofGUI(QMainWindow):
         report_menu = menu.addMenu('Report')
         about_menu = menu.addMenu('About')
 
-        """ Create actions for file menu """
+        """ 1. Create actions for File menu """
         self.new_action = QAction(QtGui.QIcon("img/file_new_blue_icon.png"), "New project", self)
         self.new_action.setShortcut('Ctrl+N')
         self.new_action.setStatusTip('New project')
@@ -133,7 +133,7 @@ class FWProofGUI(QMainWindow):
         file_menu.addAction(self.close_action)
         file_menu.addAction(quit_action)
 
-        """ Create actions for edit menu """
+        """ 2. Create actions for Edit menu """
         self.settings_action = QAction(QtGui.QIcon("img/settings_software_icon.png"), "Settings", self)
         #self.settings_action.setShortcut("Ctrl+Q")
         self.settings_action.setStatusTip("Settings")
@@ -141,16 +141,18 @@ class FWProofGUI(QMainWindow):
         self.undo_action = QAction(QtGui.QIcon("img/undo.jpg"), "Undo", self)
         self.undo_action.setShortcut("Ctrl+Z")
         self.undo_action.setStatusTip("Undo last action")
+        self.undo_action.setDisabled(True)
 
         self.redo_action = QAction(QtGui.QIcon("img/redo.jpg"), "Redo", self)
         self.redo_action.setShortcut("Ctrl+A")
         self.redo_action.setStatusTip("Redo last action")
+        self.redo_action.setDisabled(True)
 
         edit_menu.addAction(self.settings_action)
         edit_menu.addAction(self.undo_action)
         edit_menu.addAction(self.redo_action)
 
-        """ Create actions for project menu """
+        """ 3. Create actions for Project menu """
         self.home_action = QAction(QtGui.QIcon("img/homepage_icon.png"), "Project home", self)
         self.home_action.setShortcut('Ctrl+H')
         self.home_action.setStatusTip('Project home')
@@ -163,11 +165,12 @@ class FWProofGUI(QMainWindow):
         self.add_company_action.triggered.connect(self.add_company)
         self.add_company_action.setDisabled(True)
 
-        self.company_action = QAction(QtGui.QIcon("img/company_icon2.png"), "Show Company", self)
-        #self.company_action.setShortcut('Ctrl+H')
-        self.company_action.setStatusTip('Show Company')
-        self.company_action.triggered.connect(self.show_company)
-        self.company_action.setDisabled(True)
+        """ 3.1 Create actions for Company sub-menu """
+        self.show_company_action = QAction(QtGui.QIcon("img/company_icon2.png"), "Show Company", self)
+        #self.show_company_action.setShortcut('Ctrl+H')
+        self.show_company_action.setStatusTip('Show Company')
+        self.show_company_action.triggered.connect(self.show_company)
+        self.show_company_action.setDisabled(True)
 
         self.add_firewall_action = QAction(QtGui.QIcon("img/firewall_add_icon.png"), "Add new Firewall", self)
         #self.add_firewall_action.setShortcut('Ctrl+H')
@@ -187,11 +190,12 @@ class FWProofGUI(QMainWindow):
         self.add_policy_action.triggered.connect(self.add_policy)
         self.add_policy_action.setDisabled(True)
 
-        self.firewall_action = QAction(QtGui.QIcon("img/firewall_blue_icon.png"), "Show Firewall", self)
-        #self.firewall_action.setShortcut('Ctrl+H')
-        self.firewall_action.setStatusTip('Show Firewall')
-        self.firewall_action.triggered.connect(self.show_firewall)
-        self.firewall_action.setDisabled(True)
+        """ 3.2 Create actions for Firewall sub-menu """
+        self.show_firewall_action = QAction(QtGui.QIcon("img/firewall_blue_icon.png"), "Show Firewall", self)
+        #self.show_firewall_action.setShortcut('Ctrl+H')
+        self.show_firewall_action.setStatusTip('Show Firewall')
+        self.show_firewall_action.triggered.connect(self.show_firewall)
+        self.show_firewall_action.setDisabled(True)
 
         self.add_interface_action = QAction(QtGui.QIcon("img/shortcut_icon.png"), "Add new Interface", self)
         #self.add_interface_action.setShortcut('Ctrl+H')
@@ -211,20 +215,40 @@ class FWProofGUI(QMainWindow):
         self.add_rule_action.triggered.connect(self.add_rule)
         self.add_rule_action.setDisabled(True)
 
+        """ 3.3 Create actions for Policy sub-menu """
+        self.show_policy_action = QAction(QtGui.QIcon("img/shortcut_icon.png"), "Show Policy", self)
+        #self.show_policy_action.setShortcut('Ctrl+H')
+        self.show_policy_action.setStatusTip('View Policy')
+        self.show_policy_action.triggered.connect(self.show_policy)
+        self.show_policy_action.setDisabled(True)
+
+        self.add_policy_rule_action = QAction(QtGui.QIcon("img/shortcut_icon.png"), "Add new Policy rule", self)
+        #self.add_policy_rule_action.setShortcut('Ctrl+H')
+        self.add_policy_rule_action.setStatusTip('Add Policy Rule')
+        self.add_policy_rule_action.triggered.connect(self.add_policy_rule)
+        self.add_policy_rule_action.setDisabled(True)
+
         project_menu.addAction(self.home_action)
         project_menu.addAction(self.add_company_action)
         self.company_submenu = project_menu.addMenu("Company")
-        self.company_submenu.addAction(self.company_action)
+        self.company_submenu.addAction(self.show_company_action)
         self.company_submenu.addAction(self.add_firewall_action)
         self.company_submenu.addAction(self.add_zone_action)
         self.company_submenu.addAction(self.add_policy_action)
         self.firewall_submenu = project_menu.addMenu("Firewall")
-        self.firewall_submenu.addAction(self.firewall_action)
+        self.firewall_submenu.addAction(self.show_firewall_action)
         self.firewall_submenu.addAction(self.add_interface_action)
         self.firewall_submenu.addAction(self.add_host_action)
         self.firewall_submenu.addAction(self.add_rule_action)
+        self.policy_submenu = project_menu.addMenu("Policy")
+        self.policy_submenu.addAction(self.show_policy_action)
+        self.policy_submenu.addAction(self.add_policy_rule_action)
 
-        """ Create actions for about menu """
+        """ 4. Create actions for DumbAI menu """
+
+        """ 5. Create actions for Report menu """
+        
+        """ 6. Create actions for About menu """
         info_action = QAction(QtGui.QIcon("img/info_grey_icon.png"), "About software", self)
         info_action.setShortcut("F1")
         info_action.setStatusTip("About software")
@@ -260,9 +284,9 @@ class FWProofGUI(QMainWindow):
         self.toolbar.addSeparator()
         self.toolbar.addAction(self.save_action)
         self.toolbar.addSeparator()
-        self.toolbar.addAction(self.company_action)
+        self.toolbar.addAction(self.show_company_action)
         self.toolbar.addSeparator()
-        self.toolbar.addAction(self.firewall_action)
+        self.toolbar.addAction(self.show_firewall_action)
         self.toolbar.addSeparator()
         self.toolbar.addAction(info_action)
         self.toolbar.addSeparator()
@@ -444,7 +468,6 @@ class FWProofGUI(QMainWindow):
             self.show_firewall()
 
     def show_host(self):
-        #self.host = host
         if self.host:
             host_gui = HostGUI(self, host)
             self.windows.addWidget(host_gui)
@@ -455,6 +478,12 @@ class FWProofGUI(QMainWindow):
             policy_gui = PolicyGUI(self, self.policy)
             self.windows.addWidget(policy_gui)
             self.windows.setCurrentWidget(policy_gui)
+    
+    def add_policy_rule(self):
+        if self.policy:
+            self.add_policy_rule_dialog = DialogAddPolicyRule(self, self.policy)
+            self.add_policy_rule_dialog.exec()
+            self.show_policy()
 
     ''' 4- Call functions for Menu: DumbAI '''
     
