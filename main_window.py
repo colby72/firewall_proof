@@ -390,7 +390,8 @@ class FWProofGUI(QMainWindow):
                 self.home_action,
                 self.add_company_action,
                 self.company_submenu,
-                self.firewall_submenu
+                self.firewall_submenu,
+                self.policy_submenu
             ]
             self.disable_actions(disbaled_actions)
             # show default widget
@@ -445,6 +446,7 @@ class FWProofGUI(QMainWindow):
     
     def show_firewall(self):
         if self.firewall:
+            self.policy = self.firewall.policy
             firewall_gui = FirewallGUI(self, self.firewall)
             self.windows.addWidget(firewall_gui)
             self.windows.setCurrentWidget(firewall_gui)
