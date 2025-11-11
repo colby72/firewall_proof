@@ -69,6 +69,34 @@ class CompanyGUI(QWidget):
         add_zone_button.clicked.connect(self.add_zone)
         zone_layout.addWidget(add_zone_button, len(self.company.zones)+1, 0)
 
+        # status box
+        status_box = QGroupBox("Status list")
+        status_layout = QGridLayout()
+        status_layout.setSpacing(10)
+        status_box.setLayout(status_layout)
+        status_per_row = 3
+        for i in range(len(self.company.status_list)):
+            status = self.company.status_list[i]
+            status_item = QWidget()
+            status_item_layout = QGridLayout()
+            status_item.setLayout(status_item_layout)
+            edit_button = QPushButton('')
+                edit_button.setIcon(QIcon("img/edit_blue_icon.png"))
+                edit_button.setIconSize(QSize(16, 16))
+                edit_button.setFixedSize(16, 16)
+                edit_button.setToolTip("Edit Status")
+                edit_button.clicked.connect(
+                    lambda checked, s=status:
+                    self.edit_status(s)
+                )
+            label = QLabel(status.label)
+            label.setStyleSheet(f"color: {status.color}")
+            status_item_layout.addWidget(edit_button, 0, 0)
+            status_item_layout.addWidget(label, 0, 1)
+            status_layout.addWidget(status_item, i//status_per_row, i%status_per_row)
+        add_status_button = QPushButton("Add Status")
+        status_layout.addWidget(add_status_button, len(self.company.status_list)//status_per_row, len(self.company.status_list)%status_per_row)
+
         # policies box
         policies = QGroupBox("Company policies")
         policies_layout = QGridLayout()
@@ -134,6 +162,7 @@ class CompanyGUI(QWidget):
 
         layout.addWidget(summary)
         layout.addWidget(zone)
+        layout.addWidget(status_box)
         layout.addWidget(policies)
         layout.addWidget(firewall)
         layout.addStretch()
@@ -161,6 +190,9 @@ class CompanyGUI(QWidget):
         self.edit_zone_dialog = DialogEditZone(self.main_window, self.company, zone)
         self.edit_zone_dialog.exec()
         self.main_window.show_company()
+    
+    def edit_status(self, status):
+        pass
     
     def add_policy(self):
         self.add_policy_dialog = DialogAddPolicy(self.main_window, self.company)
