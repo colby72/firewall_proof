@@ -5,6 +5,8 @@ from PyQt6.QtCore import *
 
 from gui.dialogs.add_zone import *
 from gui.dialogs.edit_zone import *
+from gui.dialogs.add_status import *
+from gui.dialogs.edit_status import *
 from gui.dialogs.add_policy import *
 from gui.dialogs.edit_policy import *
 from gui.dialogs.add_firewall import *
@@ -75,27 +77,32 @@ class CompanyGUI(QWidget):
         status_layout.setSpacing(10)
         status_box.setLayout(status_layout)
         status_per_row = 3
-        for i in range(len(self.company.status_list)):
+        status_count = len(self.company.status_list)
+        for i in range(status_count):
             status = self.company.status_list[i]
             status_item = QWidget()
-            status_item_layout = QGridLayout()
+            status_item_layout = QHBoxLayout()
             status_item.setLayout(status_item_layout)
-            edit_button = QPushButton('')
-                edit_button.setIcon(QIcon("img/edit_blue_icon.png"))
-                edit_button.setIconSize(QSize(16, 16))
-                edit_button.setFixedSize(16, 16)
-                edit_button.setToolTip("Edit Status")
-                edit_button.clicked.connect(
-                    lambda checked, s=status:
-                    self.edit_status(s)
-                )
+            # status label
             label = QLabel(status.label)
             label.setStyleSheet(f"color: {status.color}")
-            status_item_layout.addWidget(edit_button, 0, 0)
-            status_item_layout.addWidget(label, 0, 1)
+            # status edit button
+            edit_button = QPushButton('')
+            edit_button.setIcon(QIcon("img/edit_blue_icon.png"))
+            edit_button.setIconSize(QSize(16, 16))
+            edit_button.setFixedSize(16, 16)
+            edit_button.setToolTip("Edit Status")
+            edit_button.clicked.connect(
+                lambda checked, s=status:
+                self.edit_status(s)
+            )
+            status_item_layout.addWidget(label)
+            status_item_layout.addWidget(edit_button)
+            status_item_layout.addStretch()
             status_layout.addWidget(status_item, i//status_per_row, i%status_per_row)
         add_status_button = QPushButton("Add Status")
-        status_layout.addWidget(add_status_button, len(self.company.status_list)//status_per_row, len(self.company.status_list)%status_per_row)
+        add_status_button.clicked.connect(self.add_status)
+        status_layout.addWidget(add_status_button, status_count//status_per_row, status_count%status_per_row)
 
         # policies box
         policies = QGroupBox("Company policies")
@@ -191,8 +198,15 @@ class CompanyGUI(QWidget):
         self.edit_zone_dialog.exec()
         self.main_window.show_company()
     
+    def add_status(self):
+        self.add_status_dialog = DialogAddStatus(self.main_window, self.company)
+        self.add_status_dialog.exec()
+        self.main_window.show_company()
+    
     def edit_status(self, status):
-        pass
+        self.edit_status_dialog = DialogEditStatus(self.main_window, self.company, status)
+        self.edit_status_dialog.exec()
+        self.main_window.show_company()
     
     def add_policy(self):
         self.add_policy_dialog = DialogAddPolicy(self.main_window, self.company)
