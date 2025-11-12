@@ -1,10 +1,9 @@
-#import pdflatex, os, jinja2
 from jinja2 import Environment, FileSystemLoader
-from pdflatex import PDFLaTeX
 from xhtml2pdf import pisa
-import os, subprocess
+import os
 
 from cli.logger import *
+from utils import *
 
 
 def generate_company_report_html(company):
@@ -43,7 +42,7 @@ def generate_company_report_html(company):
 
 def get_company_data(company):
     context = {
-        "company_name": company.name,
+        "company_name": text_to_tex(company.name),
         "zone_count": len(company.zones),
         "fw_count": len(company.fw_inventory)
     }
@@ -51,9 +50,9 @@ def get_company_data(company):
     context['zones'] = []
     for z in company.zones:
         zone = {
-            "name": z.name,
+            "name": text_to_tex(z.name),
             "level": z.level,
-            "description": z.description
+            "description": text_to_tex(z.description)
         }
         context['zones'].append(zone)
     return context
@@ -84,20 +83,12 @@ def generate_company_report_pdf(company):
     try:
         with open(f"reporting/export/{tex_file}", 'w') as f:
             f.write(tex_content)
-        #f.close()
         print_success(f"Company TEX report for {company.name} generated successfully")
     except:
         print_error(f"Error while generating TEX repot for company {company.name}")
         return None
     
     # generate PDF file
-    os.system(f"pdflatex -synctex=1 -interaction=nonstopmode reporting/export/{tex_file}")
+    os.system(f"pdflatex -interaction=nonstopmode reporting/export/{tex_file}")
     os.system("rm *.aux *.log *.synctex*")
     os.system(f"mv {pdf_file} reporting/export/")
-
-    #target_file = f"{os.getcwd()}/reporting/export/{tex_file}"
-    """target_file = os.path.join(os.getcwd(), tex_file)
-    print(f"debug > pwd {target_file}")
-    pdfl = PDFLaTeX.from_texfile(target_file)
-    pdfl.set_interaction_mode()
-    pdf = pdfl.create_pdf(keep_pdf_file=True, keep_log_file=False)"""

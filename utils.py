@@ -18,3 +18,11 @@ def get_status_by_label(company, label):
 def get_status_list_labels(company):
     labels = [status.label for status in company.status_list]
     return labels
+
+def text_to_tex(text):
+    """
+    Format text to be Latex-compatible
+    Escape Latex special chars
+    """
+    text = text.replace('&', '\&')
+    return text
