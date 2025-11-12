@@ -1,0 +1,35 @@
+\documentclass{report}
+\begin{document}
+	\title{Company Report}
+	\author{ @=company_name=@ }
+	\date{\today}
+	\maketitle
+	
+	\chapter{Summary}
+	\begin{itemize}
+		\item Name : @=company_name=@
+		\item Zones : @=zone_count=@
+		\item Firewalls : @=fw_count=@
+	\end{itemize}
+	
+	\chapter{Zones}
+	Describe your methodology here.\\
+	\begin{tabular}{|l|c|r|}
+		\hline
+		Name & Purdue level & Description \\
+		\hline
+		@@ for z in zones @@
+		@=z.name=@    & @=z.level=@      & @=z.description=@     \\
+		@@ endfor @@
+		1    & 2      & 3     \\
+		4    & 5      & 6     \\
+		\hline
+	\end{tabular}
+	
+	\chapter{Results}
+	Present your results here.
+	
+	\chapter{Conclusion}
+	Summarize your findings here.
+	
+\end{document}

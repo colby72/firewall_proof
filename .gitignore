@@ -210,3 +210,10 @@ __marimo__/
 # custom
 *.fwp
 count.sh
+reporting/export/*
+reporting/templates/*.html
+reporting/templates/*.tex
+reporting/templates/*.aux
+reporting/templates/*.log
+reporting/templates/*.synctex*
+reporting/templates/*.pdf

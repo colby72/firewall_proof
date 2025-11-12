@@ -40,6 +40,9 @@ from file.open_file import *
 from algorithms.parse_policy import *
 from algorithms.policy_check import *
 
+# import reporting functions
+from reporting.company_report import *
+
 
 class FWProofGUI(QMainWindow):
     def __init__(self):
@@ -247,6 +250,13 @@ class FWProofGUI(QMainWindow):
         """ 4. Create actions for DumbAI menu """
 
         """ 5. Create actions for Report menu """
+        self.company_report_action = QAction(QtGui.QIcon("img/redo.jpg"), "Company report", self)
+        #self.company_report_action.setShortcut("Ctrl+A")
+        self.company_report_action.setStatusTip("Generate company report")
+        self.company_report_action.triggered.connect(self.generate_company_report)
+        self.company_report_action.setDisabled(True)
+
+        report_menu.addAction(self.company_report_action)
         
         """ 6. Create actions for About menu """
         info_action = QAction(QtGui.QIcon("img/info_grey_icon.png"), "About software", self)
@@ -391,7 +401,8 @@ class FWProofGUI(QMainWindow):
                 self.add_company_action,
                 self.company_submenu,
                 self.firewall_submenu,
-                self.policy_submenu
+                self.policy_submenu,
+                self.company_report_action
             ]
             self.disable_actions(disbaled_actions)
             # show default widget
@@ -488,8 +499,13 @@ class FWProofGUI(QMainWindow):
             self.show_policy()
 
     ''' 4- Call functions for Menu: DumbAI '''
+
+    ''' 5- Call functions for Menu: Report '''
+    def generate_company_report(self):
+        if self.company:
+            generate_company_report_pdf(self.company)
     
-    ''' 5- Call functions for Menu: About '''
+    ''' 6- Call functions for Menu: About '''
     def show_software_info(self):
         self.widget_software_info = Information()
         self.widget_software_info.show()

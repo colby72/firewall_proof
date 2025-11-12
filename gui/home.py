@@ -24,7 +24,8 @@ class HomeGUI(QWidget):
         disabled_actions = [
             self.main_window.company_submenu,
             self.main_window.firewall_submenu,
-            self.main_window.policy_submenu
+            self.main_window.policy_submenu,
+            self.main_window.company_report_action
         ]
         self.main_window.disable_actions(disabled_actions)
         
