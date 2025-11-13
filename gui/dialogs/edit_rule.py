@@ -59,17 +59,20 @@ class DialogEditRule(QDialog):
         self.services_list.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
         if self.rule.services:
             self.services_list.addItems(self.rule.services)
-        self.add_tcp = QPushButton("+ TCP")
+        self.add_tcp = QPushButton("TCP")
+        self.add_tcp.setIcon(QIcon("img/add_sign_icon.png"))
         self.add_tcp.clicked.connect(
             lambda checked, proto="TCP":
             self.add_service(proto)
         )
-        self.add_udp = QPushButton("+ UDP")
+        self.add_udp = QPushButton("UDP")
+        self.add_udp.setIcon(QIcon("img/add_sign_icon.png"))
         self.add_udp.clicked.connect(
             lambda checked, proto="UDP":
             self.add_service(proto)
         )
-        self.add_icmp = QPushButton("+ ICMP")
+        self.add_icmp = QPushButton("ICMP")
+        self.add_icmp.setIcon(QIcon("img/add_sign_icon.png"))
         self.add_icmp.clicked.connect(
             lambda checked, proto="ICMP":
             self.add_service(proto)
@@ -78,9 +81,11 @@ class DialogEditRule(QDialog):
         service_layout.addWidget(self.add_tcp, 3, 0, 1, 1)
         service_layout.addWidget(self.add_udp, 3, 1, 1, 1)
         service_layout.addWidget(self.add_icmp, 3, 2, 1, 1)
-        self.remove_select_button = QPushButton("- Remove")
+        self.remove_select_button = QPushButton("Remove")
+        self.remove_select_button.setIcon(QIcon("img/minus_red_remove_icon.png"))
         self.remove_select_button.clicked.connect(self.remove_selected_services)
-        self.clear_all_button = QPushButton("- Clear")
+        self.clear_all_button = QPushButton("Clear")
+        self.clear_all_button.setIcon(QIcon("img/error_exit_remove_icon.png"))
         self.clear_all_button.clicked.connect(self.clear_all_services)
         service_layout.addWidget(self.remove_select_button, 0, 4, 1, 1)
         service_layout.addWidget(self.clear_all_button, 1, 4, 1, 1)

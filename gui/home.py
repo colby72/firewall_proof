@@ -51,6 +51,7 @@ class HomeGUI(QWidget):
             company_layout.addWidget(QLabel("Firewalls : "), 1, 0)
             company_layout.addWidget(QLabel(str(len(c.fw_inventory))), 1, 1)
             view_button = QPushButton("View")
+            view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
             view_button.clicked.connect(
                 lambda checked, comp=c:
                 self.view_company(comp)
@@ -60,6 +61,7 @@ class HomeGUI(QWidget):
         
         # add company
         add_button = QPushButton("Add Company")
+        add_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_button.clicked.connect(self.add_company)
         layout.addWidget(add_button, stretch=2)
 

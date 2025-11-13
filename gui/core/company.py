@@ -62,12 +62,14 @@ class CompanyGUI(QWidget):
             zone_layout.addWidget(QLabel(str(z.level)), i+1, 1, 1, 1)
             zone_layout.addWidget(QLabel(z.description), i+1, 2, 1, 1)
             edit_button = QPushButton("Edit")
+            edit_button.setIcon(QIcon("img/pencil_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, zparam=z:
                 self.edit_zone(zparam)
             )
             zone_layout.addWidget(edit_button, i+1, 3)
-        add_zone_button = QPushButton("Add Zone")
+        add_zone_button = QPushButton("Zone")
+        add_zone_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_zone_button.clicked.connect(self.add_zone)
         zone_layout.addWidget(add_zone_button, len(self.company.zones)+1, 0)
 
@@ -88,7 +90,7 @@ class CompanyGUI(QWidget):
             label.setStyleSheet(f"color: {status.color}")
             # status edit button
             edit_button = QPushButton('')
-            edit_button.setIcon(QIcon("img/edit_blue_icon.png"))
+            edit_button.setIcon(QIcon("img/pencil_icon.png"))
             edit_button.setIconSize(QSize(16, 16))
             edit_button.setFixedSize(16, 16)
             edit_button.setToolTip("Edit Status")
@@ -100,7 +102,8 @@ class CompanyGUI(QWidget):
             status_item_layout.addWidget(edit_button)
             status_item_layout.addStretch()
             status_layout.addWidget(status_item, i//status_per_row, i%status_per_row)
-        add_status_button = QPushButton("Add Status")
+        add_status_button = QPushButton("Status")
+        add_status_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_status_button.clicked.connect(self.add_status)
         status_layout.addWidget(add_status_button, status_count//status_per_row, status_count%status_per_row)
 
@@ -120,18 +123,21 @@ class CompanyGUI(QWidget):
             policies_layout.addWidget(QLabel(str(p.default.label)), i+1, 1, 1, 1)
             policies_layout.addWidget(QLabel(str(len(p.rules))), i+1, 2, 1, 1)
             view_button = QPushButton("View")
+            view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
             view_button.clicked.connect(
                 lambda checked, pol=p:
                 self.view_policy(pol)
             )
             policies_layout.addWidget(view_button, i+1, 3, 1, 1)
             edit_button = QPushButton("Edit")
+            edit_button.setIcon(QIcon("img/pencil_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, pol=p:
                 self.edit_policy(pol)
             )
             policies_layout.addWidget(edit_button, i+1, 4, 1, 1)
-        add_policy_button = QPushButton("Add Policy")
+        add_policy_button = QPushButton("Policy")
+        add_policy_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_policy_button.clicked.connect(self.add_policy)
         policies_layout.addWidget(add_policy_button, len(self.company.policies)+1, 0)
 
@@ -152,12 +158,14 @@ class CompanyGUI(QWidget):
             firewall_layout.addWidget(QLabel(fw.address), i+1, 6, 1, 3)
             firewall_layout.addWidget(QLabel(fw.policy.name), i+1, 9, 1, 3)
             view_button = QPushButton("View")
+            view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
             view_button.clicked.connect(
                 lambda checked, f=fw:
                 self.view_firewall(f)
             )
             firewall_layout.addWidget(view_button, i+1, 12, 1, 1)
             edit_button = QPushButton("Edit")
+            edit_button.setIcon(QIcon("img/pencil_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, f=fw:
                 self.edit_firewall(f)

@@ -63,6 +63,7 @@ class PolicyGUI(QWidget):
             """)
             rules_layout.addWidget(status_label, i+1, 4)
             edit_button = QPushButton('Edit')
+            edit_button.setIcon(QIcon("img/pencil_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, rule=r:
                 self.edit_policy_rule(rule)
@@ -70,7 +71,8 @@ class PolicyGUI(QWidget):
             rules_layout.addWidget(edit_button, i+1, 5)
         
         # add policy rule button
-        add_policy_rule_button = QPushButton("Add Policy Rule")
+        add_policy_rule_button = QPushButton("Policy Rule")
+        add_policy_rule_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_policy_rule_button.clicked.connect(self.add_policy_rule)
         
         layout.addWidget(rules, 2, 0, 1, 3)

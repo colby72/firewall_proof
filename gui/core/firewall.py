@@ -65,16 +65,19 @@ class FirewallGUI(QWidget):
             interface_layout.addWidget(QLabel(ifce.address), i+1, 1)
             interface_layout.addWidget(QLabel("n/a"), i+1, 2)
             edit_button = QPushButton("Edit")
+            edit_button.setIcon(QIcon("img/pencil_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, interface=ifce:
                 self.edit_interface(interface)
             )
             interface_layout.addWidget(edit_button, i+1, 3)
-        add_iface_button = QPushButton("Add Interface")
+        add_iface_button = QPushButton("Interface")
+        add_iface_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_iface_button.clicked.connect(self.add_interface)
         interface_layout.addWidget(add_iface_button, len(self.fw.interfaces)+1, 0)
 
-        add_host_button = QPushButton("Add Host")
+        add_host_button = QPushButton("Host")
+        add_host_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_host_button.clicked.connect(self.add_host)
 
         # rules box
@@ -95,7 +98,7 @@ class FirewallGUI(QWidget):
             src.setLayout(src_layout)
             for j, host in enumerate(r.src):
                 view_button = QPushButton('')
-                view_button.setIcon(QIcon("img/eye_vision_icon.png"))
+                view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
                 view_button.setIconSize(QSize(16, 16))
                 view_button.setFixedSize(16, 16)
                 view_button.setToolTip("View Host")
@@ -104,7 +107,7 @@ class FirewallGUI(QWidget):
                     self.show_host(h)
                 )
                 edit_button = QPushButton('')
-                edit_button.setIcon(QIcon("img/edit_blue_icon.png"))
+                edit_button.setIcon(QIcon("img/pencil_icon.png"))
                 edit_button.setIconSize(QSize(16, 16))
                 edit_button.setFixedSize(16, 16)
                 edit_button.setToolTip("Edit Host")
@@ -124,7 +127,7 @@ class FirewallGUI(QWidget):
             dest.setLayout(dest_layout)
             for j, host in enumerate(r.dest):
                 view_button = QPushButton('')
-                view_button.setIcon(QIcon("img/eye_vision_icon.png"))
+                view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
                 view_button.setIconSize(QSize(16, 16))
                 view_button.setFixedSize(16, 16)
                 view_button.setToolTip("View Host")
@@ -133,7 +136,7 @@ class FirewallGUI(QWidget):
                     self.show_host(h)
                 )
                 edit_button = QPushButton('')
-                edit_button.setIcon(QIcon("img/edit_blue_icon.png"))
+                edit_button.setIcon(QIcon("img/pencil_icon.png"))
                 edit_button.setIconSize(QSize(16, 16))
                 edit_button.setFixedSize(16, 16)
                 edit_button.setToolTip("Edit Host")
@@ -158,12 +161,14 @@ class FirewallGUI(QWidget):
             """)
             rules_layout.addWidget(status, i+1, 5)
             edit_button = QPushButton('Edit')
+            edit_button.setIcon(QIcon("img/pencil_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, rule=r:
                 self.edit_rule(rule)
             )
             rules_layout.addWidget(edit_button, i+1, 6)
-        add_rule_button = QPushButton("Add Rule")
+        add_rule_button = QPushButton("Rule")
+        add_rule_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_rule_button.clicked.connect(self.add_rule)
         rules_layout.addWidget(add_rule_button, len(self.fw.rules)+2, 0)
 
