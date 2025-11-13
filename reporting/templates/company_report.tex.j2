@@ -1,33 +1,41 @@
 \documentclass{report}
+\usepackage[table,xcdraw]{xcolor}
+
 \begin{document}
 	\title{Company Report}
 	\author{ @=company_name=@ }
 	\date{\today}
 	\maketitle
 	
-	\chapter{Summary}
+	\section*{Summary}
 	\begin{itemize}
-		\item Name : @=company_name=@
-		\item Zones : @=zone_count=@
-		\item Firewalls : @=fw_count=@
+		\item \textbf{Name :} @=company_name=@
+		\item \textbf{Zones :} @=zone_count=@
+		\item \textbf{Firewalls :} @=fw_count=@
 	\end{itemize}
 	
-	\chapter{Zones}
-	Describe your methodology here.\\
-	\begin{tabular}{|l|c|r|}
-		\hline
-		Name & Purdue level & Description \\
-		\hline
+	\section*{Zones}
+	Defined zones are listed below.\\ \\
+	\begin{tabular}{lcl}
+		\multicolumn{1}{l}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Purdue level}} & \multicolumn{1}{l}{\textbf{Description}} \\
 		@@ for z in zones @@
-		@=z.name=@    & @=z.level=@      & @=z.description=@     \\
+		\rowcolor[HTML]{@=z.row_color=@} {\color[HTML]{@=z.color=@} @=z.name=@} & @=z.level=@ & @=z.description=@ \\
 		@@ endfor @@
-		\hline
 	\end{tabular}
 	
-	\chapter{Results}
-	Present your results here.
+	\section*{Policies}
+	\begin{tabular}{ccc}
+		\multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Default}} & \multicolumn{1}{c}{\textbf{\# Rules}} \\
+		@@ for p in policies @@
+		\rowcolor[HTML]{@=p.row_color=@} @=p.name=@ & @=p.default=@ & @=p.nb_rules=@ \\
+		@@ endfor @@
+	\end{tabular}
 	
-	\chapter{Conclusion}
-	Summarize your findings here.
-	
+	\section*{Firewalls}
+	\begin{tabular}{cccc}
+		\multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Vendor}} & \multicolumn{1}{c}{\textbf{Address}} & \multicolumn{1}{c}{\textbf{Policy}} \\
+		@@ for fw in firewalls @@
+		\rowcolor[HTML]{@=fw.row_color=@} @=fw.name=@ & @=fw.vendor=@ & @=fw.address=@ & @=fw.policy=@ \\
+		@@ endfor @@
+	\end{tabular}
 \end{document}

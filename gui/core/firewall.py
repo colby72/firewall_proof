@@ -19,7 +19,7 @@ class FirewallGUI(QWidget):
         self.fw = fw
         self.main_window.setWindowTitle(f"{self.fw.name} - Firewall Proof {self.main_window.version}")
         # update menu actions
-        enabled_actions = [self.main_window.firewall_submenu]
+        enabled_actions = [self.main_window.firewall_submenu, self.main_window.firewall_report_action]
         if self.main_window.policy: enabled_actions.append(self.main_window.policy_submenu)
         self.main_window.enable_actions(enabled_actions)
         

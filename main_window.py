@@ -42,6 +42,7 @@ from algorithms.policy_check import *
 
 # import reporting functions
 from reporting.company_report import *
+from reporting.firewall_report import *
 
 
 class FWProofGUI(QMainWindow):
@@ -256,7 +257,14 @@ class FWProofGUI(QMainWindow):
         self.company_report_action.triggered.connect(self.generate_company_report)
         self.company_report_action.setDisabled(True)
 
+        self.firewall_report_action = QAction(QtGui.QIcon("img/redo.jpg"), "Firewall report", self)
+        #self.firewall_report_action.setShortcut("Ctrl+A")
+        self.firewall_report_action.setStatusTip("Generate firewall report")
+        self.firewall_report_action.triggered.connect(self.generate_firewall_report)
+        self.firewall_report_action.setDisabled(True)
+
         report_menu.addAction(self.company_report_action)
+        report_menu.addAction(self.firewall_report_action)
         
         """ 6. Create actions for About menu """
         info_action = QAction(QtGui.QIcon("img/info_grey_icon.png"), "About software", self)
@@ -402,7 +410,8 @@ class FWProofGUI(QMainWindow):
                 self.company_submenu,
                 self.firewall_submenu,
                 self.policy_submenu,
-                self.company_report_action
+                self.company_report_action,
+                self.firewall_report_action
             ]
             self.disable_actions(disbaled_actions)
             # show default widget
@@ -503,7 +512,11 @@ class FWProofGUI(QMainWindow):
     ''' 5- Call functions for Menu: Report '''
     def generate_company_report(self):
         if self.company:
-            generate_company_report_pdf(self.company)
+            generate_company_report_tex(self.company)
+    
+    def generate_firewall_report(self):
+        if self.firewall:
+            generate_firewall_report_tex(self.firewall)
     
     ''' 6- Call functions for Menu: About '''
     def show_software_info(self):

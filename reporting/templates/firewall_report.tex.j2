@@ -1,0 +1,39 @@
+\documentclass{report}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{makecell}
+
+
+\begin{document}
+	\title{Firewall Report}
+	\author{ @=fw_name=@ }
+	\date{\today}
+	\maketitle
+	
+	\section*{Summary}
+	\begin{itemize}
+		\item \textbf{Name :} @=fw_name=@
+		\item \textbf{Vendor :} @=fw_vendor=@
+		\item \textbf{Address :} @=fw_address=@
+		\item \textbf{Policy :} @=fw_policy=@
+		\item \textbf{Interfaces :} @=iface_count=@
+		\item \textbf{Hosts (Groups) :} @=host_count=@ (@=group_count=@)
+		\item \textbf{Rules :} @=rules_count=@
+	\end{itemize}
+	
+	\section*{Interfaces}
+	Defined interfaces are listed below.\\ \\
+	\begin{tabular}{lcl}
+		\multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Address}} & \multicolumn{1}{c}{\textbf{Hosts}} \\
+		@@ for i in interfaces @@
+		\rowcolor[HTML]{@=i.row_color=@} @=i.name=@ & @=i.address=@ & @=i.hosts=@ \\
+		@@ endfor @@
+	\end{tabular}
+	
+	\section*{Firewall rules}
+	\begin{tabular}{cccccc}
+		\multicolumn{1}{c}{\textbf{ID}} & \multicolumn{1}{c}{\textbf{Source}} & \multicolumn{1}{c}{\textbf{Destination}} & \multicolumn{1}{c}{\textbf{Service}} & \multicolumn{1}{c}{\textbf{VPN}} & \multicolumn{1}{c}{\textbf{Status}}\\
+		@@ for r in rules @@
+		\rowcolor[HTML]{@=r.row_color=@} @=r.id=@ & \makecell{@@ for h in r.src @@ {\color[HTML]{@=h.color=@} @=h.name=@}\\@@ endfor @@} & \makecell{@@ for h in r.dest @@ {\color[HTML]{@=h.color=@} @=h.name=@}\\@@ endfor @@} & \makecell{@=r.services=@} & @=r.vpn=@ & {\color[HTML]{@=r.status_color=@} @=r.status=@} \\
+		@@ endfor @@
+	\end{tabular}
+\end{document}

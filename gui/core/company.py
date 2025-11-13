@@ -22,7 +22,7 @@ class CompanyGUI(QWidget):
         # update menu actions
         enabled_actions = [self.main_window.company_submenu, self.main_window.company_report_action]
         self.main_window.enable_actions(enabled_actions)
-        disabled_actions = [self.main_window.firewall_submenu, self.main_window.policy_submenu]
+        disabled_actions = [self.main_window.firewall_submenu, self.main_window.policy_submenu, self.main_window.firewall_report_action]
         self.main_window.disable_actions(disabled_actions)
 
         # widget design
