@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
 
 
 class Settings(QWidget):
@@ -6,6 +7,7 @@ class Settings(QWidget):
         super().__init__()
         self.main_window = main_window
         self.setWindowTitle(f"Settings - Firewall Proof {self.main_window.version}")
+        self.setWindowIcon(QIcon("img/screwdriver_wrench_icon.png"))
         #self.resize(410, 210)
 
         # widget design

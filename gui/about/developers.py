@@ -1,11 +1,14 @@
 from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
 
 
 class Developers(QWidget):
-    def __init__(self):
+    def __init__(self, main_window):
         super().__init__()
+        self.main_window = main_window
         self.all_developers()
-        self.setWindowTitle("About developers")
+        self.setWindowTitle(f"Developers - Firewall Proof {self.main_window.version}")
+        self.setWindowIcon(QIcon("img/developer_community_github_icon.png"))
         self.resize(410, 210)
 
 

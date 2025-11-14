@@ -1,11 +1,14 @@
 from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
 
 
 class Shortcuts(QWidget):
-    def __init__(self):
+    def __init__(self, main_window):
         super().__init__()
+        self.main_window = main_window
         self.shortcuts()
-        self.setWindowTitle("Shortcuts list")
+        self.setWindowTitle(f"Shortcuts - Firewall Proof {self.main_window.version}")
+        self.setWindowIcon(QIcon("img/share_social_media_network_connection_icon.png"))
         self.resize(410, 210)
     
     def shortcuts(self):

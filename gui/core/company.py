@@ -62,7 +62,7 @@ class CompanyGUI(QWidget):
             zone_layout.addWidget(QLabel(str(z.level)), i+1, 1, 1, 1)
             zone_layout.addWidget(QLabel(z.description), i+1, 2, 1, 1)
             edit_button = QPushButton("Edit")
-            edit_button.setIcon(QIcon("img/pencil_icon.png"))
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, zparam=z:
                 self.edit_zone(zparam)
@@ -90,7 +90,7 @@ class CompanyGUI(QWidget):
             label.setStyleSheet(f"color: {status.color}")
             # status edit button
             edit_button = QPushButton('')
-            edit_button.setIcon(QIcon("img/pencil_icon.png"))
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.setIconSize(QSize(16, 16))
             edit_button.setFixedSize(16, 16)
             edit_button.setToolTip("Edit Status")
@@ -130,7 +130,7 @@ class CompanyGUI(QWidget):
             )
             policies_layout.addWidget(view_button, i+1, 3, 1, 1)
             edit_button = QPushButton("Edit")
-            edit_button.setIcon(QIcon("img/pencil_icon.png"))
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, pol=p:
                 self.edit_policy(pol)
@@ -165,7 +165,7 @@ class CompanyGUI(QWidget):
             )
             firewall_layout.addWidget(view_button, i+1, 12, 1, 1)
             edit_button = QPushButton("Edit")
-            edit_button.setIcon(QIcon("img/pencil_icon.png"))
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, f=fw:
                 self.edit_firewall(f)

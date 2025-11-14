@@ -1,11 +1,14 @@
 from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
 
 
 class Information(QWidget):
-    def __init__(self):
+    def __init__(self, main_window):
         super().__init__()
+        self.main_window = main_window
         self.information()
-        self.setWindowTitle("About Firewall Proof")
+        self.setWindowTitle(f"About Firewall Proof {self.main_window.version}")
+        self.setWindowIcon(QIcon("img/network_learn_info_information_media_icon.png"))
         self.resize(410, 210)
     
     def information(self):

@@ -65,7 +65,7 @@ class FirewallGUI(QWidget):
             interface_layout.addWidget(QLabel(ifce.address), i+1, 1)
             interface_layout.addWidget(QLabel("n/a"), i+1, 2)
             edit_button = QPushButton("Edit")
-            edit_button.setIcon(QIcon("img/pencil_icon.png"))
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, interface=ifce:
                 self.edit_interface(interface)
@@ -107,7 +107,7 @@ class FirewallGUI(QWidget):
                     self.show_host(h)
                 )
                 edit_button = QPushButton('')
-                edit_button.setIcon(QIcon("img/pencil_icon.png"))
+                edit_button.setIcon(QIcon("img/edit_icon.png"))
                 edit_button.setIconSize(QSize(16, 16))
                 edit_button.setFixedSize(16, 16)
                 edit_button.setToolTip("Edit Host")
@@ -136,7 +136,7 @@ class FirewallGUI(QWidget):
                     self.show_host(h)
                 )
                 edit_button = QPushButton('')
-                edit_button.setIcon(QIcon("img/pencil_icon.png"))
+                edit_button.setIcon(QIcon("img/edit_icon.png"))
                 edit_button.setIconSize(QSize(16, 16))
                 edit_button.setFixedSize(16, 16)
                 edit_button.setToolTip("Edit Host")
@@ -161,7 +161,7 @@ class FirewallGUI(QWidget):
             """)
             rules_layout.addWidget(status, i+1, 5)
             edit_button = QPushButton('Edit')
-            edit_button.setIcon(QIcon("img/pencil_icon.png"))
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(
                 lambda checked, rule=r:
                 self.edit_rule(rule)

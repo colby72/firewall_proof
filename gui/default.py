@@ -27,10 +27,12 @@ class DefaultGUI(QWidget):
         layout.addWidget(QLabel(), 0, 2, 1, 1)
 
         self.new_button = QPushButton("Create new project")
+        self.new_button.setIcon(QIcon("img/file_new_blue_icon.png"))
         self.new_button.clicked.connect(self.new_project)
         layout.addWidget(self.new_button, 1, 1, 1, 1)
 
         self.open_button = QPushButton("Open project")
+        self.open_button.setIcon(QIcon("img/file_open_icon.png"))
         self.open_button.clicked.connect(self.open_project)
         layout.addWidget(self.open_button, 2, 1, 1, 1)
 

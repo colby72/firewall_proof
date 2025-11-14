@@ -528,15 +528,15 @@ class FWProofGUI(QMainWindow):
     
     ''' 6- Call functions for Menu: About '''
     def show_software_info(self):
-        self.widget_software_info = Information()
+        self.widget_software_info = Information(self)
         self.widget_software_info.show()
     
     def show_developers(self):
-        self.widget_developers = Developers()
+        self.widget_developers = Developers(self)
         self.widget_developers.show()
     
     def show_shortcuts(self):
-        self.widget_shortcuts = Shortcuts()
+        self.widget_shortcuts = Shortcuts(self)
         self.widget_shortcuts.show()
     
     ''' X- Call functions for Test Widgets '''
