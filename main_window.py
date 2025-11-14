@@ -475,6 +475,7 @@ class FWProofGUI(QMainWindow):
     def show_firewall(self):
         if self.firewall:
             self.policy = self.firewall.policy
+            apply_policy(self.firewall, self.policy)
             firewall_gui = FirewallGUI(self, self.firewall)
             self.windows.addWidget(firewall_gui)
             self.windows.setCurrentWidget(firewall_gui)

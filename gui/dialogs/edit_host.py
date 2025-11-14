@@ -4,6 +4,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
 from core.host import *
+from algorithms.policy_check import *
 
 
 class DialogEditHost(QDialog):

@@ -131,7 +131,6 @@ class DialogEditRule(QDialog):
         self.rule.set_dest(rule_dest)
         self.rule.set_services(rule_services)
         self.rule.set_vpn(rule_vpn)
-        apply_policy(self.fw, self.fw.policy)
         self.close()
     
     def when_cancel(self):
