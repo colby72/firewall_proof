@@ -14,6 +14,7 @@ from gui.core.company import *
 from gui.core.policy import *
 from gui.core.firewall import *
 from gui.core.host import *
+from gui.edit.settings import *
 from gui.dialogs.add_zone import *
 from gui.dialogs.add_policy import *
 from gui.dialogs.add_firewall import *
@@ -139,7 +140,9 @@ class FWProofGUI(QMainWindow):
 
         """ 2. Create actions for Edit menu """
         self.settings_action = QAction(QtGui.QIcon("img/screwdriver_wrench_icon.png"), "Settings", self)
-        #self.settings_action.setShortcut("Ctrl+Q")
+        self.settings_action.setShortcut("Ctrl+P")
+        self.settings_action.setStatusTip("Edit preferences")
+        self.settings_action.triggered.connect(self.show_settings)
         self.settings_action.setStatusTip("Settings")
 
         self.undo_action = QAction(QtGui.QIcon("img/undo_icon.png"), "Undo", self)
@@ -294,13 +297,13 @@ class FWProofGUI(QMainWindow):
         self.toolbar = self.addToolBar("ToolBar")
 
         # Add The Actions To Tool Bar
-        self.toolbar.addAction(self.home_action)
-        self.toolbar.addSeparator()
         self.toolbar.addAction(self.new_action)
         self.toolbar.addSeparator()
         self.toolbar.addAction(self.open_action)
         self.toolbar.addSeparator()
         self.toolbar.addAction(self.save_action)
+        self.toolbar.addSeparator()
+        self.toolbar.addAction(self.home_action)
         self.toolbar.addSeparator()
         self.toolbar.addAction(self.show_company_action)
         self.toolbar.addSeparator()
@@ -426,6 +429,9 @@ class FWProofGUI(QMainWindow):
             self.close()
     
     ''' 2- Call functions for Menu: Edit '''
+    def show_settings(self):
+        self.settings_dialog = Settings(self)
+        self.settings_dialog.show()
     
     ''' 3- Call functions for Menu: Project '''
     def show_home(self):
