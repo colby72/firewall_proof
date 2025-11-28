@@ -1,0 +1,40 @@
+QStackedWidget {
+    background-color: rgb(50, 50, 50);
+}
+
+QPushButton#default_widget_btn {
+    font-size: 22px;
+}
+
+QPushButton#edit_button_text {
+    width: 10px;
+    border-radius: 5px;
+    border: 1px solid #0d6efd;
+}
+
+QGroupBox:title {
+    font-size: 40px;
+}
+
+/*QGroupBox {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+}*/
+
+QPushButton#view_button_text {
+    width: 10px;
+    border-radius: 5px;
+    border: 0.5px solid #fdb10d;
+}
+
+QPushButton#add_button {
+    font-size: 15px;
+}
+
+QPushButton#add_button2 {
+    width: 10px;
+    border-radius: 5px;
+    border: 0.5px none #35fd0d;
+}

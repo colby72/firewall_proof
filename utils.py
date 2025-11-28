@@ -26,3 +26,8 @@ def text_to_tex(text):
     """
     text = text.replace('&', '\&')
     return text
+
+def get_stylesheet(sheet_file):
+    with open(f"gui/qss/{sheet_file}", 'r', encoding="utf8") as f:
+        style = f.read()
+        return style

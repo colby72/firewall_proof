@@ -85,6 +85,8 @@ class FWProofGUI(QMainWindow):
         #self.setGeometry(self.left, self.top, self.width, self.height)
         self.setMinimumWidth(self.width)
         self.setMinimumHeight(self.height)
+        #self.setStyleSheet("background-color: rgb(200, 200, 200)")
+        self.setStyleSheet(get_stylesheet("main.qss"))
 
         # Create a menu bar
         menu = self.menuBar()
@@ -108,7 +110,7 @@ class FWProofGUI(QMainWindow):
         self.open_action.setStatusTip("Open project")
         self.open_action.triggered.connect(self.open_project)
 
-        self.save_as_action = QAction(QtGui.QIcon("img/floppy_disc_save_storage_disk_icon.png"), "Save project as", self)
+        self.save_as_action = QAction("Save project as", self)
         #self.save_as_action.setShortcut("Ctrl+S")
         self.save_as_action.setStatusTip("Save project as")
         self.save_as_action.triggered.connect(self.save_project_as)
@@ -316,7 +318,8 @@ class FWProofGUI(QMainWindow):
         self.toolbar.addAction(developers_action)
         self.toolbar.addSeparator()
 
-        self.toolbar.setStyleSheet("background-color: rgb(250, 250, 250)")
+        #self.toolbar.setObjectName("toolbar")
+        self.toolbar.setStyleSheet("background-color: rgb(230, 230, 230)")
         self.toolbar.setIconSize(QSize(self.toolbar_icon_size, self.toolbar_icon_size))
 
         # Create Vertical Layout for MenuBar

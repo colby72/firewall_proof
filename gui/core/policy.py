@@ -39,6 +39,8 @@ class PolicyGUI(QWidget):
         # rules box
         rules = QGroupBox("Policy rules")
         rules_layout = QGridLayout()
+        rules_layout.setContentsMargins(10, 10, 10, 10)
+        rules_layout.setSpacing(20)
         rules.setLayout(rules_layout)
         headers = ["Source zone", "Destination zone", "Services", "VPN", "Status"]
         for i in range(len(headers)):
@@ -68,16 +70,20 @@ class PolicyGUI(QWidget):
                 lambda checked, rule=r:
                 self.edit_policy_rule(rule)
             )
+            edit_button.setFixedSize(120, 30)
+            edit_button.setIconSize(QSize(18, 18))
             rules_layout.addWidget(edit_button, i+1, 5)
         
         # add policy rule button
         add_policy_rule_button = QPushButton("Policy Rule")
         add_policy_rule_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_policy_rule_button.clicked.connect(self.add_policy_rule)
+        add_policy_rule_button.setFixedSize(140, 40)
+        add_policy_rule_button.setIconSize(QSize(20, 20))
         
-        layout.addWidget(rules, 2, 0, 1, 3)
-        layout.addWidget(QLabel(), 2, 3, 1, 1)
+        layout.addWidget(rules, 2, 0, 1, 6)
         layout.addWidget(add_policy_rule_button, 3, 0, 1, 1)
+        layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
     
     def add_policy_rule(self):

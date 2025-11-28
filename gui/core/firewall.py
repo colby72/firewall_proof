@@ -24,7 +24,7 @@ class FirewallGUI(QWidget):
         self.main_window.enable_actions(enabled_actions)
         
         # widget design
-        layout = QVBoxLayout()
+        layout = QGridLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(20)
         self.setLayout(layout)
@@ -49,10 +49,13 @@ class FirewallGUI(QWidget):
         summary_layout.addWidget(QLabel("Rules : "), 6, 0)
         summary_layout.addWidget(QLabel(str(len(self.fw.rules))), 6, 1)
         summary.setLayout(summary_layout)
+        #summary_layout.setColumnStretch(summary_layout.columnCount(), 1)
 
         # interface box
         interface = QGroupBox("Interfaces")
         interface_layout = QGridLayout()
+        interface_layout.setContentsMargins(10, 10, 10, 10)
+        interface_layout.setSpacing(20)
         interface.setLayout(interface_layout)
         headers = ["Name", "Address", "Hosts"]
         for i in range(len(headers)):
@@ -70,19 +73,29 @@ class FirewallGUI(QWidget):
                 lambda checked, interface=ifce:
                 self.edit_interface(interface)
             )
+            edit_button.setFixedSize(120, 30)
+            edit_button.setIconSize(QSize(18, 18))
             interface_layout.addWidget(edit_button, i+1, 3)
+        #interface_layout.setColumnStretch(interface_layout.columnCount(), 1)
+        
         add_iface_button = QPushButton("Interface")
         add_iface_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_iface_button.clicked.connect(self.add_interface)
-        interface_layout.addWidget(add_iface_button, len(self.fw.interfaces)+1, 0)
+        add_iface_button.setFixedSize(140, 40)
+        add_iface_button.setIconSize(QSize(20, 20))
+        #interface_layout.addWidget(add_iface_button, len(self.fw.interfaces)+1, 0)
 
         add_host_button = QPushButton("Host")
         add_host_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_host_button.clicked.connect(self.add_host)
+        add_host_button.setFixedSize(140, 40)
+        add_host_button.setIconSize(QSize(20, 20))
 
         # rules box
         rules = QGroupBox("Firewall rules")
         rules_layout = QGridLayout()
+        rules_layout.setContentsMargins(10, 10, 10, 10)
+        rules_layout.setSpacing(20)
         rules.setLayout(rules_layout)
         headers = ["ID", "Source", "Destination", "Service", "VPN", "Status"]
         for i in range(len(headers)):
@@ -166,17 +179,26 @@ class FirewallGUI(QWidget):
                 lambda checked, rule=r:
                 self.edit_rule(rule)
             )
+            edit_button.setFixedSize(120, 30)
+            edit_button.setIconSize(QSize(18, 18))
             rules_layout.addWidget(edit_button, i+1, 6)
+        #rules_layout.setColumnStretch(rules_layout.columnCount(), 1)
+        
         add_rule_button = QPushButton("Rule")
         add_rule_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_rule_button.clicked.connect(self.add_rule)
-        rules_layout.addWidget(add_rule_button, len(self.fw.rules)+2, 0)
+        add_rule_button.setFixedSize(140, 40)
+        add_rule_button.setIconSize(QSize(20, 20))
+        #rules_layout.addWidget(add_rule_button, len(self.fw.rules)+2, 0)
 
-        layout.addWidget(summary)
-        layout.addWidget(interface)
-        layout.addWidget(add_host_button)
-        layout.addWidget(rules)
-        layout.addStretch()
+        layout.addWidget(summary, 0, 0, 1, 2)
+        layout.addWidget(interface, 1, 0, 1, 4)
+        layout.addWidget(add_iface_button, 2, 0, 1, 1)
+        layout.addWidget(add_host_button, 3, 0, 1, 1)
+        layout.addWidget(rules, 4, 0, 1, 7)
+        layout.addWidget(add_rule_button, 5, 0, 1, 1)
+        layout.setColumnStretch(layout.columnCount(), 1)
+        layout.setRowStretch(layout.rowCount(), 1)
     
     def add_interface(self):
         self.add_iface_dialog = DialogAddInterface(self.main_window, self.fw)

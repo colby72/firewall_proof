@@ -12,6 +12,8 @@ from gui.dialogs.edit_policy import *
 from gui.dialogs.add_firewall import *
 from gui.dialogs.edit_firewall import *
 
+from utils import *
+
 
 class CompanyGUI(QWidget):
     def __init__(self, main_window):
@@ -26,7 +28,7 @@ class CompanyGUI(QWidget):
         self.main_window.disable_actions(disabled_actions)
 
         # widget design
-        layout = QVBoxLayout()
+        layout = QGridLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(20)
 
@@ -47,7 +49,8 @@ class CompanyGUI(QWidget):
         zone = QGroupBox("Zones")
         zone.setFlat(False)
         zone_layout = QGridLayout()
-        zone_layout.setSpacing(10)
+        zone_layout.setContentsMargins(10, 10, 10, 10)
+        zone_layout.setSpacing(20)
         zone.setLayout(zone_layout)
         headers = ["Name","PURDUE level", "Description"]
         for i in range(len(headers)):
@@ -67,11 +70,17 @@ class CompanyGUI(QWidget):
                 lambda checked, zparam=z:
                 self.edit_zone(zparam)
             )
+            edit_button.setFixedSize(120, 30)
+            edit_button.setIconSize(QSize(18, 18))
+            #edit_button.setObjectName("edit_button_text")
             zone_layout.addWidget(edit_button, i+1, 3)
         add_zone_button = QPushButton("Zone")
         add_zone_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_zone_button.clicked.connect(self.add_zone)
-        zone_layout.addWidget(add_zone_button, len(self.company.zones)+1, 0)
+        add_zone_button.setObjectName("add_button")
+        add_zone_button.setFixedSize(140, 40)
+        add_zone_button.setIconSize(QSize(20, 20))
+        #zone_layout.addWidget(add_zone_button, len(self.company.zones)+1, 2)
 
         # status box
         status_box = QGroupBox("Status list")
@@ -105,12 +114,16 @@ class CompanyGUI(QWidget):
         add_status_button = QPushButton("Status")
         add_status_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_status_button.clicked.connect(self.add_status)
-        status_layout.addWidget(add_status_button, status_count//status_per_row, status_count%status_per_row)
+        add_status_button.setObjectName("add_button")
+        add_status_button.setFixedSize(140, 40)
+        add_status_button.setIconSize(QSize(20, 20))
+        #status_layout.addWidget(add_status_button, status_count//status_per_row, status_count%status_per_row)
 
         # policies box
         policies = QGroupBox("Company policies")
         policies_layout = QGridLayout()
-        policies_layout.setSpacing(10)
+        policies_layout.setContentsMargins(10, 10, 10, 10)
+        policies_layout.setSpacing(20)
         policies.setLayout(policies_layout)
         headers = ["Name", "Default", "# Rules"]
         for i in range(len(headers)):
@@ -128,6 +141,9 @@ class CompanyGUI(QWidget):
                 lambda checked, pol=p:
                 self.view_policy(pol)
             )
+            view_button.setFixedSize(120, 30)
+            view_button.setIconSize(QSize(18, 18))
+            #view_button.setObjectName("view_button_text")
             policies_layout.addWidget(view_button, i+1, 3, 1, 1)
             edit_button = QPushButton("Edit")
             edit_button.setIcon(QIcon("img/edit_icon.png"))
@@ -135,15 +151,23 @@ class CompanyGUI(QWidget):
                 lambda checked, pol=p:
                 self.edit_policy(pol)
             )
+            edit_button.setFixedSize(120, 30)
+            edit_button.setIconSize(QSize(18, 18))
+            #edit_button.setObjectName("edit_button_text")
             policies_layout.addWidget(edit_button, i+1, 4, 1, 1)
         add_policy_button = QPushButton("Policy")
         add_policy_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_policy_button.clicked.connect(self.add_policy)
-        policies_layout.addWidget(add_policy_button, len(self.company.policies)+1, 0)
+        add_policy_button.setObjectName("add_button")
+        add_policy_button.setFixedSize(140, 40)
+        add_policy_button.setIconSize(QSize(20, 20))
+        #policies_layout.addWidget(add_policy_button, len(self.company.policies)+1, 0)
 
         # frewalls box
         firewall = QGroupBox("Firewalls")
         firewall_layout = QGridLayout()
+        firewall_layout.setContentsMargins(10, 10, 10, 10)
+        firewall_layout.setSpacing(20)
         firewall.setLayout(firewall_layout)
         headers = ["Name", "Vendor", "Address", "Policy"]
         for i in range(len(headers)):
@@ -163,6 +187,9 @@ class CompanyGUI(QWidget):
                 lambda checked, f=fw:
                 self.view_firewall(f)
             )
+            view_button.setFixedSize(120, 30)
+            view_button.setIconSize(QSize(18, 18))
+            #view_button.setObjectName("view_button_text")
             firewall_layout.addWidget(view_button, i+1, 12, 1, 1)
             edit_button = QPushButton("Edit")
             edit_button.setIcon(QIcon("img/edit_icon.png"))
@@ -170,18 +197,31 @@ class CompanyGUI(QWidget):
                 lambda checked, f=fw:
                 self.edit_firewall(f)
             )
+            edit_button.setFixedSize(120, 30)
+            edit_button.setIconSize(QSize(18, 18))
+            #edit_button.setObjectName("edit_button_text")
             firewall_layout.addWidget(edit_button, i+1, 15, 1, 1)
-        add_fw_button = QPushButton("Add Firewall")
+        add_fw_button = QPushButton("Firewall")
+        add_fw_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_fw_button.clicked.connect(self.add_firewall)
-        firewall_layout.addWidget(add_fw_button, len(self.company.fw_inventory)+1 ,0)
+        add_fw_button.setObjectName("add_button")
+        add_fw_button.setFixedSize(140, 40)
+        add_fw_button.setIconSize(QSize(20, 20))
+        #firewall_layout.addWidget(add_fw_button, len(self.company.fw_inventory)+1 ,0)
 
-        layout.addWidget(summary)
-        layout.addWidget(zone)
-        layout.addWidget(status_box)
-        layout.addWidget(policies)
-        layout.addWidget(firewall)
-        layout.addStretch()
+        layout.addWidget(summary, 0, 0, 1, 2)
+        layout.addWidget(zone, 1, 0, 1, 4)
+        layout.addWidget(add_zone_button, 2, 0, 1, 1)
+        layout.addWidget(status_box, 3, 0, 1, 3)
+        layout.addWidget(add_status_button, 4, 0, 1, 1)
+        layout.addWidget(policies, 5, 0, 1, 5)
+        layout.addWidget(add_policy_button, 6, 0, 1, 1)
+        layout.addWidget(firewall, 7, 0, 1, 6)
+        layout.addWidget(add_fw_button, 8, 0, 1, 1)
+        layout.setColumnStretch(layout.columnCount(), 1)
+        layout.setRowStretch(layout.rowCount(), 1)
         self.setLayout(layout)
+        #self.setStyleSheet(get_stylesheet("main.qss"))
     
     def view_policy(self, policy):
         self.main_window.policy = policy
