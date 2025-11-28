@@ -60,6 +60,15 @@ class HomeGUI(QWidget):
             view_button.setFixedSize(120, 30)
             view_button.setIconSize(QSize(18, 18))
             company_layout.addWidget(view_button, 2, 4)
+            edit_button = QPushButton("Edit")
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
+            edit_button.clicked.connect(
+                lambda checked, c_buffer=c:
+                self.edit_company(c_buffer)
+            )
+            edit_button.setFixedSize(120, 30)
+            edit_button.setIconSize(QSize(18, 18))
+            company_layout.addWidget(edit_button, 2, 5)
             company_layout.setColumnStretch(company_layout.columnCount(), 1)
             layout.addWidget(company, 1, 0)
         
@@ -85,4 +94,10 @@ class HomeGUI(QWidget):
         if ok_pressed and company_name:
             company = Company(company_name)
             self.project.add_company(company)
+            self.main_window.show_home()
+    
+    def edit_company(self, company):
+        company_name, ok_pressed = QInputDialog.getText(self, "Edit Company", "Company name", text=company.name)
+        if ok_pressed and company_name:
+            company.set_name(company_name)
             self.main_window.show_home()
