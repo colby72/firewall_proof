@@ -8,19 +8,19 @@ from cli.logger import *
 
 
 class Firewall():
-    def __init__(self, company, name, vendor, address):
+    def __init__(self, company, name, vendor, address, policy=None):
         self.id = 0
         self.name = name
         self.company = company
         self.vendor = vendor
         self.address = address
+        self.policy = policy # ref to FW policy object
 
         # firewall's components & elements
         self.interfaces = [] # list of refs to FW's interfaces
         self.hosts = [] # list of refs to FW's hosts
         self.groups = [] # list of refs to FW's object groups
         self.rules = [] # list of refs to FW's rules
-        self.policy = None # ref to FW policy object
 
         # current rules' summary
         self.ok_count = 0 # OK rules
@@ -38,6 +38,9 @@ class Firewall():
     
     def set_address(self, address):
         self.address = address
+    
+    def set_policy(self, policy):
+        self.policy = policy
     
     # Firewall operations
     def add_interface(self, name, address):

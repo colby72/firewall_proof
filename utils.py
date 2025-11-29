@@ -19,6 +19,13 @@ def get_status_list_labels(company):
     labels = [status.label for status in company.status_list]
     return labels
 
+def get_policy_by_name(company, policy_name):
+    for p in company.policies:
+        if p.name == policy_name:
+            return p
+    print_error(f"Policy '{policy_name}' not found in Company '{company.name}'")
+    return None
+
 def text_to_tex(text):
     """
     Format text to be Latex-compatible
