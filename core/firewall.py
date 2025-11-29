@@ -16,7 +16,7 @@ class Firewall():
         self.address = address
 
         # firewall's components & elements
-        self.interfaces = [] # list of refs to FW's interfaces (eg. {"name": "eth0", "address": "172.0.16.2/29"})
+        self.interfaces = [] # list of refs to FW's interfaces
         self.hosts = [] # list of refs to FW's hosts
         self.groups = [] # list of refs to FW's object groups
         self.rules = [] # list of refs to FW's rules
@@ -44,6 +44,9 @@ class Firewall():
         interface = FwInterface(name, address)
         self.interfaces.append(interface)
     
+    def remove_interface(self, interface):
+        self.interfaces.remove(interface)
+    
     def add_host(self, host):
         # verify if host already exists
         for h in self.hosts:
@@ -53,6 +56,9 @@ class Firewall():
         # add host
         self.hosts.append(host)
         return host
+    
+    def remove_host(self, host):
+        self.hosts.remove(host)
     
     def add_rule(self, rule):
         # verify if rule already exists
@@ -64,6 +70,9 @@ class Firewall():
                 return r
         # add rule if new
         self.rules.append(rule)
+    
+    def remove_rule(self, rule):
+        self.rules.remove(rule)
     
     def add_group(self, group):
         # verify if group already exists

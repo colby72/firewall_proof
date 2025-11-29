@@ -73,6 +73,15 @@ class PolicyGUI(QWidget):
             edit_button.setFixedSize(120, 30)
             edit_button.setIconSize(QSize(18, 18))
             rules_layout.addWidget(edit_button, i+1, 5)
+            remove_button = QPushButton('Remove')
+            remove_button.setIcon(QIcon("img/delete.png"))
+            remove_button.clicked.connect(
+                lambda checked, rule=r:
+                self.remove_policy_rule(rule)
+            )
+            remove_button.setFixedSize(120, 30)
+            remove_button.setIconSize(QSize(18, 18))
+            rules_layout.addWidget(remove_button, i+1, 6)
         
         # add policy rule button
         add_policy_rule_button = QPushButton("Policy Rule")
@@ -81,7 +90,7 @@ class PolicyGUI(QWidget):
         add_policy_rule_button.setFixedSize(140, 40)
         add_policy_rule_button.setIconSize(QSize(20, 20))
         
-        layout.addWidget(rules, 2, 0, 1, 6)
+        layout.addWidget(rules, 2, 0, 1, 7)
         layout.addWidget(add_policy_rule_button, 3, 0, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
@@ -94,4 +103,8 @@ class PolicyGUI(QWidget):
     def edit_policy_rule(self, policy_rule):
         self.edit_policy_rule_dialog = DialogEditPolicyRule(self.main_window, self.policy, policy_rule)
         self.edit_policy_rule_dialog.exec()
+        self.main_window.show_policy()
+    
+    def remove_policy_rule(self, policy_rule):
+        self.policy.remove_rule(policy_rule)
         self.main_window.show_policy()

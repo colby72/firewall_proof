@@ -18,6 +18,9 @@ class FWPolicy():
     
     def set_default(self, default):
         self.default = default
+    
+    def remove_rule(self, rule):
+        self.rules.remove(rule)
 
 
 class PolicyRule():

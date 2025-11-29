@@ -41,12 +41,13 @@ class HomeGUI(QWidget):
         layout.addWidget(title, 0, 0)
 
         # project companies
-        for c in self.project.companies:
+        for i, c in enumerate(self.project.companies):
             company = QGroupBox("")
             company_layout = QGridLayout()
             company_layout.setContentsMargins(10, 10, 10, 10)
             company_layout.setSpacing(20)
             company.setLayout(company_layout)
+
             company_layout.addWidget(QLabel("Company : "), 0, 0)
             company_layout.addWidget(QLabel(c.name), 0, 1)
             company_layout.addWidget(QLabel("Firewalls : "), 1, 0)
@@ -63,14 +64,24 @@ class HomeGUI(QWidget):
             edit_button = QPushButton("Edit")
             edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(
-                lambda checked, c_buffer=c:
-                self.edit_company(c_buffer)
+                lambda checked, comp=c:
+                self.edit_company(comp)
             )
             edit_button.setFixedSize(120, 30)
             edit_button.setIconSize(QSize(18, 18))
             company_layout.addWidget(edit_button, 2, 5)
+            remove_button = QPushButton("Remove")
+            remove_button.setIcon(QIcon("img/delete.png"))
+            remove_button.clicked.connect(
+                lambda checked, comp=c:
+                self.remove_company(comp)
+            )
+            remove_button.setFixedSize(120, 30)
+            remove_button.setIconSize(QSize(18, 18))
+            company_layout.addWidget(remove_button, 2, 6)
+            
             company_layout.setColumnStretch(company_layout.columnCount(), 1)
-            layout.addWidget(company, 1, 0)
+            layout.addWidget(company, i+1, 0)
         
         # add company
         add_button = QPushButton(" Company")
@@ -79,7 +90,7 @@ class HomeGUI(QWidget):
         add_button.setObjectName("add_button")
         add_button.setFixedSize(140, 40)
         add_button.setIconSize(QSize(20, 20))
-        layout.addWidget(add_button, 2, 0)
+        layout.addWidget(add_button, len(self.project.companies)+1, 0)
 
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
@@ -101,3 +112,7 @@ class HomeGUI(QWidget):
         if ok_pressed and company_name:
             company.set_name(company_name)
             self.main_window.show_home()
+    
+    def remove_company(self, company):
+        self.project.remove_company(company)
+        self.main_window.show_home()

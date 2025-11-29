@@ -23,3 +23,6 @@ class Project():
                 return None
         self.companies.append(company)
         return company
+    
+    def remove_company(self, company):
+        self.companies.remove(company)

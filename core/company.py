@@ -32,6 +32,9 @@ class Company():
         print_info(f"Zone '{zone.name}' added to company '{self.name}")
         return zone
     
+    def remove_zone(self, zone):
+        self.zones.remove(zone)
+    
     def add_firewall(self, firewall):
         # verify if Firewall already exists in FW inventory
         for fw in self.fw_inventory:
@@ -44,6 +47,9 @@ class Company():
         print_info(f"Firewall '{firewall.name}' added to company '{self.name}'")
         return firewall
     
+    def remove_firewall(self, firewall):
+        self.fw_inventory.remove(firewall)
+    
     def add_policy(self, policy):
         # verify if policy already exists
         for pol in self.policies:
@@ -55,6 +61,9 @@ class Company():
         print_info(f"Policy '{policy.name}' added to company '{self.name}'")
         return policy
     
+    def remove_policy(self, policy):
+        self.policies.remove(policy)
+    
     def add_status(self, status):
         # verify if status already exists
         for st in self.status_list:
@@ -65,6 +74,9 @@ class Company():
         self.status_list.append(status)
         print_info(f"Status '{status.label}' added to company '{self.name}'")
         return status
+    
+    def remove_status(self, status):
+        self.status_list.remove(status)
 
 
 class RuleStatus():

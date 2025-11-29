@@ -74,6 +74,16 @@ class CompanyGUI(QWidget):
             edit_button.setIconSize(QSize(18, 18))
             #edit_button.setObjectName("edit_button_text")
             zone_layout.addWidget(edit_button, i+1, 3)
+            remove_button = QPushButton("Remove")
+            remove_button.setIcon(QIcon("img/delete.png"))
+            remove_button.clicked.connect(
+                lambda checked, zparam=z:
+                self.remove_zone(zparam)
+            )
+            remove_button.setFixedSize(120, 30)
+            remove_button.setIconSize(QSize(18, 18))
+            zone_layout.addWidget(remove_button, i+1, 4)
+
         add_zone_button = QPushButton("Zone")
         add_zone_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_zone_button.clicked.connect(self.add_zone)
@@ -107,8 +117,20 @@ class CompanyGUI(QWidget):
                 lambda checked, s=status:
                 self.edit_status(s)
             )
+            # status remove button
+            remove_button = QPushButton('')
+            remove_button.setIcon(QIcon("img/delete.png"))
+            remove_button.setIconSize(QSize(16, 16))
+            remove_button.setFixedSize(16, 16)
+            remove_button.setToolTip("Remove Status")
+            remove_button.clicked.connect(
+                lambda checked, s=status:
+                self.remove_status(s)
+            )
+
             status_item_layout.addWidget(label)
             status_item_layout.addWidget(edit_button)
+            status_item_layout.addWidget(remove_button)
             status_item_layout.addStretch()
             status_layout.addWidget(status_item, i//status_per_row, i%status_per_row)
         add_status_button = QPushButton("Status")
@@ -155,6 +177,16 @@ class CompanyGUI(QWidget):
             edit_button.setIconSize(QSize(18, 18))
             #edit_button.setObjectName("edit_button_text")
             policies_layout.addWidget(edit_button, i+1, 4, 1, 1)
+            remove_button = QPushButton("Remove")
+            remove_button.setIcon(QIcon("img/delete.png"))
+            remove_button.clicked.connect(
+                lambda checked, pol=p:
+                self.remove_policy(pol)
+            )
+            remove_button.setFixedSize(120, 30)
+            remove_button.setIconSize(QSize(18, 18))
+            policies_layout.addWidget(remove_button, i+1, 5, 1, 1)
+
         add_policy_button = QPushButton("Policy")
         add_policy_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_policy_button.clicked.connect(self.add_policy)
@@ -201,6 +233,16 @@ class CompanyGUI(QWidget):
             edit_button.setIconSize(QSize(18, 18))
             #edit_button.setObjectName("edit_button_text")
             firewall_layout.addWidget(edit_button, i+1, 15, 1, 1)
+            remove_button = QPushButton("Remove")
+            remove_button.setIcon(QIcon("img/delete.png"))
+            remove_button.clicked.connect(
+                lambda checked, f=fw:
+                self.remove_firewall(f)
+            )
+            remove_button.setFixedSize(120, 30)
+            remove_button.setIconSize(QSize(18, 18))
+            firewall_layout.addWidget(remove_button, i+1, 18, 1, 1)
+
         add_fw_button = QPushButton("Firewall")
         add_fw_button.setIcon(QIcon("img/add_sign_icon.png"))
         add_fw_button.clicked.connect(self.add_firewall)
@@ -210,13 +252,13 @@ class CompanyGUI(QWidget):
         #firewall_layout.addWidget(add_fw_button, len(self.company.fw_inventory)+1 ,0)
 
         layout.addWidget(summary, 0, 0, 1, 2)
-        layout.addWidget(zone, 1, 0, 1, 4)
+        layout.addWidget(zone, 1, 0, 1, 5)
         layout.addWidget(add_zone_button, 2, 0, 1, 1)
         layout.addWidget(status_box, 3, 0, 1, 3)
         layout.addWidget(add_status_button, 4, 0, 1, 1)
-        layout.addWidget(policies, 5, 0, 1, 5)
+        layout.addWidget(policies, 5, 0, 1, 6)
         layout.addWidget(add_policy_button, 6, 0, 1, 1)
-        layout.addWidget(firewall, 7, 0, 1, 6)
+        layout.addWidget(firewall, 7, 0, 1, 7)
         layout.addWidget(add_fw_button, 8, 0, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
@@ -230,6 +272,10 @@ class CompanyGUI(QWidget):
     def edit_policy(self, policy):
         self.edit_policy_dialog = DialogEditPolicy(self.main_window, self.company, policy)
         self.edit_policy_dialog.exec()
+        self.main_window.show_company()
+    
+    def remove_policy(self, policy):
+        self.company.remove_policy(policy)
         self.main_window.show_company()
     
     def view_firewall(self, fw):
@@ -246,6 +292,10 @@ class CompanyGUI(QWidget):
         self.edit_zone_dialog.exec()
         self.main_window.show_company()
     
+    def remove_zone(self, zone):
+        self.company.remove_zone(zone)
+        self.main_window.show_company()
+    
     def add_status(self):
         self.add_status_dialog = DialogAddStatus(self.main_window, self.company)
         self.add_status_dialog.exec()
@@ -254,6 +304,10 @@ class CompanyGUI(QWidget):
     def edit_status(self, status):
         self.edit_status_dialog = DialogEditStatus(self.main_window, self.company, status)
         self.edit_status_dialog.exec()
+        self.main_window.show_company()
+    
+    def remove_status(self, status):
+        self.company.remove_status(status)
         self.main_window.show_company()
     
     def add_policy(self):
@@ -269,4 +323,8 @@ class CompanyGUI(QWidget):
     def edit_firewall(self, fw):
         self.edit_fw_dialog = DialogEditFirewall(self.main_window, self.company, fw)
         self.edit_fw_dialog.exec()
+        self.main_window.show_company()
+    
+    def remove_firewall(self, firewall):
+        self.company.remove_firewall(firewall)
         self.main_window.show_company()

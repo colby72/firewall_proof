@@ -76,6 +76,16 @@ class FirewallGUI(QWidget):
             edit_button.setFixedSize(120, 30)
             edit_button.setIconSize(QSize(18, 18))
             interface_layout.addWidget(edit_button, i+1, 3)
+
+            remove_button = QPushButton("Remove")
+            remove_button.setIcon(QIcon("img/delete.png"))
+            remove_button.clicked.connect(
+                lambda checked, interface=ifce:
+                self.remove_interface(interface)
+            )
+            remove_button.setFixedSize(120, 30)
+            remove_button.setIconSize(QSize(18, 18))
+            interface_layout.addWidget(remove_button, i+1, 4)
         #interface_layout.setColumnStretch(interface_layout.columnCount(), 1)
         
         add_iface_button = QPushButton("Interface")
@@ -182,6 +192,15 @@ class FirewallGUI(QWidget):
             edit_button.setFixedSize(120, 30)
             edit_button.setIconSize(QSize(18, 18))
             rules_layout.addWidget(edit_button, i+1, 6)
+            remove_button = QPushButton('Remove')
+            remove_button.setIcon(QIcon("img/delete.png"))
+            remove_button.clicked.connect(
+                lambda checked, rule=r:
+                self.remove_rule(rule)
+            )
+            remove_button.setFixedSize(120, 30)
+            remove_button.setIconSize(QSize(18, 18))
+            rules_layout.addWidget(remove_button, i+1, 7)
         #rules_layout.setColumnStretch(rules_layout.columnCount(), 1)
         
         add_rule_button = QPushButton("Rule")
@@ -192,10 +211,10 @@ class FirewallGUI(QWidget):
         #rules_layout.addWidget(add_rule_button, len(self.fw.rules)+2, 0)
 
         layout.addWidget(summary, 0, 0, 1, 2)
-        layout.addWidget(interface, 1, 0, 1, 4)
+        layout.addWidget(interface, 1, 0, 1, 5)
         layout.addWidget(add_iface_button, 2, 0, 1, 1)
         layout.addWidget(add_host_button, 3, 0, 1, 1)
-        layout.addWidget(rules, 4, 0, 1, 7)
+        layout.addWidget(rules, 4, 0, 1, 8)
         layout.addWidget(add_rule_button, 5, 0, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
@@ -208,6 +227,10 @@ class FirewallGUI(QWidget):
     def edit_interface(self, interface):
         self.edit_iface_dialog = DialogEditInterface(self.main_window, self.fw, interface)
         self.edit_iface_dialog.exec()
+        self.main_window.show_firewall()
+    
+    def remove_interface(self, interface):
+        self.fw.remove_interface(interface)
         self.main_window.show_firewall()
     
     def add_host(self):
@@ -233,4 +256,8 @@ class FirewallGUI(QWidget):
     def edit_rule(self, rule):
         self.edit_rule_dialog = DialogEditRule(self.main_window, self.fw, rule)
         self.edit_rule_dialog.exec()
+        self.main_window.show_firewall()
+    
+    def remove_rule(self, rule):
+        self.fw.remove_rule(rule)
         self.main_window.show_firewall()
