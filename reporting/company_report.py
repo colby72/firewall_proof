@@ -2,6 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 #from xhtml2pdf import pisa
 import os
 
+from reporting.generate_report import *
 from cli.logger import *
 from utils import *
 
@@ -122,3 +123,14 @@ def generate_company_report_html(company):
         print_error(f"Error while generating PDF repot for company {company.name}")
         return None
     return pdf_report
+
+def generate_company_report_docx(company):
+    # get context data
+    context = {
+        "company_name": company.name,
+        "zone_count": len(company.zones),
+        "fw_count": len(company.fw_inventory)
+    }
+    # generate report
+    report = generate_docx_report("company_report.docx.j2", context, company.name)
+    return report

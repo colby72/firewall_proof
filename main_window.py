@@ -524,7 +524,12 @@ class FWProofGUI(QMainWindow):
     ''' 5- Call functions for Menu: Report '''
     def generate_company_report(self):
         if self.company:
-            generate_company_report_tex(self.company)
+            #generate_company_report_tex(self.company)
+            report = generate_company_report_docx(self.company)
+            if report:
+                button = QMessageBox.information(self, "Company report", f"\nCompany report {report} generated successfully !", buttons=QMessageBox.StandardButton.Ok)
+            else:
+                button = QMessageBox.critical(self, "Company report", f"\nError while generating company report !", buttons=QMessageBox.StandardButton.Ok)
     
     def generate_firewall_report(self):
         if self.firewall:
