@@ -16,20 +16,15 @@ def generate_html_report(template, context, report_name):
     html_file = f"{report_name}_{datetime.date.today()}.html".replace(' ', '_')
     pdf_file = f"{report_name}_{datetime.date.today()}.pdf".replace(' ', '_')
     try:
-        with open(f"reporting/export/{html_report}", 'w') as f:
+        with open(f"reporting/export/{html_file}", 'w') as f:
             f.write(html_content)
-        f.close()
-        os.system(f"mv {html_file} reporting/export/")
         print_success(f"HTML report '{report_name}' generated successfully")
     except:
-        print_error(f"Error while generating HTML repot '{report_name}'")
+        print_error(f"Error while generating HTML report '{report_name}'")
         return None
     try:
         with open(f"reporting/export/{pdf_file}", 'wb') as f:
             pisa_status = pisa.CreatePDF(html_content, dest=f)
-        f.close()
-        #os.system(f"mv {pdf_file} reporting/export/")
-        shutil.move(pdf_file, f"reporting/export/{pdf_file}")
         print_success(f"PDF report '{report_name}' generated successfully")
     except:
         print_error(f"Error while generating PDF report '{report_name}'")
@@ -66,10 +61,14 @@ def generate_latex_report(template, context, report_name):
         return None
     
     # generate PDF file
-    os.system(f"pdflatex -interaction=nonstopmode reporting/export/{tex_file}")
-    os.system("rm *.aux *.log *.synctex*")
-    #os.system(f"mv {pdf_file} reporting/export/")
-    shutil.move(pdf_file, f"reporting/export/{pdf_file}")
+    try:
+        os.system(f"pdflatex -interaction=nonstopmode reporting/export/{tex_file}")
+        os.system("rm *.aux *.log *.synctex*")
+        shutil.move(pdf_file, f"reporting/export/{pdf_file}")
+    except:
+        print_error(f"Error while generating PDF report '{report_name}'")
+        return None
+    return pdf_file
 
 def generate_docx_report(template, context, report_name):
     docx_file = f"{report_name}_{datetime.date.today()}.docx".replace(' ', '_')
@@ -98,4 +97,5 @@ def generate_docx_report(template, context, report_name):
             print_error(f"Error while generating PDF report '{pdf_file}'")
             return pdf_file
     except:
+        print_error(f"Error while generating PDF report '{report_name}'")
         return None

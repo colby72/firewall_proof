@@ -70,14 +70,18 @@ class FWProofGUI(QMainWindow):
 
     # related FW Proof data
     def init_data(self):
+        # file management
         self.file_path = None
         self.file_name = None
+        # core data
         self.project = None
         self.company = None
         self.firewall = None
         self.zone = None
         self.host = None
         self.policy = None
+        # reporting settings
+        self.report_format = "Docx"
 
     def init_ui(self, parent=None):
         # General layout
@@ -524,8 +528,16 @@ class FWProofGUI(QMainWindow):
     ''' 5- Call functions for Menu: Report '''
     def generate_company_report(self):
         if self.company:
-            #generate_company_report_tex(self.company)
-            report = generate_company_report_docx(self.company)
+            # generate report as per selected format
+            if self.report_format == "Docx":
+                report = generate_company_report_docx(self.company)
+            elif self.report_format == "HTML":
+                report = generate_company_report_html(self.company)
+            elif self.report_format == "Latex":
+                report = generate_company_report_latex(self.company)
+            else:
+                report = None
+            # display message to user
             if report:
                 button = QMessageBox.information(self, "Company report", f"\nCompany report {report} generated successfully !", buttons=QMessageBox.StandardButton.Ok)
             else:
