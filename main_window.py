@@ -261,7 +261,7 @@ class FWProofGUI(QMainWindow):
 
         """ 4. Create actions for DumbAI menu """
         self.shift_rules_action = QAction(QtGui.QIcon("img/shift.png"), "Shift rules", self)
-        self.shift_rules_action.setShortcut("Ctrl+Shift")
+        #self.shift_rules_action.setShortcut("Ctrl+Shift")
         self.shift_rules_action.setStatusTip("Shift Firewall rules")
         self.shift_rules_action.triggered.connect(self.shift_rules)
         self.shift_rules_action.setDisabled(True)
@@ -432,7 +432,8 @@ class FWProofGUI(QMainWindow):
                 self.firewall_submenu,
                 self.policy_submenu,
                 self.company_report_action,
-                self.firewall_report_action
+                self.firewall_report_action,
+                self.shift_rules_action
             ]
             self.disable_actions(disbaled_actions)
             # show default widget
