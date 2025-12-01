@@ -15,6 +15,7 @@ from gui.core.policy import *
 from gui.core.firewall import *
 from gui.core.host import *
 from gui.edit.settings import *
+from gui.algorithms.shift_rules import *
 from gui.dialogs.add_zone import *
 from gui.dialogs.add_policy import *
 from gui.dialogs.add_firewall import *
@@ -259,6 +260,13 @@ class FWProofGUI(QMainWindow):
         self.policy_submenu.addAction(self.add_policy_rule_action)
 
         """ 4. Create actions for DumbAI menu """
+        self.shift_rules_action = QAction(QtGui.QIcon("img/shift.png"), "Shift rules", self)
+        self.shift_rules_action.setShortcut("Ctrl+Shift")
+        self.shift_rules_action.setStatusTip("Shift Firewall rules")
+        self.shift_rules_action.triggered.connect(self.shift_rules)
+        self.shift_rules_action.setDisabled(True)
+
+        dumb_ai_menu.addAction(self.shift_rules_action)
 
         """ 5. Create actions for Report menu """
         self.company_report_action = QAction(QtGui.QIcon("img/report_seo_analysis_pie_chart_icon.png"), "Company report", self)
@@ -525,6 +533,11 @@ class FWProofGUI(QMainWindow):
             self.show_policy()
 
     ''' 4- Call functions for Menu: DumbAI '''
+    def shift_rules(self):
+        if self.firewall and self.firewall.rules:
+            shift_rules_dialog = ShiftRules(self, self.firewall)
+            shift_rules_dialog.exec()
+            self.show_firewall()
 
     ''' 5- Call functions for Menu: Report '''
     def generate_company_report(self):
