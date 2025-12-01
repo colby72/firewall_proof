@@ -539,13 +539,18 @@ class FWProofGUI(QMainWindow):
                 report = None
             # display message to user
             if report:
-                button = QMessageBox.information(self, "Company report", f"\nCompany report {report} generated successfully !", buttons=QMessageBox.StandardButton.Ok)
+                button = QMessageBox.information(self, "Company report", f"Company report {report} generated successfully !", buttons=QMessageBox.StandardButton.Ok)
             else:
-                button = QMessageBox.critical(self, "Company report", f"\nError while generating company report !", buttons=QMessageBox.StandardButton.Ok)
+                button = QMessageBox.critical(self, "Company report", f"Error while generating company report !", buttons=QMessageBox.StandardButton.Ok)
     
     def generate_firewall_report(self):
         if self.firewall:
-            generate_firewall_report_tex(self.firewall)
+            report = generate_firewall_report_latex(self.firewall)
+            # display message to user
+            if report:
+                button = QMessageBox.information(self, "Firewall report", f"Firewall report {report} generated successfully !", buttons=QMessageBox.StandardButton.Ok)
+            else:
+                button = QMessageBox.critical(self, "Firewall report", f"Error while generating firewall report !", buttons=QMessageBox.StandardButton.Ok)
     
     ''' 6- Call functions for Menu: About '''
     def show_software_info(self):

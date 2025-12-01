@@ -2,6 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 #from xhtml2pdf import pisa
 import os
 
+from reporting.generate_report import *
 from cli.logger import *
 from utils import *
 
@@ -48,38 +49,9 @@ def get_firewall_data(firewall):
         context['rules'].append(rule)
     return context
 
-def generate_firewall_report_tex(firewall):
+def generate_firewall_report_latex(firewall):
     # get context data
     context = get_firewall_data(firewall)
     # get report template and render it
-    env = Environment(
-        loader = FileSystemLoader('reporting/templates'),
-        trim_blocks=True,
-        block_start_string='@@',
-        block_end_string='@@',
-        variable_start_string='@=',
-        variable_end_string='=@',
-        autoescape=False,
-        comment_start_string='\#{',
-        comment_end_string='}',
-        line_statement_prefix='%%',
-        line_comment_prefix='%#',
-    )
-    template = env.get_template('firewall_report.tex.j2')
-    tex_content = template.render(context)
-
-    # save rendered report
-    tex_file = f"{firewall.name}_report.tex".replace(' ', '_')
-    pdf_file = f"{firewall.name}_report.pdf".replace(' ', '_')
-    try:
-        with open(f"reporting/export/{tex_file}", 'w') as f:
-            f.write(tex_content)
-        print_success(f"Firewall TEX report for {firewall.name} generated successfully")
-    except:
-        print_error(f"Error while generating TEX repot for firewall {firewall.name}")
-        return None
-    
-    # generate PDF file
-    os.system(f"pdflatex -interaction=nonstopmode reporting/export/{tex_file}")
-    os.system("rm *.aux *.log *.synctex*")
-    os.system(f"mv {pdf_file} reporting/export/")
+    report = generate_latex_report("firewall_report.tex.j2", context, firewall.name)
+    return report
