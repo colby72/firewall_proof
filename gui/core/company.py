@@ -97,7 +97,7 @@ class CompanyGUI(QWidget):
         status_layout = QGridLayout()
         status_layout.setSpacing(10)
         status_box.setLayout(status_layout)
-        status_per_row = 3
+        status_per_row = self.main_window.status_per_row
         status_count = len(self.company.status_list)
         for i in range(status_count):
             status = self.company.status_list[i]

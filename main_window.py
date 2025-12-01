@@ -81,6 +81,7 @@ class FWProofGUI(QMainWindow):
         self.host = None
         self.policy = None
         # reporting settings
+        self.status_per_row = 3
         self.report_format = "Docx"
 
     def init_ui(self, parent=None):

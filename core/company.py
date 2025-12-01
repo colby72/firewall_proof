@@ -80,12 +80,16 @@ class Company():
 
 
 class RuleStatus():
-    def __init__(self, label, color="#00FF00"):
+    def __init__(self, label, color="#00FF00", compliant=False):
         self.label = label
         self.color = color
+        self.compliant = compliant
     
     def set_label(self, label):
         self.label = label
     
     def set_color(self, color):
         self.color = color
+    
+    def set_compliant(self, compliant):
+        self.compliant = compliant

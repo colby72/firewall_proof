@@ -30,11 +30,14 @@ class DialogEditStatus(QDialog):
         self.color_button = QPushButton("Edit color")
         self.color_button.clicked.connect(self.get_color)
         layout.addWidget(self.color_button, 1, 2)
+        self.status_compliant = QCheckBox("Compliant")
+        self.status_compliant.setChecked(status.compliant)
+        layout.addWidget(self.status_compliant, 2, 0)
 
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         self.buttons.accepted.connect(self.when_ok)
         self.buttons.rejected.connect(self.when_cancel)
-        layout.addWidget(self.buttons, 4, 1)
+        layout.addWidget(self.buttons, 3, 2)
 
     def get_color(self):
         color = QColorDialog().getColor()
@@ -44,8 +47,10 @@ class DialogEditStatus(QDialog):
     def when_ok(self):
         status_label = self.status_label.text()
         color = self.html_color.text()
+        compliant = self.status_compliant.isChecked()
         self.status.set_label(status_label)
         self.status.set_color(color)
+        self.status.set_compliant(compliant)
         self.close()
     
     def when_cancel(self):

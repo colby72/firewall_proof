@@ -54,9 +54,9 @@ class Settings(QWidget):
         status_per_row = self.status_per_row.value()
         # get report settings
         default_report_format = self.default_report_format.currentText()
+        # apply settings
+        self.main_window.status_per_row = status_per_row
         self.main_window.report_format = default_report_format
-        print(f"debug > status per row {status_per_row}")
-        print(f"debug > default format {default_report_format}")
         self.close()
     
     def when_cancel(self):

@@ -30,7 +30,7 @@ def parse_fwp_json(conf_file):
 
     # parse Firewall status list
     for s in data['status']:
-        status = RuleStatus(s['label'], s['color'])
+        status = RuleStatus(s['label'], s['color'], s['compliant'])
         company.add_status(status)
 
     # parse Firewall inventory

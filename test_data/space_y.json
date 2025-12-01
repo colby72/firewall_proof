@@ -141,15 +141,18 @@
     "status": [
         {
             "label": "OK",
-            "color": "#1ba91c"
+            "color": "#1ba91c",
+            "compliant": true
         },
         {
             "label": "WARNING",
-            "color": "#f4bf14"
+            "color": "#f4bf14",
+            "compliant": false
         },
         {
             "label": "NOK",
-            "color": "#e83232"
+            "color": "#e83232",
+            "compliant": false
         }
     ],
     "zones": [
