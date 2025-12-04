@@ -560,7 +560,15 @@ class FWProofGUI(QMainWindow):
     
     def generate_firewall_report(self):
         if self.firewall:
-            report = generate_firewall_report_latex(self.firewall)
+            # generate report as per selected format
+            if self.report_format == "Docx":
+                report = generate_firewall_report_docx(self.firewall)
+            elif self.report_format == "HTML":
+                report = generate_firewall_report_html(self.firewall)
+            elif self.report_format == "Latex":
+                report = generate_firewall_report_latex(self.firewall)
+            else:
+                report = None
             # display message to user
             if report:
                 button = QMessageBox.information(self, "Firewall report", f"Firewall report {report} generated successfully !", buttons=QMessageBox.StandardButton.Ok)

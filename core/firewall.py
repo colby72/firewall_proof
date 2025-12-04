@@ -22,13 +22,6 @@ class Firewall():
         self.groups = [] # list of refs to FW's object groups
         self.rules = [] # list of refs to FW's rules
 
-        # current rules' summary
-        self.ok_count = 0 # OK rules
-        self.nok_count = 0 # NOK rules
-        self.warning_count = 0 # WARNING rules
-        self.disabled_count = 0 # DISABLED rules
-        self.total_count = 0 # Total rules count
-
     # Firewall management
     def set_name(self, name):
         self.name = name
@@ -87,18 +80,27 @@ class Firewall():
         self.groups.append(group)
         return group
     
-    def update_rules_count(self):
-        for rule in self.rules:
-            self.total_count += 1
-            if rule.status == "DISABLED":
-                self.disabled_count += 1
+    # stats & reporting functions
+    def compliance_rate(self):
+        compliant = 0
+        for r in self.rules:
+            if r.status.compliant: compliant += 1
+        try:
+            rate = round(compliant/len(self.rules), 2)
+        except:
+            rate = 0
+        return rate
+    
+    def status_stats(self):
+        stats = {}
+        #stats['total'] = len(self.rules)
+        for r in self.rules:
+            if r.status.label in stats.keys():
+                stats[r.status.label] += 1
             else:
-                if rule.status == "OK":
-                    self.ok_count += 1
-                elif rule.status == "NOK":
-                    self.nok_count += 1
-                elif rule.status == "WARNING":
-                    self.warning_count += 1
+                stats[r.status.label] = 1
+        return stats
+
 
 
 class FwInterface():

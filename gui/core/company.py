@@ -12,6 +12,7 @@ from gui.dialogs.edit_policy import *
 from gui.dialogs.add_firewall import *
 from gui.dialogs.edit_firewall import *
 
+from reporting.generate_graphs import *
 from utils import *
 
 
@@ -42,13 +43,25 @@ class CompanyGUI(QWidget):
         summary_layout = QGridLayout()
         summary_layout.setContentsMargins(10, 10, 10, 10)
         summary_layout.setSpacing(10)
+        summary.setLayout(summary_layout)
         summary_layout.addWidget(QLabel("Name : "), 0, 0)
         summary_layout.addWidget(QLabel(self.company.name), 0, 1)
         summary_layout.addWidget(QLabel("Zones : "), 1, 0)
         summary_layout.addWidget(QLabel(str(len(self.company.zones))), 1, 1)
         summary_layout.addWidget(QLabel("Firewalls : "), 2, 0)
         summary_layout.addWidget(QLabel(str(len(self.company.fw_inventory))), 2, 1)
-        summary.setLayout(summary_layout)
+        summary_layout.addWidget(QLabel("Compliance rate : "), 3, 0)
+        summary_layout.addWidget(QLabel(f"{self.company.compliance_rate()}%"), 3, 1)
+        summary_layout.setColumnStretch(summary_layout.columnCount(), 1)
+        summary_layout.setRowStretch(summary_layout.rowCount(), 1)
+        
+        chart_file, chart_path = status_pie_chart("Company compliance", self.company, self.company.status_stats())
+        summary_chart = QLabel()
+        summary_chart.resize(300, 300)
+        chart_pixmap = QPixmap(chart_path)
+        chart_scaled = chart_pixmap.scaled(summary_chart.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
+        summary_chart.setPixmap(chart_scaled)
+        summary_layout.addWidget(summary_chart, 0, 2, 5, 1)
 
         # zones box
         zone = QGroupBox("Zones")
@@ -206,18 +219,19 @@ class CompanyGUI(QWidget):
         firewall_layout.setContentsMargins(10, 10, 10, 10)
         firewall_layout.setSpacing(20)
         firewall.setLayout(firewall_layout)
-        headers = ["Name", "Vendor", "Address", "Policy"]
+        headers = ["Name", "Vendor", "Address", "Policy", "Compliance"]
         for i in range(len(headers)):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
             #label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            firewall_layout.addWidget(label, 0, i*3)
+            firewall_layout.addWidget(label, 0, i)
         for i in range(len(self.company.fw_inventory)):
             fw = self.company.fw_inventory[i]
-            firewall_layout.addWidget(QLabel(fw.name), i+1, 0, 1, 3)
-            firewall_layout.addWidget(QLabel(fw.vendor), i+1, 3, 1, 3)
-            firewall_layout.addWidget(QLabel(fw.address), i+1, 6, 1, 3)
-            firewall_layout.addWidget(QLabel(fw.policy.name), i+1, 9, 1, 3)
+            firewall_layout.addWidget(QLabel(fw.name), i+1, 0)
+            firewall_layout.addWidget(QLabel(fw.vendor), i+1, 1)
+            firewall_layout.addWidget(QLabel(fw.address), i+1, 2)
+            firewall_layout.addWidget(QLabel(fw.policy.name), i+1, 3)
+            firewall_layout.addWidget(QLabel(f"{fw.compliance_rate()}%"), i+1, 4)
             view_button = QPushButton("View")
             view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
             view_button.clicked.connect(
@@ -227,7 +241,7 @@ class CompanyGUI(QWidget):
             view_button.setFixedSize(120, 30)
             view_button.setIconSize(QSize(18, 18))
             #view_button.setObjectName("view_button_text")
-            firewall_layout.addWidget(view_button, i+1, 12, 1, 1)
+            firewall_layout.addWidget(view_button, i+1, 5, 1, 1)
             edit_button = QPushButton("Edit")
             edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(
@@ -237,7 +251,7 @@ class CompanyGUI(QWidget):
             edit_button.setFixedSize(120, 30)
             edit_button.setIconSize(QSize(18, 18))
             #edit_button.setObjectName("edit_button_text")
-            firewall_layout.addWidget(edit_button, i+1, 15, 1, 1)
+            firewall_layout.addWidget(edit_button, i+1, 6, 1, 1)
             remove_button = QPushButton("Remove")
             remove_button.setIcon(QIcon("img/delete.png"))
             remove_button.clicked.connect(
@@ -246,7 +260,7 @@ class CompanyGUI(QWidget):
             )
             remove_button.setFixedSize(120, 30)
             remove_button.setIconSize(QSize(18, 18))
-            firewall_layout.addWidget(remove_button, i+1, 18, 1, 1)
+            firewall_layout.addWidget(remove_button, i+1, 7, 1, 1)
 
         add_fw_button = QPushButton("Firewall")
         add_fw_button.setIcon(QIcon("img/add_sign_icon.png"))
@@ -257,13 +271,14 @@ class CompanyGUI(QWidget):
         #firewall_layout.addWidget(add_fw_button, len(self.company.fw_inventory)+1 ,0)
 
         layout.addWidget(summary, 0, 0, 1, 2)
+        #layout.addWidget(summary_chart, 0, 2)
         layout.addWidget(zone, 1, 0, 1, 5)
         layout.addWidget(add_zone_button, 2, 0, 1, 1)
         layout.addWidget(status_box, 3, 0, 1, 3)
         layout.addWidget(add_status_button, 4, 0, 1, 1)
         layout.addWidget(policies, 5, 0, 1, 6)
         layout.addWidget(add_policy_button, 6, 0, 1, 1)
-        layout.addWidget(firewall, 7, 0, 1, 7)
+        layout.addWidget(firewall, 7, 0, 1, 8)
         layout.addWidget(add_fw_button, 8, 0, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)

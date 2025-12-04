@@ -1,5 +1,7 @@
 \documentclass{report}
 \usepackage[table,xcdraw]{xcolor}
+\usepackage{graphicx}
+
 
 \begin{document}
 	\title{Company Report}
@@ -12,7 +14,14 @@
 		\item \textbf{Name :} @=company_name=@
 		\item \textbf{Zones :} @=zone_count=@
 		\item \textbf{Firewalls :} @=fw_count=@
+		\item \textbf{Compliance :} @=compliance_rate=@ \%
 	\end{itemize}
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.75\textwidth, keepaspectratio]{@=company_chart=@}
+		\caption{Company compliance}
+	\end{figure}
 	
 	\section*{Zones}
 	Defined zones are listed below.\\ \\
@@ -32,10 +41,10 @@
 	\end{tabular}
 	
 	\section*{Firewalls}
-	\begin{tabular}{cccc}
-		\multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Vendor}} & \multicolumn{1}{c}{\textbf{Address}} & \multicolumn{1}{c}{\textbf{Policy}} \\
+	\begin{tabular}{ccccc}
+		\multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Vendor}} & \multicolumn{1}{c}{\textbf{Address}} & \multicolumn{1}{c}{\textbf{Policy}} & \multicolumn{1}{c}{\textbf{Compliance}} \\
 		@@ for fw in firewalls @@
-		\rowcolor[HTML]{@=fw.row_color=@} @=fw.name=@ & @=fw.vendor=@ & @=fw.address=@ & @=fw.policy=@ \\
+		\rowcolor[HTML]{@=fw.row_color=@} @=fw.name=@ & @=fw.vendor=@ & @=fw.address=@ & @=fw.policy=@ & @=fw.compliance=@ \% \\
 		@@ endfor @@
 	\end{tabular}
 \end{document}

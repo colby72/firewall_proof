@@ -77,6 +77,32 @@ class Company():
     
     def remove_status(self, status):
         self.status_list.remove(status)
+    
+    # stats & reporting functions
+    def compliance_rate(self):
+        compliant = 0
+        total = 0
+        for fw in self.fw_inventory:
+            total += len(fw.rules)
+            for r in fw.rules:
+                if r.status.compliant: compliant += 1
+        try:
+            rate = round(compliant/total, 2)
+        except:
+            rate = 0
+        return rate
+    
+    def status_stats(self):
+        stats = {}
+        #stats['total'] = 0
+        for fw in self.fw_inventory:
+            #stats['total'] += len(fw.rules)
+            for r in fw.rules:
+                if r.status.label in stats.keys():
+                    stats[r.status.label] += 1
+                else:
+                    stats[r.status.label] = 1
+        return stats
 
 
 class RuleStatus():
@@ -84,6 +110,7 @@ class RuleStatus():
         self.label = label
         self.color = color
         self.compliant = compliant
+        self.auto = True
     
     def set_label(self, label):
         self.label = label
@@ -93,3 +120,6 @@ class RuleStatus():
     
     def set_compliant(self, compliant):
         self.compliant = compliant
+    
+    def set_auto(self, auto):
+        self.auto = auto

@@ -11,6 +11,8 @@ from gui.dialogs.show_host import *
 from gui.dialogs.add_rule import *
 from gui.dialogs.edit_rule import *
 
+from reporting.generate_graphs import *
+
 
 class FirewallGUI(QWidget):
     def __init__(self, main_window, fw):
@@ -38,6 +40,7 @@ class FirewallGUI(QWidget):
         summary_layout = QGridLayout()
         summary_layout.setContentsMargins(10, 10, 10, 10)
         summary_layout.setSpacing(10)
+        summary.setLayout(summary_layout)
         summary_layout.addWidget(QLabel("Name : "), 0, 0)
         summary_layout.addWidget(QLabel(self.fw.name), 0, 1)
         summary_layout.addWidget(QLabel("Vendor : "), 1, 0)
@@ -52,8 +55,16 @@ class FirewallGUI(QWidget):
         summary_layout.addWidget(QLabel(f"{len(self.fw.hosts)} ({len(self.fw.groups)})"), 5, 1)
         summary_layout.addWidget(QLabel("Rules : "), 6, 0)
         summary_layout.addWidget(QLabel(str(len(self.fw.rules))), 6, 1)
-        summary.setLayout(summary_layout)
-        #summary_layout.setColumnStretch(summary_layout.columnCount(), 1)
+        summary_layout.setColumnStretch(summary_layout.columnCount(), 1)
+        summary_layout.setRowStretch(summary_layout.rowCount(), 1)
+
+        chart_file, chart_path = status_pie_chart("Firewall compliance", self.fw.company, self.fw.status_stats())
+        summary_chart = QLabel()
+        summary_chart.resize(300, 300)
+        chart_pixmap = QPixmap(chart_path)
+        chart_scaled = chart_pixmap.scaled(summary_chart.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
+        summary_chart.setPixmap(chart_scaled)
+        summary_layout.addWidget(summary_chart, 0, 2, 8, 1)
 
         # interface box
         interface = QGroupBox("Interfaces")

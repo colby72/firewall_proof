@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{company_name}}</title>
+    <style>
+        .info-block {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .group-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Company Report</h1>
+
+    <div class="info-block">
+        <h2>Summary</h2>
+        <p><strong>Name :</strong> {{fw_name}}</p>
+        <p><strong>Vendor :</strong> {{fw_vendor}}</p>
+        <p><strong>Address :</strong> {{fw_address}}</p>
+        <p><strong>Policy :</strong> {{fw_policy}}</p>
+        <p><strong>Interfaces :</strong> {{iface_count}}</p>
+        <p><strong>Hosts (Groups) :</strong> {{host_count}} ({{group_count}})</p>
+        <p><strong>Rules :</strong> {{rules_count}}</p>
+        <p><strong>Compliance :</strong> {{compliance_rate}}%</p>
+    </div>
+
+    <div class="group-box">
+        <h2>Interfaces</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Hosts</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in interfaces %}
+                <tr>
+                    <td>{{i.name}}</td>
+                    <td>{{i.address}}</td>
+                    <td>n/a</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="group-box">
+        <h2>Rules</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Service</th>
+                    <th>VPN</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in rules %}
+                <tr>
+                    <td>{{r.id}}</td>
+                    <td>{{r.src}}</td>
+                    <td>{{r.dest}}</td>
+                    <td>{{r.services}}</td>
+                    <td>{{r.vpn}}</td>
+                    <td>{{r.status}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

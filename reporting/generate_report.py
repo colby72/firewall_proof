@@ -1,6 +1,7 @@
 from jinja2 import Environment, FileSystemLoader
 from xhtml2pdf import pisa
 import os, sys, shutil, datetime, docxtpl, docx2pdf, subprocess
+from docx.shared import Mm
 
 from cli.logger import *
 from utils import *
@@ -70,18 +71,28 @@ def generate_latex_report(template, context, report_name):
         return None
     return pdf_file
 
-def generate_docx_report(template, context, report_name):
+def generate_docx_report(template, context, images, report_name):
     docx_file = f"{report_name}_{datetime.date.today()}.docx".replace(' ', '_')
     pdf_file = f"{report_name}_{datetime.date.today()}.pdf".replace(' ', '_')
     # get docx template and render it
-    try:
-        tpl = docxtpl.DocxTemplate(f"reporting/templates/{template}")
-        tpl.render(context)
-        tpl.save(docx_file)
-        print_success(f"docx report '{docx_file}' generated successfully")
-    except:
+    #try:
+    tpl = docxtpl.DocxTemplate(f"reporting/templates/{template}")
+    # create image docx objects
+    for image in images.keys():
+        if ("width" in image) or ("height" in image):
+            continue
+        pic_width = images[f"{image}_width"]
+        pic_height = images[f"{image}_height"]
+        print(f"debug > {pic_width} & {pic_height}")
+        pic = docxtpl.InlineImage(tpl, image_descriptor=images[image], width=Mm(pic_width), height=Mm(pic_height))
+        context[image] = pic
+    # render document
+    tpl.render(context)
+    tpl.save(docx_file)
+    print_success(f"docx report '{docx_file}' generated successfully")
+    '''except:
         print_error(f"Error while generating docx report '{docx_file}'")
-        return None
+        return None'''
     # save PDF report
     try:
         if sys.platform == "linux":

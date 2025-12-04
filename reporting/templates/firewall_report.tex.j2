@@ -1,6 +1,7 @@
 \documentclass{report}
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{makecell}
+\usepackage{graphicx}
 
 
 \begin{document}
@@ -18,7 +19,14 @@
 		\item \textbf{Interfaces :} @=iface_count=@
 		\item \textbf{Hosts (Groups) :} @=host_count=@ (@=group_count=@)
 		\item \textbf{Rules :} @=rules_count=@
+		\item \textbf{Compliance :} @=compliance_rate=@ \%
 	\end{itemize}
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.75\textwidth, keepaspectratio]{@=firewall_chart=@}
+		\caption{Firewall compliance}
+	\end{figure}
 	
 	\section*{Interfaces}
 	Defined interfaces are listed below.\\ \\

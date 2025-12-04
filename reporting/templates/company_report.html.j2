@@ -38,6 +38,7 @@
         <p><strong>Name :</strong> {{company_name}}</p>
         <p><strong>Zones :</strong> {{zone_count}}</p>
         <p><strong>Firewalls :</strong> {{fw_count}}</p>
+        <p><strong>Compliance :</strong> {{compliance_rate}} %</p>
     </div>
 
     <div class="group-box">
@@ -51,16 +52,61 @@
                 </tr>
             </thead>
             <tbody>
+                {% for z in zones %}
                 <tr>
-                    <td>Development</td>
-                    <td>Strategy</td>
-                    <td>Synergy</td>
+                    <td>{{z.name}}</td>
+                    <td>{{z.level}}</td>
+                    <td>{{z.description}}</td>
                 </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="group-box">
+        <h2>Policies</h2>
+        <table>
+            <thead>
                 <tr>
-                    <td>Efficiency</td>
-                    <td>Collaboration</td>
-                    <td>Growth</td>
+                    <th>Name</th>
+                    <th>Default</th>
+                    <th>Rules</th>
                 </tr>
+            </thead>
+            <tbody>
+                {% for p in policies %}
+                <tr>
+                    <td>{{p.name}}</td>
+                    <td>{{p.default}}</td>
+                    <td>{{p.nb_rules}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="group-box">
+        <h2>Firewalls</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Vendor</th>
+                    <th>Address</th>
+                    <th>Policy</th>
+                    <th>Compliance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fw in firewalls %}
+                <tr>
+                    <td>{{fw.name}}</td>
+                    <td>{{fw.vendor}}</td>
+                    <td>{{fw.address}}</td>
+                    <td>{{fw.policy}}</td>
+                    <td>{{fw.compliance}} %</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
