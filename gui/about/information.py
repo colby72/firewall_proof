@@ -1,15 +1,20 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
+from PyQt6.QtCore import *
+
+from utils import *
 
 
-class Information(QWidget):
+class Information(QDialog):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
         self.information()
         self.setWindowTitle(f"About Firewall Proof {self.main_window.version}")
         self.setWindowIcon(QIcon("img/network_learn_info_information_media_icon.png"))
-        self.resize(410, 210)
+        self.setStyleSheet(get_stylesheet("about.qss"))
+        #self.resize(410, 210)
+        self.setFixedSize(600, 420)
     
     def information(self):
         # init global layout and  and tab bar
@@ -20,29 +25,113 @@ class Information(QWidget):
         
         # software presentation
         presentation = QWidget()
-        pres_layout = QVBoxLayout()
+        pres_layout = QGridLayout()
         pres_layout.setContentsMargins(15, 15, 15, 15)
-        pres_layout.addWidget(QLabel("This is a presentation"))
-        pres_layout.addStretch()
+        pres_layout.setSpacing(10)
         presentation.setLayout(pres_layout)
+        
+        logo = QLabel()
+        logo.resize(150, 150)
+        logo_pixmap = QPixmap('img/firewall3.png')
+        logo_scaled = logo_pixmap.scaled(logo.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
+        logo.setPixmap(logo_scaled)
+        logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        software_banner = QLabel(f"Firewall Proof {self.main_window.version}")
+        software_banner.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        software_banner.setObjectName("banner")
+        brief_pres = QLabel("Firewall compliance audit tool")
+        brief_pres.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        brief_pres.setObjectName("normal")
+        pres_layout.addWidget(logo, 0, 0)
+        pres_layout.addWidget(software_banner, 1, 0)
+        pres_layout.addWidget(brief_pres, 2, 0)
+        pres_layout.setRowStretch(pres_layout.rowCount(), 1)
 
         # used libraries
         libraries = QWidget()
-        libraries_layout = QVBoxLayout()
+        lib_scroll_area = QScrollArea()
+        lib_scroll_area.setWidgetResizable(True)
+        lib_scroll_area.setWidget(libraries)
+        libraries_layout = QGridLayout()
         libraries_layout.setContentsMargins(15, 15, 15, 15)
-        libraries_layout.addWidget(QLabel("This is a list of libraries"))
-        libraries_layout.addStretch()
+        libraries_layout.setSpacing(10)
         libraries.setLayout(libraries_layout)
+
+        package_title = QLabel("Python packages")
+        package_title.setObjectName('title')
+        packages = [
+            "PyQt6",
+            "json",
+            "jsonpickle",
+            "colorama",
+            "shutil",
+            "datetime",
+            "subprocess",
+            "jinja2",
+            "matplotlib",
+            "docxtpl",
+            "docx",
+            "docx2pdf",
+            "xhtml2pdf" 
+        ]
+        libraries_layout.addWidget(package_title, 0, 0)
+        for i, p in enumerate(packages):
+            package_label = QLabel(p)
+            package_label.setObjectName("normal")
+            libraries_layout.addWidget(package_label, i+1, 0)
+        software_title = QLabel("Third-party software")
+        software_title.setObjectName("title")
+        softwares = [
+            "pdflatex (Linux)",
+            "libreoffice (Linux)",
+            "Microsoft Word (Windows)"
+        ]
+        libraries_layout.addWidget(software_title, 0, 1)
+        for i, s in enumerate(softwares):
+            software_label = QLabel(s)
+            software_label.setObjectName("normal")
+            libraries_layout.addWidget(software_label, i+1, 1)
+        libraries_layout.setRowStretch(libraries_layout.rowCount(), 1)
+        libraries_layout.setColumnStretch(libraries_layout.columnCount(), 1)
         
         # software detailed description
         description = QWidget()
-        description_layout = QVBoxLayout()
+        desc_scroll_area = QScrollArea()
+        desc_scroll_area.setWidgetResizable(True)
+        desc_scroll_area.setWidget(description)
+        description_layout = QGridLayout()
         description_layout.setContentsMargins(15, 15, 15, 15)
-        description_layout.addWidget(QLabel("Detailed description"))
-        description_layout.addStretch()
+        description_layout.setSpacing(10)
         description.setLayout(description_layout)
+        
+        desc_header = QLabel("Description")
+        desc_header.setObjectName("paragraph_title")
+        description_layout.addWidget(desc_header, 0, 0)
+        paragraph_1 = "Firewall compliance audit tool, designed to allow " \
+            "organizations to audit their Firewalls flow matrix against a set of rules, " \
+            "namely a security policy. It can uncover potential misconfigurations or " \
+            "security flaws."
+        paragraph_2 = "To put it straight, a Firewall whose only rule <b>'allows'</b>" \
+            " flows from <b>'all'</b> source objects to <b>'all'</b> destinations " \
+            "on <b>'any'</b> service, well ... it's fairly useless actually."
+        paragraph_3 = "For an efficient secure network filtering, a Firewall " \
+            "shall at least be configured with a set of rules that ensure network " \
+            "segregation between different object groups and network zones, " \
+            "following a block-all allow-required basis. These rules can further " \
+            "enhanced by restricting network subnets or tunneling sensitive " \
+            "communications (using IPSec for example)."
+        
+        paragraphs = [paragraph_1, paragraph_2, paragraph_3]
+        for i, p in enumerate(paragraphs):
+            par = QLabel(p)
+            par.setWordWrap(True)
+            par.setObjectName("paragraph")
+            par.setAlignment(Qt.AlignmentFlag.AlignJustify)
+            description_layout.addWidget(par, i+1, 0)
+        description_layout.setRowStretch(description_layout.rowCount(), 1)
+        #description_layout.setColumnStretch(description_layout.columnCount(), 1)
         
         # add tabs to global layout
         tabs.addTab(presentation, "Firewall Proof")
-        tabs.addTab(libraries, "Libraries")
-        tabs.addTab(description, "Software details")
+        tabs.addTab(lib_scroll_area, "Libraries")
+        tabs.addTab(desc_scroll_area, "Software details")

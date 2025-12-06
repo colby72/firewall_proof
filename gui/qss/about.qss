@@ -1,0 +1,23 @@
+QLabel#banner {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+QLabel#title {
+    font-weight: bold;
+}
+
+QLabel#normal {
+    font-style: italic;
+}
+
+QLabel#paragraph_title {
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+QLabel#paragraph {
+    font-size: 16px;
+    font-style: italic;
+}
