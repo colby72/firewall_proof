@@ -47,7 +47,7 @@ class DefaultGUI(QWidget):
 
         self.project_button = QPushButton("Test Project")
         self.project_button.clicked.connect(self.test_project)
-        layout.addWidget(self.project_button, 4, 1, 1, 1)
+        #layout.addWidget(self.project_button, 4, 1, 1, 1)
 
         layout.setRowStretch(layout.rowCount(), 1)
         self.setLayout(layout)
@@ -57,17 +57,6 @@ class DefaultGUI(QWidget):
     
     def open_project(self):
         self.main_window.open_project()
-    
-    def test_company(self):
-        #company = parse_fwp_json('test_data/space_y.json')
-        #self.main_window.company = company
-        self.main_window.display_company()
-    
-    def test_firewall(self):
-        self.main_window.display_firewall()
-    
-    def test_host(self):
-        self.main_window.display_host()
     
     def test_project(self):
         self.main_window.display_home()

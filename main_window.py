@@ -605,43 +605,6 @@ class FWProofGUI(QMainWindow):
         self.windows.addWidget(home)
         self.windows.setCurrentWidget(home)
 
-    def display_company(self):
-        company = parse_fwp_json('test_data/space_y.json')
-        policy = parse_policy('test_data/policy.json')
-        for fw in company.fw_inventory:
-            apply_policy(fw, policy)
-        self.company = company
-        #print(f"display company '{self.company.name}'")
-        company_gui = CompanyGUI(self)
-        self.windows.addWidget(company_gui)
-        self.windows.setCurrentWidget(company_gui)
-    
-    def display_firewall(self):
-        company = parse_fwp_json('test_data/space_y.json')
-        policy = parse_policy('test_data/policy.json')
-        for fw in company.fw_inventory:
-            apply_policy(fw, policy)
-        self.company = company
-        # choose a random firewall to display
-        fw = self.company.fw_inventory[0]
-        firewall_gui = FirewallGUI(self, fw)
-        self.windows.addWidget(firewall_gui)
-        self.windows.setCurrentWidget(firewall_gui)
-    
-    def display_host(self):
-        company = parse_fwp_json('test_data/space_y.json')
-        policy = parse_policy('test_data/policy.json')
-        for fw in company.fw_inventory:
-            apply_policy(fw, policy)
-        self.company = company
-        # choose a random host to display
-        print(f"len = {len(self.company.fw_inventory[0].hosts)}")
-        print(f"type = {type(self.company.fw_inventory[0].hosts[0])}")
-        host = self.company.fw_inventory[0].hosts[4]
-        host_gui = HostGUI(self, host)
-        self.windows.addWidget(host_gui)
-        self.windows.setCurrentWidget(host_gui)
-
 
 app = QApplication(sys.argv)
 

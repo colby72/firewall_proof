@@ -13,6 +13,8 @@ from gui.dialogs.edit_rule import *
 
 from reporting.generate_graphs import *
 
+import json
+
 
 class FirewallGUI(QWidget):
     def __init__(self, main_window, fw):
@@ -28,7 +30,10 @@ class FirewallGUI(QWidget):
         ]
         if self.main_window.policy: enabled_actions.append(self.main_window.policy_submenu)
         self.main_window.enable_actions(enabled_actions)
-        
+        # load common ports dictionary
+        with open("algorithms/common_ports.json", 'r', encoding="utf8") as f:
+            self.common_ports = json.loads(f.read())
+
         # widget design
         layout = QGridLayout()
         layout.setContentsMargins(10, 10, 10, 10)
@@ -131,6 +136,7 @@ class FirewallGUI(QWidget):
         for i in range(len(self.fw.rules)):
             r = self.fw.rules[i]
             rules_layout.addWidget(QLabel(str(r.number)), i+1, 0)
+            # rule source
             src = QWidget()
             src_layout = QGridLayout()
             src.setLayout(src_layout)
@@ -160,6 +166,7 @@ class FirewallGUI(QWidget):
                 src_layout.addWidget(edit_button, j, 1)
                 src_layout.addWidget(label, j, 2)
             rules_layout.addWidget(src, i+1, 1)
+            # rule destination
             dest = QWidget()
             dest_layout = QGridLayout()
             dest.setLayout(dest_layout)
@@ -189,9 +196,22 @@ class FirewallGUI(QWidget):
                 dest_layout.addWidget(edit_button, j, 1)
                 dest_layout.addWidget(label, j, 2)
             rules_layout.addWidget(dest, i+1, 2)
-            services = '\n'.join(r.services) if r.services else "all"
-            rules_layout.addWidget(QLabel(services), i+1, 3)
+            # rule service
+            if not r.services:
+                rules_layout.addWidget(QLabel("all"), i+1, 3)
+            else:
+                services = QWidget()
+                services_layout = QGridLayout()
+                services.setLayout(services_layout)
+                for j, svc in enumerate(r.services):
+                    label = QLabel(svc)
+                    if svc in self.common_ports.keys():
+                        label.setToolTip(self.common_ports[svc])
+                    services_layout.addWidget(label, j, 0)
+                rules_layout.addWidget(services, i+1, 3)
+            # rule vpn
             rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)
+            # rule status
             status = QLabel(str(r.status.label))
             status.setStyleSheet(f"""
                 color: {r.status.color};
