@@ -103,6 +103,13 @@ class Firewall():
     
     def sort_rules_by_number(self):
         self.rules.sort(key=lambda r: r.number)
+    
+    def sort_hosts_by_zone(self):
+        self.hosts.sort(key=lambda h: (h.zone.level, h.name))
+    
+    def sort_objects(self):
+        self.sort_rules_by_number()
+        self.sort_hosts_by_zone()
 
 
 

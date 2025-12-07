@@ -27,6 +27,11 @@ class Settings(QWidget):
         self.status_per_row.setRange(3, 6)
         self.status_per_row.setValue(4)
         general_layout.addWidget(self.status_per_row, 0, 1)
+        general_layout.addWidget(QLabel("# Hosts per row : "), 1, 0)
+        self.hosts_per_row = QSpinBox()
+        self.hosts_per_row.setRange(3, 7)
+        self.hosts_per_row.setValue(5)
+        general_layout.addWidget(self.hosts_per_row, 1, 1)
 
         # report settings tab
         report_tab = QWidget()
@@ -52,10 +57,12 @@ class Settings(QWidget):
     def when_ok(self):
         # get generatl settings
         status_per_row = self.status_per_row.value()
+        hosts_per_row = self.hosts_per_row.value()
         # get report settings
         default_report_format = self.default_report_format.currentText()
         # apply settings
         self.main_window.status_per_row = status_per_row
+        self.main_window.hosts_per_row = hosts_per_row
         self.main_window.report_format = default_report_format
         self.close()
     

@@ -83,6 +83,7 @@ class FWProofGUI(QMainWindow):
         self.policy = None
         # reporting settings
         self.status_per_row = 3
+        self.hosts_per_row = 5
         self.report_format = "Docx"
 
     def init_ui(self, parent=None):
@@ -494,7 +495,7 @@ class FWProofGUI(QMainWindow):
         if self.firewall:
             self.policy = self.firewall.policy
             apply_policy(self.firewall, self.policy)
-            self.firewall.sort_rules_by_number()
+            self.firewall.sort_objects()
             firewall_gui = FirewallGUI(self, self.firewall)
             self.windows.addWidget(firewall_gui)
             self.windows.setCurrentWidget(firewall_gui)

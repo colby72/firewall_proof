@@ -13,6 +13,7 @@ from gui.dialogs.edit_rule import *
 
 from reporting.generate_graphs import *
 
+from superqt import QCollapsible
 import json
 
 
@@ -114,6 +115,45 @@ class FirewallGUI(QWidget):
         add_iface_button.setFixedSize(140, 40)
         add_iface_button.setIconSize(QSize(20, 20))
         #interface_layout.addWidget(add_iface_button, len(self.fw.interfaces)+1, 0)
+
+        # collapsible hosts box
+        hosts_collapse = QCollapsible("List of hosts")
+        hosts_widget = QWidget()
+        hosts_layout = QGridLayout()
+        hosts_layout.setSpacing(10)
+        hosts_widget.setLayout(hosts_layout)
+        hosts_collapse.addWidget(hosts_widget)
+
+        hosts_per_row = self.main_window.hosts_per_row
+        for i, h in enumerate(self.fw.hosts):
+            host_widget = QWidget()
+            host_layout = QGridLayout()
+            host_widget.setLayout(host_layout)
+            view_button = QPushButton('')
+            view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
+            view_button.setIconSize(QSize(16, 16))
+            view_button.setFixedSize(16, 16)
+            view_button.setToolTip("View Host")
+            view_button.clicked.connect(
+                lambda checked, host=h:
+                self.show_host(host)
+            )
+            edit_button = QPushButton('')
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
+            edit_button.setIconSize(QSize(16, 16))
+            edit_button.setFixedSize(16, 16)
+            edit_button.setToolTip("Edit Host")
+            edit_button.clicked.connect(
+                lambda checked, host=h:
+                self.edit_host(host)
+            )
+            label = QLabel(h.name)
+            label.setToolTip(f"{h.address}")
+            label.setStyleSheet(f"color: {h.zone.color}")
+            host_layout.addWidget(view_button, 0, 0)
+            host_layout.addWidget(edit_button, 0, 1)
+            host_layout.addWidget(label, 0, 2)
+            hosts_layout.addWidget(host_widget, i//hosts_per_row, i%hosts_per_row)
 
         add_host_button = QPushButton("Host")
         add_host_button.setIcon(QIcon("img/add_sign_icon.png"))
@@ -248,9 +288,10 @@ class FirewallGUI(QWidget):
         layout.addWidget(summary, 0, 0, 1, 2)
         layout.addWidget(interface, 1, 0, 1, 5)
         layout.addWidget(add_iface_button, 2, 0, 1, 1)
-        layout.addWidget(add_host_button, 3, 0, 1, 1)
-        layout.addWidget(rules, 4, 0, 1, 8)
-        layout.addWidget(add_rule_button, 5, 0, 1, 1)
+        layout.addWidget(hosts_collapse, 3, 0, 1, 3)
+        layout.addWidget(add_host_button, 4, 0, 1, 1)
+        layout.addWidget(rules, 5, 0, 1, 8)
+        layout.addWidget(add_rule_button, 6, 0, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
     
