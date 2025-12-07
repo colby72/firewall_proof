@@ -100,6 +100,9 @@ class Firewall():
             else:
                 stats[r.status.label] = 1
         return stats
+    
+    def sort_rules_by_number(self):
+        self.rules.sort(key=lambda r: r.number)
 
 
 

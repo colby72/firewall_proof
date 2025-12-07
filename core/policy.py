@@ -21,6 +21,9 @@ class FWPolicy():
     
     def remove_rule(self, rule):
         self.rules.remove(rule)
+    
+    def sort_rules_by_zone(self):
+        self.rules.sort(key=lambda r: (r.src_zone.level, r.dest_zone.level), reverse=True)
 
 
 class PolicyRule():

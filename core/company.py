@@ -103,6 +103,9 @@ class Company():
                 else:
                     stats[r.status.label] = 1
         return stats
+    
+    def sort_zones_by_level(self):
+        self.zones.sort(key=lambda z: z.level, reverse=True)
 
 
 class RuleStatus():

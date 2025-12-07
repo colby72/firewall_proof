@@ -23,7 +23,7 @@ def parse_fwp_json(conf_file):
     zone_count = 0
     print_info(f"Parsing zones for company '{company.name}' ...")
     for z in data['zones']:
-        zone = Zone(z['name'], z['level'], z['description'], z['color'])
+        zone = Zone(z['name'], str(z['level']), z['description'], z['color'])
         e = company.add_zone(zone)
         if e: zone_count += 1
     print_info(f"{zone_count} Zones added to company '{company.name}'")

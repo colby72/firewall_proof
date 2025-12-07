@@ -467,6 +467,7 @@ class FWProofGUI(QMainWindow):
 
     def show_company(self):
         if self.company:
+            self.company.sort_zones_by_level()
             company_gui = CompanyGUI(self)
             self.windows.addWidget(company_gui)
             self.windows.setCurrentWidget(company_gui)
@@ -493,6 +494,7 @@ class FWProofGUI(QMainWindow):
         if self.firewall:
             self.policy = self.firewall.policy
             apply_policy(self.firewall, self.policy)
+            self.firewall.sort_rules_by_number()
             firewall_gui = FirewallGUI(self, self.firewall)
             self.windows.addWidget(firewall_gui)
             self.windows.setCurrentWidget(firewall_gui)
@@ -523,6 +525,7 @@ class FWProofGUI(QMainWindow):
     
     def show_policy(self):
         if self.policy:
+            self.policy.sort_rules_by_zone()
             policy_gui = PolicyGUI(self, self.policy)
             self.windows.addWidget(policy_gui)
             self.windows.setCurrentWidget(policy_gui)
