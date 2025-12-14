@@ -42,7 +42,8 @@ class DialogEditFirewall(QDialog):
         self.fw_policy = QComboBox()
         labels = [policy.name for policy in self.company.policies]
         self.fw_policy.addItems(labels)
-        self.fw_policy.setCurrentText(self.fw.policy.name)
+        if self.fw.policy:
+            self.fw_policy.setCurrentText(self.fw.policy.name)
         layout.addWidget(self.fw_policy, 3, 1)
 
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
@@ -58,7 +59,8 @@ class DialogEditFirewall(QDialog):
         self.fw.set_name(fw_name)
         self.fw.set_vendor(fw_vendor)
         self.fw.set_address(fw_address)
-        self.fw.set_policy(fw_policy)
+        if fw_policy:
+            self.fw.set_policy(fw_policy)
         self.close()
     
     def when_cancel(self):
