@@ -1,9 +1,11 @@
 from utils import *
+from cli.logger import *
 from core.company import *
 from core.firewall import *
 from core.host import *
 from core.rule import *
 from core.zone import *
+from core.policy import *
 
 import json
 
@@ -32,6 +34,19 @@ def parse_fwp_json(conf_file):
     for s in data['status']:
         status = RuleStatus(s['label'], s['color'], s['compliant'])
         company.add_status(status)
+    
+    # parse firewall policies
+    for p in data['policies']:
+        default = get_status_by_label(company, p['default'])
+        policy = FWPolicy(company, p['name'], default)
+        print_info(f"Firewall policy '{policy.name}' initiated ...")
+        for rule in p['rules']:
+            src_zone = get_zone_by_name(company, rule['src_zone'])
+            dest_zone = get_zone_by_name(company, rule['dest_zone'])
+            status = get_status_by_label(company, rule['status'])
+            pol_rule = PolicyRule(src_zone, dest_zone, rule['services'], rule['vpn'], status)
+            policy.rules.append(pol_rule)
+        company.add_policy(policy)
 
     # parse Firewall inventory
     fw_count = 0
@@ -69,5 +84,8 @@ def parse_fwp_json(conf_file):
             # initiate rule
             rule = Rule(r['number'], src, dest, r['services'])
             firewall.add_rule(rule)
+        # set policy
+        policy = get_policy_by_name(company, fw['policy'])
+        firewall.set_policy(policy)
     print_info(f"{fw_count} Firewalls added to company '{company.name}'")
     return company

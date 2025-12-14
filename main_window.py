@@ -41,6 +41,7 @@ from file.open_file import *
 # import data algorithms
 from algorithms.parse_policy import *
 from algorithms.policy_check import *
+from algorithms.net_topology_anomalies import find_net_overlaps
 
 # import reporting functions
 from reporting.company_report import *
@@ -267,7 +268,14 @@ class FWProofGUI(QMainWindow):
         self.shift_rules_action.triggered.connect(self.shift_rules)
         self.shift_rules_action.setDisabled(True)
 
+        self.net_anomalies_action = QAction(QtGui.QIcon("img/shift.png"), "Net anomalies", self)
+        #self.shift_rules_action.setShortcut("Ctrl+Shift")
+        self.net_anomalies_action.setStatusTip("Shift Firewall rules")
+        self.net_anomalies_action.triggered.connect(self.test_net_anomalies)
+        self.net_anomalies_action.setDisabled(True)
+
         dumb_ai_menu.addAction(self.shift_rules_action)
+        dumb_ai_menu.addAction(self.net_anomalies_action)
 
         """ 5. Create actions for Report menu """
         self.company_report_action = QAction(QtGui.QIcon("img/report_seo_analysis_pie_chart_icon.png"), "Company report", self)
@@ -543,6 +551,10 @@ class FWProofGUI(QMainWindow):
             shift_rules_dialog = ShiftRules(self, self.firewall)
             shift_rules_dialog.exec()
             self.show_firewall()
+    
+    def test_net_anomalies(self):
+        if self.firewall:
+            find_net_overlaps(self.firewall)
 
     ''' 5- Call functions for Menu: Report '''
     def generate_company_report(self):
@@ -599,6 +611,18 @@ class FWProofGUI(QMainWindow):
         company.add_policy(policy)
         for fw in company.fw_inventory:
             apply_policy(fw, policy)
+        self.project = Project("Test project")
+        self.project.add_company(company)
+        # update menu actions
+        self.save_action.setDisabled(False)
+        self.close_action.setDisabled(False)
+        # display the project
+        home = HomeGUI(self, self.project)
+        self.windows.addWidget(home)
+        self.windows.setCurrentWidget(home)
+    
+    def display_home2(self):
+        company = parse_fwp_json('test_data/space_y_ext.json')
         self.project = Project("Test project")
         self.project.add_company(company)
         # update menu actions

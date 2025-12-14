@@ -83,6 +83,8 @@ class Company():
         compliant = 0
         total = 0
         for fw in self.fw_inventory:
+            if not fw.policy:
+                continue
             total += len(fw.rules)
             for r in fw.rules:
                 if r.status.compliant: compliant += 1
@@ -94,9 +96,9 @@ class Company():
     
     def status_stats(self):
         stats = {}
-        #stats['total'] = 0
         for fw in self.fw_inventory:
-            #stats['total'] += len(fw.rules)
+            if not fw.policy:
+                continue
             for r in fw.rules:
                 if r.status.label in stats.keys():
                     stats[r.status.label] += 1

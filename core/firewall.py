@@ -5,6 +5,7 @@ from core.zone import *
 from core.policy import *
 
 from cli.logger import *
+from algorithms.policy_check import apply_policy
 
 
 class Firewall():
@@ -34,6 +35,7 @@ class Firewall():
     
     def set_policy(self, policy):
         self.policy = policy
+        self.check_policy()
     
     # Firewall operations
     def add_interface(self, name, address):
@@ -80,8 +82,13 @@ class Firewall():
         self.groups.append(group)
         return group
     
+    def check_policy(self):
+        apply_policy(self, self.policy)
+    
     # stats & reporting functions
     def compliance_rate(self):
+        if not self.policy:
+            return 0
         compliant = 0
         for r in self.rules:
             if r.status.compliant: compliant += 1

@@ -1,0 +1,235 @@
+{
+    "name": "SpaceY",
+    "fw_inventory": [
+        {
+            "name": "IT-OT front Firewall",
+            "vendor": "Cisco ASA",
+            "address": "10.23.64.51",
+            "policy": "Basic Policy",
+            "interfaces": [
+                {
+                    "name": "Mgmt",
+                    "address": "10.52.43.90/29"
+                },
+                {
+                    "name": "eth1",
+                    "address": "192.168.202.252/24"
+                },
+                {
+                    "name": "eth3",
+                    "address": "192.168.203.254/24"
+                }
+            ],
+            "hosts": [
+                {
+                    "name": "WKS-01",
+                    "address": "10.126.104.193/32",
+                    "zone": "EIS"
+                },
+                {
+                    "name": "WKS-02",
+                    "address": "10.126.104.194/32",
+                    "zone": "EIS"
+                },
+                {
+                    "name": "Rebound-01",
+                    "address": "10.52.43.91/32",
+                    "zone": "DMZ-OT"
+                },
+                {
+                    "name": "Rebound-02",
+                    "address": "10.52.43.92/32",
+                    "zone": "DMZ-OT"
+                },
+                {
+                    "name": "Server-01",
+                    "address": "192.168.204.1/32",
+                    "zone": "IIS-SL1"
+                },
+                {
+                    "name": "Server-02",
+                    "address": "192.168.204.2/32",
+                    "zone": "IIS-SL1"
+                },
+                {
+                    "name": "C2-Schneider-01",
+                    "address": "192.168.201.43/32",
+                    "zone": "IIS-SL3"
+                },
+                {
+                    "name": "C2-Siemens-01",
+                    "address": "192.168.201.44/32",
+                    "zone": "IIS-SL3"
+                },
+                {
+                    "name": "C2-Siemens-02",
+                    "address": "192.168.201.45/32",
+                    "zone": "IIS-SL3"
+                }
+            ],
+            "groups": [
+                {
+                    "name": "Controllers",
+                    "zone": "IIS-SL3",
+                    "hosts": ["C2-Schneider-01", "C2-Siemens-01", "C2-Siemens-02"]
+                },
+                {
+                    "name": "Workstations",
+                    "zone": "EIS",
+                    "hosts": ["WKS-01", "WKS-02"]
+                },
+                {
+                    "name": "Jump Stations",
+                    "zone": "DMZ-OT",
+                    "hosts": ["Rebound-01", "Rebound-02"]
+                }
+            ],
+            "rules": [
+                {
+                    "number": 7,
+                    "src": ["C2-Schneider-01", "C2-Siemens-01"],
+                    "dest": ["Server-01", "Server-02"],
+                    "services": ["TCP/14000", "TCP/21379"]
+                },
+                {
+                    "number": 5,
+                    "src": ["Server-01", "Server-02"],
+                    "dest": ["WKS-01", "WKS-02"],
+                    "services": ["TCP/80"]
+                },
+                {
+                    "number": 6,
+                    "src": ["WKS-01", "WKS-02"],
+                    "dest": ["Rebound-01", "Rebound-02"],
+                    "services": ["TCP/3389"]
+                },
+                {
+                    "number": 8,
+                    "src": ["Rebound-01", "Rebound-02"],
+                    "dest": ["WKS-01", "WKS-02"],
+                    "services": ["TCP/21", "TCP/445"]
+                },
+                {
+                    "number": 13,
+                    "src": ["C2-Schneider-01", "C2-Siemens-01"],
+                    "dest": ["WKS-01", "WKS-02"],
+                    "services": ["TCP/7485"]
+                },
+                {
+                    "number": 14,
+                    "src": ["Rebound-01", "Rebound-02"],
+                    "dest": ["C2-Schneider-01", "C2-Siemens-01"],
+                    "services": ["TCP/443"]
+                },
+                {
+                    "number": 15,
+                    "src": ["C2-Schneider-01"],
+                    "dest": ["C2-Siemens-01"],
+                    "services": ["TCP/512"]
+                }
+            ]
+        },
+        {
+            "name": "IT-OT Firewall Back",
+            "vendor": "Fortinet",
+            "address": "10.52.43.90",
+            "policy": "Basic Policy",
+            "interfaces": [],
+            "hosts": [],
+            "groups": [],
+            "rules": []
+        }
+    ],
+    "status": [
+        {
+            "label": "OK",
+            "color": "#1ba91c",
+            "compliant": true
+        },
+        {
+            "label": "WARNING",
+            "color": "#f4bf14",
+            "compliant": false
+        },
+        {
+            "label": "NOK",
+            "color": "#e83232",
+            "compliant": false
+        }
+    ],
+    "zones": [
+        {
+            "name": "EIS",
+            "level": 4,
+            "description": "Enterprise network",
+            "color": "#26D189"
+        },
+        {
+            "name": "DMZ-OT",
+            "level": 3.5,
+            "description": "DMZ segregating IT and OT domains",
+            "color": "#A5B34B"
+        },
+        {
+            "name": "IIS-SL1",
+            "level": 3,
+            "description": "OT HMI assets - Security Level 1",
+            "color": "#174EFF"
+        },
+        {
+            "name": "IIS-SL2",
+            "level": 3,
+            "description": "OT C&C assets - Security Level 2",
+            "color": "#D79AE6"
+        },
+        {
+            "name": "IIS-SL3",
+            "level": 2,
+            "description": "PLC assets - Security Level 3",
+            "color": "#FF17E4"
+        }
+    ],
+    "policies": [
+        {
+            "name": "Basic Policy",
+            "default": "NOK",
+            "rules": [
+                {
+                    "src_zone": "EIS",
+                    "dest_zone": "DMZ-OT",
+                    "services": ["TCP/3389", "TCP/443"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "DMZ-OT",
+                    "dest_zone": "EIS",
+                    "services": null,
+                    "vpn": false,
+                    "status": "WARNING"
+                },
+                {
+                    "src_zone": "DMZ-OT",
+                    "dest_zone": "IIS-SL1",
+                    "services": ["TCP/3389"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "IIS-SL3",
+                    "dest_zone": "IIS-SL3",
+                    "services": ["TCP/512"],
+                    "vpn": true,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "IIS-SL1",
+                    "dest_zone": "IIS-SL2",
+                    "services": ["TCP/512"],
+                    "vpn": false,
+                    "status": "WARNING"
+                }
+            ]
+        }
+    ]
+}
