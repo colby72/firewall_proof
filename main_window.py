@@ -262,6 +262,24 @@ class FWProofGUI(QMainWindow):
         self.policy_submenu.addAction(self.add_policy_rule_action)
 
         """ 4. Create actions for DumbAI menu """
+        self.traffic_light_action = QAction(QtGui.QIcon("img/shift.png"), "Traffic light status", self)
+        #self.traffic_light_action.setShortcut("Ctrl+Shift")
+        self.traffic_light_action.setStatusTip("Add traffic light status to company")
+        self.traffic_light_action.triggered.connect(self.traffic_light)
+        self.traffic_light_action.setDisabled(True)
+
+        self.company_policy_check_action = QAction(QtGui.QIcon("img/shift.png"), "Company policy check", self)
+        #self.company_policy_check_action.setShortcut("Ctrl+Shift")
+        self.company_policy_check_action.setStatusTip("Refresh Firewall policy check for whole company")
+        self.company_policy_check_action.triggered.connect(self.company_policy_check)
+        self.company_policy_check_action.setDisabled(True)
+
+        self.fw_policy_check_action = QAction(QtGui.QIcon("img/shift.png"), "Firewall policy check", self)
+        #self.fw_policy_check_action.setShortcut("Ctrl+Shift")
+        self.fw_policy_check_action.setStatusTip("Refresh Firewall policy check")
+        self.fw_policy_check_action.triggered.connect(self.fw_policy_check)
+        self.fw_policy_check_action.setDisabled(True)
+        
         self.shift_rules_action = QAction(QtGui.QIcon("img/shift.png"), "Shift rules", self)
         #self.shift_rules_action.setShortcut("Ctrl+Shift")
         self.shift_rules_action.setStatusTip("Shift Firewall rules")
@@ -269,13 +287,23 @@ class FWProofGUI(QMainWindow):
         self.shift_rules_action.setDisabled(True)
 
         self.net_anomalies_action = QAction(QtGui.QIcon("img/shift.png"), "Net anomalies", self)
-        #self.shift_rules_action.setShortcut("Ctrl+Shift")
-        self.net_anomalies_action.setStatusTip("Shift Firewall rules")
+        #self.net_anomalies_action.setShortcut("Ctrl+Shift")
+        self.net_anomalies_action.setStatusTip("Look for network topology issues")
         self.net_anomalies_action.triggered.connect(self.test_net_anomalies)
         self.net_anomalies_action.setDisabled(True)
 
+        self.policy_meter_action = QAction(QtGui.QIcon("img/shift.png"), "Policy meter", self)
+        #self.policy_meter_action.setShortcut("Ctrl+Shift")
+        self.policy_meter_action.setStatusTip("Check policy rules' rubustness")
+        self.policy_meter_action.triggered.connect(self.policy_meter)
+        self.policy_meter_action.setDisabled(True)
+
+        dumb_ai_menu.addAction(self.traffic_light_action)
+        dumb_ai_menu.addAction(self.company_policy_check_action)
+        dumb_ai_menu.addAction(self.fw_policy_check_action)
         dumb_ai_menu.addAction(self.shift_rules_action)
         dumb_ai_menu.addAction(self.net_anomalies_action)
+        dumb_ai_menu.addAction(self.policy_meter_action)
 
         """ 5. Create actions for Report menu """
         self.company_report_action = QAction(QtGui.QIcon("img/report_seo_analysis_pie_chart_icon.png"), "Company report", self)
@@ -546,6 +574,15 @@ class FWProofGUI(QMainWindow):
             self.show_policy()
 
     ''' 4- Call functions for Menu: DumbAI '''
+    def traffic_light(self):
+        pass
+    
+    def company_policy_check(self):
+        pass
+    
+    def fw_policy_check(self):
+        pass
+
     def shift_rules(self):
         if self.firewall and self.firewall.rules:
             shift_rules_dialog = ShiftRules(self, self.firewall)
@@ -555,6 +592,9 @@ class FWProofGUI(QMainWindow):
     def test_net_anomalies(self):
         if self.firewall:
             find_net_overlaps(self.firewall)
+    
+    def policy_meter(self):
+        pass
 
     ''' 5- Call functions for Menu: Report '''
     def generate_company_report(self):
