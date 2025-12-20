@@ -93,7 +93,7 @@ class Firewall():
         for r in self.rules:
             if r.status.compliant: compliant += 1
         try:
-            rate = round(compliant/len(self.rules), 2)
+            rate = round((compliant/len(self.rules))*100, 2)
         except:
             rate = 0
         return rate

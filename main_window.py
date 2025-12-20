@@ -622,7 +622,7 @@ class FWProofGUI(QMainWindow):
         self.windows.setCurrentWidget(home)
     
     def display_home2(self):
-        company = parse_fwp_json('test_data/space_y_ext.json')
+        company = parse_fwp_json('test_data/space_z.json')
         self.project = Project("Test project")
         self.project.add_company(company)
         # update menu actions
