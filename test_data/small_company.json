@@ -1,0 +1,248 @@
+{
+    "name": "My Small Company",
+    "status": [
+        {
+            "label": "OK",
+            "color": "#1ba91c",
+            "compliant": true
+        },
+        {
+            "label": "WARNING",
+            "color": "#f4bf14",
+            "compliant": false
+        },
+        {
+            "label": "NOK",
+            "color": "#e83232",
+            "compliant": false
+        }
+    ],
+    "zones": [
+        {
+            "name": "Eng-Staff",
+            "level": 5,
+            "description": "Engineering team workstations",
+            "color": "#26D189"
+        },
+        {
+            "name": "Eng-Res",
+            "level": 5,
+            "description": "Engineering servers and resources",
+            "color": "#A5B34B"
+        },
+        {
+            "name": "Sales",
+            "level": 5,
+            "description": "Sales and marketing team workstations",
+            "color": "#174EFF"
+        },
+        {
+            "name": "HR-Staff",
+            "level": 5,
+            "description": "Karen's team workstations",
+            "color": "#D79AE6"
+        },
+        {
+            "name": "HR-Res",
+            "level": 5,
+            "description": "HR applications",
+            "color": "#FF17E4"
+        },
+        {
+            "name": "IT-Staff",
+            "level": 5,
+            "description": "IT support and helpdesk",
+            "color": "#DF98E4"
+        }
+    ],
+    "policies": [
+        {
+            "name": "IT policy",
+            "default": "NOK",
+            "rules": [
+                {
+                    "src_zone": "Eng-Staff",
+                    "dest_zone": "Eng-Res",
+                    "services": ["TCP/21", "TCP/1521"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "Sales",
+                    "dest_zone": "Sales",
+                    "services": [],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "HR-Staff",
+                    "dest_zone": "HR-Res",
+                    "services": ["TCP/443"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "IT-Staff",
+                    "dest_zone": "Eng-Staff",
+                    "services": ["TCP/3389"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "IT-Staff",
+                    "dest_zone": "Sales",
+                    "services": ["TCP/3389"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "IT-Staff",
+                    "dest_zone": "HR-Staff",
+                    "services": ["TCP/3389"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "IT-Staff",
+                    "dest_zone": "Eng-Res",
+                    "services": ["TCP/21", "TCP/1521"],
+                    "vpn": true,
+                    "status": "WARNING"
+                },
+                {
+                    "src_zone": "IT-Staff",
+                    "dest_zone": "HR-Res",
+                    "services": ["TCP/443"],
+                    "vpn": true,
+                    "status": "WARNING"
+                }
+            ]
+        }
+    ],
+    "fw_inventory": [
+        {
+            "name": "IT Firewall",
+            "vendor": "Fortinet",
+            "address": "10.42.13.7",
+            "policy": "IT policy",
+            "interfaces": [],
+            "hosts": [
+                {
+                    "name": "Engineering-01",
+                    "address": "172.16.20.11/24",
+                    "zone": "Eng-Staff" 
+                },
+                {
+                    "name": "Engineering-02",
+                    "address": "172.16.20.12/24",
+                    "zone": "Eng-Staff" 
+                },
+                {
+                    "name": "Engineering-03",
+                    "address": "172.16.20.13/24",
+                    "zone": "Eng-Staff" 
+                },
+                {
+                    "name": "Engineering-04",
+                    "address": "172.16.20.14/24",
+                    "zone": "Eng-Staff" 
+                },
+                {
+                    "name": "FTP-Server",
+                    "address": "172.16.20.100/24",
+                    "zone": "Eng-Res" 
+                },
+                {
+                    "name": "Eng-DB",
+                    "address": "172.16.20.101/24",
+                    "zone": "Eng-Res" 
+                },
+                {
+                    "name": "Sales-01",
+                    "address": "172.16.10.11/24",
+                    "zone": "Sales" 
+                },
+                {
+                    "name": "Sales-02",
+                    "address": "172.16.10.12/24",
+                    "zone": "Sales" 
+                },
+                {
+                    "name": "HR-01",
+                    "address": "172.16.30.11/24",
+                    "zone": "HR-Staff" 
+                },
+                {
+                    "name": "HR-02",
+                    "address": "172.16.30.12/24",
+                    "zone": "HR-Staff" 
+                },
+                {
+                    "name": "HR-03",
+                    "address": "172.16.30.13/24",
+                    "zone": "HR-Staff" 
+                },
+                {
+                    "name": "HR-Admin",
+                    "address": "172.16.30.10/24",
+                    "zone": "HR-Staff" 
+                },
+                {
+                    "name": "HR-Apps",
+                    "address": "172.16.30.100/24",
+                    "zone": "HR-Res" 
+                },
+                {
+                    "name": "IT-Admin-01",
+                    "address": "172.16.0.3/24",
+                    "zone": "IT-Staff" 
+                },
+                {
+                    "name": "IT-Admin-02",
+                    "address": "172.16.0.14/24",
+                    "zone": "IT-Staff" 
+                }
+            ],
+            "groups": [
+            ],
+            "rules": [
+                {
+                    "number": 1,
+                    "src": ["Engineering-01", "Engineering-02"],
+                    "dest": ["FTP-Server"],
+                    "services": ["TCP/21"]
+                },
+                {
+                    "number": 2,
+                    "src": ["Engineering-03", "Engineering-04"],
+                    "dest": ["Eng-DB"],
+                    "services": ["TCP/1521"]
+                },
+                {
+                    "number": 3,
+                    "src": ["HR-01", "HR-02","HR-03"],
+                    "dest": ["HR-Apps"],
+                    "services": ["TCP/80", "TCP/443"]
+                },
+                {
+                    "number": 4,
+                    "src": ["HR-Admin"],
+                    "dest": ["HR-Apps"],
+                    "services": ["TCP/22", "TCP/80", "TCP/443"]
+                },
+                {
+                    "number": 5,
+                    "src": ["IT-Admin-01", "IT-Admin-02"],
+                    "dest": ["Engineering-01", "Engineering-02", "Engineering-03", "Engineering-04", "HR-01", "HR-02","HR-03", "Sales-01", "Sales-02"],
+                    "services": ["TCP/3389"]
+                },
+                {
+                    "number": 6,
+                    "src": ["IT-Admin-02"],
+                    "dest": ["Eng-DB"],
+                    "services": ["TCP/1521"]
+                }
+            ]
+        }
+    ]
+}

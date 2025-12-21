@@ -19,7 +19,8 @@ class HomeGUI(QWidget):
             self.main_window.save_as_action,
             self.main_window.close_action,
             self.main_window.home_action,
-            self.main_window.add_company_action
+            self.main_window.add_company_action,
+            self.main_window.import_company_json_action
         ]
         self.main_window.enable_actions(enabled_actions)
         disabled_actions = [
@@ -82,7 +83,7 @@ class HomeGUI(QWidget):
             company_layout.addWidget(remove_button, 2, 6)
             
             company_layout.setColumnStretch(company_layout.columnCount(), 1)
-            layout.addWidget(company, i+1, 0)
+            layout.addWidget(company, i+1, 0, 1, 5)
         
         # add company
         add_button = QPushButton(" Company")
@@ -91,7 +92,16 @@ class HomeGUI(QWidget):
         add_button.setObjectName("add_button")
         add_button.setFixedSize(140, 40)
         add_button.setIconSize(QSize(20, 20))
-        layout.addWidget(add_button, len(self.project.companies)+1, 0)
+        layout.addWidget(add_button, len(self.project.companies)+1, 0, 1, 1)
+
+        # import company
+        add_button = QPushButton(" Import")
+        add_button.setIcon(QIcon("img/json.png"))
+        add_button.clicked.connect(self.main_window.import_company_json)
+        add_button.setObjectName("add_button")
+        add_button.setFixedSize(140, 40)
+        add_button.setIconSize(QSize(20, 20))
+        layout.addWidget(add_button, len(self.project.companies)+1, 1, 1, 1)
 
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)

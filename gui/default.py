@@ -47,7 +47,7 @@ class DefaultGUI(QWidget):
 
         self.project_button = QPushButton("Test Project")
         self.project_button.clicked.connect(self.test_project)
-        layout.addWidget(self.project_button, 4, 1, 1, 1)
+        #layout.addWidget(self.project_button, 4, 1, 1, 1)
 
         layout.setRowStretch(layout.rowCount(), 1)
         self.setLayout(layout)

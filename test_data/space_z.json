@@ -1,0 +1,318 @@
+{
+    "name": "Space Z",
+    "status": [
+        {
+            "label": "OK",
+            "color": "#1ba91c",
+            "compliant": true
+        },
+        {
+            "label": "WARNING",
+            "color": "#f4bf14",
+            "compliant": false
+        },
+        {
+            "label": "NOK",
+            "color": "#e83232",
+            "compliant": false
+        }
+    ],
+    "zones": [
+        {
+            "name": "Business",
+            "level": 4,
+            "description": "Plant business IT network",
+            "color": "#26D189"
+        },
+        {
+            "name": "DMZ",
+            "level": 3.5,
+            "description": "DMZ segregating IT and OT domains",
+            "color": "#A5B34B"
+        },
+        {
+            "name": "Control-SL1",
+            "level": 3,
+            "description": "HMI assets - OT Security Level 1",
+            "color": "#174EFF"
+        },
+        {
+            "name": "Control-SL2",
+            "level": 3,
+            "description": "C&C assets - OT Security Level 2",
+            "color": "#D79AE6"
+        },
+        {
+            "name": "Control-SL3",
+            "level": 2,
+            "description": "PLC assets - OT Security Level 3",
+            "color": "#FF17E4"
+        }
+    ],
+    "policies": [
+        {
+            "name": "OT policy",
+            "default": "NOK",
+            "rules": [
+                {
+                    "src_zone": "Business",
+                    "dest_zone": "DMZ",
+                    "services": ["TCP/22", "TCP/3389", "TCP/5432"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "DMZ",
+                    "dest_zone": "Control-SL1",
+                    "services": ["TCP/443"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "Control-SL1",
+                    "dest_zone": "DMZ",
+                    "services": ["TCP/5432"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "Control-SL2",
+                    "dest_zone": "DMZ",
+                    "services": ["TCP/22"],
+                    "vpn": false,
+                    "status": "WARNING"
+                },
+                {
+                    "src_zone": "Control-SL2",
+                    "dest_zone": "Control-SL1",
+                    "services": ["TCP/443", "TCP/1433"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "Control-SL2",
+                    "dest_zone": "Control-SL3",
+                    "services": ["TCP/502", "TCP/2404"],
+                    "vpn": false,
+                    "status": "WARNING"
+                }
+            ]
+        }
+    ],
+    "fw_inventory": [
+        {
+            "name": "OT Domain",
+            "vendor": "Palo Alto",
+            "address": "10.52.43.90",
+            "policy": "OT policy",
+            "interfaces": [],
+            "hosts": [
+                {
+                    "name": "His-Replicate",
+                    "address": "10.10.10.14/24",
+                    "zone": "DMZ"
+                },
+                {
+                    "name": "Rebound-01",
+                    "address": "10.10.10.15/24",
+                    "zone": "DMZ"
+                },
+                {
+                    "name": "Rebound-02",
+                    "address": "10.10.10.16/24",
+                    "zone": "DMZ"
+                },
+                {
+                    "name": "Historian",
+                    "address": "172.16.38.4/24",
+                    "zone": "Control-SL1"
+                },
+                {
+                    "name": "Alarm server",
+                    "address": "172.16.38.5/24",
+                    "zone": "Control-SL1"
+                },
+                {
+                    "name": "OWS-01",
+                    "address": "172.16.38.6/24",
+                    "zone": "Control-SL1"
+                },
+                {
+                    "name": "OWS-02",
+                    "address": "172.16.38.7/24",
+                    "zone": "Control-SL1"
+                },
+                {
+                    "name": "HMI-01",
+                    "address": "172.16.38.8/24",
+                    "zone": "Control-SL1"
+                },
+                {
+                    "name": "HMI-02",
+                    "address": "172.16.38.9/24",
+                    "zone": "Control-SL1"
+                },
+                {
+                    "name": "EWS-01",
+                    "address": "172.16.40.3/29",
+                    "zone": "Control-SL2"
+                },
+                {
+                    "name": "Schneider-01",
+                    "address": "172.16.40.4/29",
+                    "zone": "Control-SL3"
+                },
+                {
+                    "name": "Siemens-01",
+                    "address": "172.16.40.5/29",
+                    "zone": "Control-SL3"
+                },
+                {
+                    "name": "Siemens-02",
+                    "address": "172.16.40.6/29",
+                    "zone": "Control-SL3"
+                }
+            ],
+            "groups": [
+                {
+                    "name": "Jump Stations",
+                    "zone": "DMZ",
+                    "hosts": ["Rebound-01", "Rebound-02"]
+                },
+                {
+                    "name": "PLCs",
+                    "zone": "Control-SL3",
+                    "hosts": ["Schneider-01", "Schneider-02", "Siemens-01"]
+                }
+            ],
+            "rules": [
+                {
+                    "number": 2,
+                    "src": ["EWS-01"],
+                    "dest": ["Schneider-01", "Siemens-01", "Siemens-02"],
+                    "services": ["TCP/502", "TCP/2404"]
+                },
+                {
+                    "number": 3,
+                    "src": ["OWS-01", "OWS-02", "HMI-01", "HMI-02", "Alarm server", "Historian"],
+                    "dest": ["Schneider-01", "Siemens-01", "Siemens-02"],
+                    "services": ["TCP/502"]
+                },
+                {
+                    "number": 4,
+                    "src": ["EWS-01"],
+                    "dest": ["HMI-01", "HMI-02"],
+                    "services": ["TCP/80", "TCP/443", "TCP/1433"]
+                },
+                {
+                    "number": 5,
+                    "src": ["Rebound-01", "Rebound-02"],
+                    "dest": ["HMI-01", "HMI-02"],
+                    "services": ["TCP/443"]
+                },
+                {
+                    "number": 6,
+                    "src": ["OWS-01", "OWS-02"],
+                    "dest": ["HMI-01", "HMI-02"],
+                    "services": ["TCP/80", "TCP/443"]
+                },
+                {
+                    "number": 7,
+                    "src": ["Historian"],
+                    "dest": ["His-Replicate"],
+                    "services": ["TCP/5432"]
+                },
+                {
+                    "number": 8,
+                    "src": ["Alarm server", "Historian"],
+                    "dest": ["HMI-01", "HMI-02"],
+                    "services": ["TCP/80"]
+                },
+                {
+                    "number": 9,
+                    "src": ["OWS-02"],
+                    "dest": ["Siemens-01"],
+                    "services": ["TCP/2404"]
+                },
+                {
+                    "number": 10,
+                    "src": ["EWS-01"],
+                    "dest": ["Rebound-01", "Rebound-02"],
+                    "services": ["TCP/22"]
+                }
+            ]
+        },
+        {
+            "name": "IT-OT Segeregation",
+            "vendor": "Fortinet",
+            "address": "10.52.43.91",
+            "policy": "OT policy",
+            "interfaces": [],
+            "hosts": [
+                {
+                    "name": "WKS-01",
+                    "address": "10.10.10.11/24",
+                    "zone": "Business" 
+                },
+                {
+                    "name": "WKS-02",
+                    "address": "10.10.10.12/24",
+                    "zone": "Business" 
+                },
+                {
+                    "name": "His-Replicate",
+                    "address": "10.10.10.14/24",
+                    "zone": "DMZ"
+                },
+                {
+                    "name": "Rebound-01",
+                    "address": "10.10.10.15/24",
+                    "zone": "DMZ"
+                },
+                {
+                    "name": "Rebound-02",
+                    "address": "10.10.10.16/24",
+                    "zone": "DMZ"
+                }
+            ],
+            "groups": [
+                {
+                    "name": "Workstations",
+                    "zone": "Business",
+                    "hosts": ["WKS-01", "WKS-02"]
+                },
+                {
+                    "name": "Jump Stations",
+                    "zone": "DMZ",
+                    "hosts": ["Rebound-01", "Rebound-02"]
+                }
+            ],
+            "rules": [
+                {
+                    "number": 2,
+                    "src": ["WKS-02"],
+                    "dest": ["Rebound-01", "Rebound-02"],
+                    "services": ["TCP/3389"]
+                },
+                {
+                    "number": 3,
+                    "src": ["WKS-02"],
+                    "dest": ["His-Replicate"],
+                    "services": ["TCP/5432"]
+                },
+                {
+                    "number": 4,
+                    "src": ["WKS-01"],
+                    "dest": ["WKS-02"],
+                    "services": ["TCP/445", "TCP/139"]
+                },
+                {
+                    "number": 5,
+                    "src": ["WKS-02"],
+                    "dest": ["WKS-01"],
+                    "services": ["TCP/445", "TCP/139"]
+                }
+            ]
+        }
+    ]
+}

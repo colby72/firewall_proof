@@ -10,7 +10,7 @@ from core.policy import *
 import json
 
 
-def parse_fwp_json(conf_file):
+def parse_company_json(conf_file):
     print_info(f"Parsing JSON conf file '{conf_file}' ...")
     # read JSON data from file
     f = open(conf_file, 'r', encoding="utf8")

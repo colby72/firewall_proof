@@ -245,6 +245,13 @@ class FWProofGUI(QMainWindow):
         self.add_policy_rule_action.triggered.connect(self.add_policy_rule)
         self.add_policy_rule_action.setDisabled(True)
 
+        """ 3.4 Create actions for Policy sub-menu """
+        self.import_company_json_action = QAction(QtGui.QIcon("img/json.png"), "Import company from JSON", self)
+        #self.import_company_json_action.setShortcut('Ctrl+H')
+        self.import_company_json_action.setStatusTip('Import company from JSON file')
+        self.import_company_json_action.triggered.connect(self.import_company_json)
+        self.import_company_json_action.setDisabled(True)
+
         project_menu.addAction(self.home_action)
         project_menu.addAction(self.add_company_action)
         self.company_submenu = project_menu.addMenu("Company")
@@ -260,6 +267,8 @@ class FWProofGUI(QMainWindow):
         self.policy_submenu = project_menu.addMenu("Policy")
         self.policy_submenu.addAction(self.show_policy_action)
         self.policy_submenu.addAction(self.add_policy_rule_action)
+        self.parsers_submenu = project_menu.addMenu("Parsers")
+        self.parsers_submenu.addAction(self.import_company_json_action)
 
         """ 4. Create actions for DumbAI menu """
         self.traffic_light_action = QAction(QtGui.QIcon("img/shift.png"), "Traffic light status", self)
@@ -470,7 +479,8 @@ class FWProofGUI(QMainWindow):
                 self.policy_submenu,
                 self.company_report_action,
                 self.firewall_report_action,
-                self.shift_rules_action
+                self.shift_rules_action,
+                self.import_company_json_action
             ]
             self.disable_actions(disbaled_actions)
             # show default widget
@@ -573,6 +583,19 @@ class FWProofGUI(QMainWindow):
             self.add_policy_rule_dialog.exec()
             self.show_policy()
 
+    ''' 3.4- Call functions for Sub-Menu: Parsers '''
+    def import_company_json(self):
+        if self.project:
+            self.open_file_dialog = QFileDialog.getOpenFileName(self, "Select JSON file ...", "", "JSON files (*.json);;All files (*)")
+            selected_file = self.open_file_dialog[0]
+            if selected_file:
+                company = parse_company_json(selected_file)
+                self.project.add_company(company)
+                # show project's home
+                home = HomeGUI(self, self.project)
+                self.windows.addWidget(home)
+                self.windows.setCurrentWidget(home)
+    
     ''' 4- Call functions for Menu: DumbAI '''
     def traffic_light(self):
         pass
@@ -646,7 +669,7 @@ class FWProofGUI(QMainWindow):
     
     ''' X- Call functions for Test Widgets '''
     def display_home(self):
-        company = parse_fwp_json('test_data/space_y.json')
+        company = parse_company_json('test_data/space_y.json')
         policy = parse_policy(company, 'test_data/policy.json')
         company.add_policy(policy)
         for fw in company.fw_inventory:
@@ -662,7 +685,7 @@ class FWProofGUI(QMainWindow):
         self.windows.setCurrentWidget(home)
     
     def display_home2(self):
-        company = parse_fwp_json('test_data/space_z.json')
+        company = parse_company_json('test_data/space_z.json')
         self.project = Project("Test project")
         self.project.add_company(company)
         # update menu actions
