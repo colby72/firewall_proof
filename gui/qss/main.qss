@@ -1,6 +1,6 @@
-QStackedWidget {
+/*QStackedWidget {
     background-color: rgb(50, 50, 50);
-}
+}*/
 
 QPushButton#default_widget_btn {
     font-size: 22px;

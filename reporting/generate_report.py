@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 from xhtml2pdf import pisa
-import os, sys, shutil, datetime, docxtpl, docx2pdf, subprocess
+import os, sys, shutil, datetime, docxtpl, docx2pdf, subprocess, glob
 from docx.shared import Mm
 
 from cli.logger import *
@@ -64,7 +64,11 @@ def generate_latex_report(template, context, report_name):
     # generate PDF file
     try:
         os.system(f"pdflatex -interaction=nonstopmode reporting/export/{tex_file}")
-        os.system("rm *.aux *.log *.synctex*")
+        to_remove = glob.glob("*.aux")
+        to_remove.extend(glob.glob("*.log"))
+        to_remove.extend(glob.glob("*.synctex*"))
+        for f in to_remove:
+            os.remove(f)
         shutil.move(pdf_file, f"reporting/export/{pdf_file}")
     except:
         print_error(f"Error while generating PDF report '{report_name}'")
@@ -83,7 +87,6 @@ def generate_docx_report(template, context, images, report_name):
             continue
         pic_width = images[f"{image}_width"]
         pic_height = images[f"{image}_height"]
-        print(f"debug > {pic_width} & {pic_height}")
         pic = docxtpl.InlineImage(tpl, image_descriptor=images[image], width=Mm(pic_width), height=Mm(pic_height))
         context[image] = pic
     # render document
