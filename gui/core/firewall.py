@@ -84,8 +84,7 @@ class FirewallGUI(QWidget):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
             interface_layout.addWidget(label, 0, i)
-        for i in range(len(self.fw.interfaces)):
-            ifce = self.fw.interfaces[i]
+        for i, ifce in enumerate(self.fw.interfaces):
             interface_layout.addWidget(QLabel(ifce.name), i+1, 0)
             interface_layout.addWidget(QLabel(ifce.address), i+1, 1)
             interface_layout.addWidget(QLabel("n/a"), i+1, 2)
@@ -174,12 +173,12 @@ class FirewallGUI(QWidget):
             label.setStyleSheet("font-weight: bold;")
             #label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             rules_layout.addWidget(label, 0, i)
-        for i in range(len(self.fw.rules)):
-            r = self.fw.rules[i]
+        for i, r in enumerate(self.fw.rules):
             rules_layout.addWidget(QLabel(str(r.number)), i+1, 0)
             # rule source
             src = QWidget()
-            src_layout = QGridLayout()
+            src_layout = QVBoxLayout()
+            src_layout.addStretch(1)
             src.setLayout(src_layout)
             for j, host in enumerate(r.src):
                 view_button = QPushButton('')
@@ -205,11 +204,13 @@ class FirewallGUI(QWidget):
                 label.setStyleSheet(f"color: {host.zone.color}")
                 #src_layout.addWidget(view_button, j, 0)
                 #src_layout.addWidget(edit_button, j, 1)
-                src_layout.addWidget(label, j, 0)
+                src_layout.addWidget(label)
+            src_layout.addStretch(1)
             rules_layout.addWidget(src, i+1, 1)
             # rule destination
             dest = QWidget()
-            dest_layout = QGridLayout()
+            dest_layout = QVBoxLayout()
+            dest_layout.addStretch(1)
             dest.setLayout(dest_layout)
             for j, host in enumerate(r.dest):
                 view_button = QPushButton('')
@@ -235,20 +236,23 @@ class FirewallGUI(QWidget):
                 label.setStyleSheet(f"color: {host.zone.color}")
                 #dest_layout.addWidget(view_button, j, 0)
                 #dest_layout.addWidget(edit_button, j, 1)
-                dest_layout.addWidget(label, j, 0)
+                dest_layout.addWidget(label)
+            dest_layout.addStretch(1)
             rules_layout.addWidget(dest, i+1, 2)
             # rule service
             if not r.services:
                 rules_layout.addWidget(QLabel("all"), i+1, 3)
             else:
                 services = QWidget()
-                services_layout = QGridLayout()
+                services_layout = QVBoxLayout()
+                services_layout.addStretch(1)
                 services.setLayout(services_layout)
                 for j, svc in enumerate(r.services):
                     label = QLabel(svc)
                     if svc in self.common_ports.keys():
                         label.setToolTip(self.common_ports[svc])
-                    services_layout.addWidget(label, j, 0)
+                    services_layout.addWidget(label)
+                services_layout.addStretch(1)
                 rules_layout.addWidget(services, i+1, 3)
             # rule vpn
             rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)

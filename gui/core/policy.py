@@ -50,8 +50,7 @@ class PolicyGUI(QWidget):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
             rules_layout.addWidget(label, 0, i)
-        for i in range(len(self.policy.rules)):
-            r = self.policy.rules[i]
+        for i, r in enumerate(self.policy.rules):
             src_zone = QLabel(r.src_zone.name)
             src_zone.setStyleSheet(f"color: {r.src_zone.color}")
             rules_layout.addWidget(src_zone, i+1, 0)

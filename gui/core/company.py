@@ -75,8 +75,7 @@ class CompanyGUI(QWidget):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
             zone_layout.addWidget(label, 0, i)
-        for i in range(len(self.company.zones)):
-            z = self.company.zones[i]
+        for i, z in enumerate(self.company.zones):
             zone_label = QLabel(z.name)
             zone_label.setStyleSheet(f"color: {z.color}")
             zone_layout.addWidget(zone_label, i+1, 0, 1, 1)
@@ -116,9 +115,7 @@ class CompanyGUI(QWidget):
         status_layout.setSpacing(10)
         status_box.setLayout(status_layout)
         status_per_row = self.main_window.status_per_row
-        status_count = len(self.company.status_list)
-        for i in range(status_count):
-            status = self.company.status_list[i]
+        for i, status in enumerate(self.company.status_list):
             status_item = QWidget()
             status_item_layout = QHBoxLayout()
             status_item.setLayout(status_item_layout)
@@ -170,8 +167,7 @@ class CompanyGUI(QWidget):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
             policies_layout.addWidget(label, 0, i)
-        for i in range(len(self.company.policies)):
-            p = self.company.policies[i]
+        for i, p in enumerate(self.company.policies):
             policies_layout.addWidget(QLabel(p.name), i+1, 0, 1, 1)
             policies_layout.addWidget(QLabel(str(p.default.label)), i+1, 1, 1, 1)
             policies_layout.addWidget(QLabel(str(len(p.rules))), i+1, 2, 1, 1)
@@ -225,8 +221,7 @@ class CompanyGUI(QWidget):
             label.setStyleSheet("font-weight: bold;")
             #label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             firewall_layout.addWidget(label, 0, i)
-        for i in range(len(self.company.fw_inventory)):
-            fw = self.company.fw_inventory[i]
+        for i, fw in enumerate(self.company.fw_inventory):
             firewall_layout.addWidget(QLabel(fw.name), i+1, 0)
             firewall_layout.addWidget(QLabel(fw.vendor), i+1, 1)
             firewall_layout.addWidget(QLabel(fw.address), i+1, 2)
