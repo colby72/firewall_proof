@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+import datetime
 from utils import *
 
 
@@ -130,8 +131,36 @@ class Information(QDialog):
             description_layout.addWidget(par, i+1, 0)
         description_layout.setRowStretch(description_layout.rowCount(), 1)
         #description_layout.setColumnStretch(description_layout.columnCount(), 1)
+
+        # license
+        license_tab = QWidget()
+        lic_scroll_area = QScrollArea()
+        lic_scroll_area.setWidgetResizable(True)
+        lic_scroll_area.setWidget(license_tab)
+        license_layout = QGridLayout()
+        license_layout.setContentsMargins(15, 15, 15, 15)
+        license_layout.setSpacing(10)
+        license_tab.setLayout(license_layout)
         
+        license_1 = f"Firewall Proof {self.main_window.version} - Firewall compliance audit tool"\
+            f"\nCopyright (C) {datetime.date.today().year}  Ramy Chemak"
+        license_2 = "This work is licensed under a <a href='https://creativecommons.org/licenses/by-nc-nd/4.0/'>"\
+            "Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International License</a>."
+        license_3 = "For any commercial or professional use, please send an email to "\
+            "<b>ramy.software@protonmail.com</b>. Commercial use would be allowed in certain situations."
+        
+        licenses = [license_1, license_2, license_3]
+        for i, p in enumerate(licenses):
+            par = QLabel(p)
+            par.setWordWrap(True)
+            par.setObjectName("paragraph")
+            par.setAlignment(Qt.AlignmentFlag.AlignJustify)
+            par.setOpenExternalLinks(True)
+            license_layout.addWidget(par, i, 0)
+        license_layout.setRowStretch(license_layout.rowCount(), 1)
+
         # add tabs to global layout
         tabs.addTab(presentation, "Firewall Proof")
         tabs.addTab(lib_scroll_area, "Libraries")
         tabs.addTab(desc_scroll_area, "Software details")
+        tabs.addTab(lic_scroll_area, "License")

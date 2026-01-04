@@ -1,3 +1,7 @@
+![Python 3](https://img.shields.io/badge/python-3.x-blue.svg)
+![PyQt6](https://img.shields.io/badge/PyQt6-available-brightgreen)
+[![CC BY-NC-ND 4.0][cc-by-nc-nd-shield]][cc-by-nc-nd]
+
 # Firewall Proof
 
 ## Description
@@ -35,3 +39,18 @@ This led me to start this project, a free alternative that would be:
 - **Free:** Available for large corporations, but also to small and mid-size companies who rarely have financial and human resources for a dedicated cyber security team.
 
 But most importantly, I'm doing it to learn, sharpen my programming skills, practice my hobby  ... and to have fun.
+
+## License
+
+[![CC BY-NC-ND 4.0][cc-by-nc-nd-shield]][cc-by-nc-nd]
+
+This work is licensed under a
+[Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International License][cc-by-nc-nd].
+
+For any commercial or professional use, please send an email to ramy.software@protonmail.com. Commercial use would be allowed in certain situations.
+
+[![CC BY-NC-ND 4.0][cc-by-nc-nd-image]][cc-by-nc-nd]
+
+[cc-by-nc-nd]: http://creativecommons.org/licenses/by-nc-nd/4.0/
+[cc-by-nc-nd-image]: https://licensebuttons.net/l/by-nc-nd/4.0/88x31.png
+[cc-by-nc-nd-shield]: https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg
