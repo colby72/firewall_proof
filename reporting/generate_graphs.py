@@ -19,6 +19,7 @@ def status_pie_chart(title, company, stats):
         os.makedirs("reporting/export/charts")
     file_path = os.path.join("reporting/export/charts/", file_name)
     # draw pie chart
+    plt.clf()
     plt.pie(sizes, labels=labels, autopct='%1.2f%%', startangle=90, colors=colors)
     plt.title(title)
     plt.savefig(file_path, dpi=300, format='png', bbox_inches='tight', transparent=True)
