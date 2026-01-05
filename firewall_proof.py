@@ -16,6 +16,7 @@ from gui.core.firewall import *
 from gui.core.host import *
 from gui.edit.settings import *
 from gui.algorithms.shift_rules import *
+from gui.algorithms.net_topology_anomalies import *
 from gui.dialogs.add_zone import *
 from gui.dialogs.add_policy import *
 from gui.dialogs.add_firewall import *
@@ -41,7 +42,6 @@ from file.open_file import *
 # import data algorithms
 from algorithms.parse_policy import *
 from algorithms.policy_check import *
-from algorithms.net_topology_anomalies import find_net_overlaps
 
 # import reporting functions
 from reporting.company_report import *
@@ -633,9 +633,11 @@ class FWProofGUI(QMainWindow):
             self.show_firewall()
     
     def net_anomalies(self):
-        button = QMessageBox.information(self, "Network topology anomalies", f"Feature not implemented yet !", buttons=QMessageBox.StandardButton.Ok)
-        #if self.firewall:
-            #find_net_overlaps(self.firewall)
+        #button = QMessageBox.information(self, "Network topology anomalies", f"Feature not implemented yet !", buttons=QMessageBox.StandardButton.Ok)
+        if self.firewall:
+            #subnet_zone_overlaps(self.firewall)
+            net_anomalies_gui = DialogNetTopologyAnomalies(self, self.firewall)
+            net_anomalies_gui.exec()
     
     def policy_meter(self):
         button = QMessageBox.information(self, "Policy meter", f"Feature not implemented yet !", buttons=QMessageBox.StandardButton.Ok)
