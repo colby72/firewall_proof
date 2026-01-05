@@ -17,19 +17,14 @@ class HomeGUI(QWidget):
         enabled_actions = [
             self.main_window.save_action,
             self.main_window.save_as_action,
-            self.main_window.close_action,
-            self.main_window.home_action,
-            self.main_window.add_company_action,
-            self.main_window.import_company_json_action
+            self.main_window.close_action
         ]
+        enabled_actions.extend(self.main_window.home_specific_actions)
         self.main_window.enable_actions(enabled_actions)
-        disabled_actions = [
-            self.main_window.company_submenu,
-            self.main_window.firewall_submenu,
-            self.main_window.policy_submenu,
-            self.main_window.company_report_action,
-            self.main_window.shift_rules_action
-        ]
+        disabled_actions = []
+        disabled_actions.extend(self.main_window.company_specific_actions)
+        disabled_actions.extend(self.main_window.fw_specific_actions)
+        disabled_actions.extend(self.main_window.policy_specific_actions)
         self.main_window.disable_actions(disabled_actions)
         
         # widget design

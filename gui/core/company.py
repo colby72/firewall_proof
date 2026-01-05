@@ -23,14 +23,11 @@ class CompanyGUI(QWidget):
         self.company = self.main_window.company
         self.main_window.setWindowTitle(f"{self.company.name} - Firewall Proof {self.main_window.version}")
         # update menu actions
-        enabled_actions = [self.main_window.company_submenu, self.main_window.company_report_action]
-        self.main_window.enable_actions(enabled_actions)
-        disabled_actions = [
-            self.main_window.firewall_submenu,
-            self.main_window.policy_submenu, 
-            self.main_window.firewall_report_action,
-            self.main_window.shift_rules_action
-        ]
+        #enabled_actions = [self.main_window.company_submenu, self.main_window.company_report_action]
+        self.main_window.enable_actions(self.main_window.company_specific_actions)
+        disabled_actions = []
+        disabled_actions.extend(self.main_window.fw_specific_actions)
+        disabled_actions.extend(self.main_window.policy_specific_actions)
         self.main_window.disable_actions(disabled_actions)
 
         # widget design

@@ -24,14 +24,9 @@ class FirewallGUI(QWidget):
         self.fw = fw
         self.main_window.setWindowTitle(f"{self.fw.name} - Firewall Proof {self.main_window.version}")
         # update menu actions
-        enabled_actions = [
-            self.main_window.firewall_submenu,
-            self.main_window.firewall_report_action,
-            self.main_window.shift_rules_action,
-            self.main_window.net_anomalies_action
-        ]
-        if self.main_window.policy: enabled_actions.append(self.main_window.policy_submenu)
-        self.main_window.enable_actions(enabled_actions)
+        self.main_window.enable_actions(self.main_window.fw_specific_actions)
+        if self.main_window.policy:
+            self.main_window.enable_actions(self.main_window.policy_specific_actions)
         # load common ports dictionary
         with open("algorithms/common_ports.json", 'r', encoding="utf8") as f:
             self.common_ports = json.loads(f.read())
