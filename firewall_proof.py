@@ -103,7 +103,7 @@ class FWProofGUI(QMainWindow):
         file_menu = menu.addMenu('File')
         edit_menu = menu.addMenu('Edit')
         project_menu = menu.addMenu('Project')
-        dumb_ai_menu = menu.addMenu('Dumb AI')
+        analytics_menu = menu.addMenu('Analytics')
         report_menu = menu.addMenu('Report')
         about_menu = menu.addMenu('About')
 
@@ -270,7 +270,7 @@ class FWProofGUI(QMainWindow):
         self.parsers_submenu = project_menu.addMenu("Parsers")
         self.parsers_submenu.addAction(self.import_company_json_action)
 
-        """ 4. Create actions for DumbAI menu """
+        """ 4. Create actions for Analytics menu """
         self.traffic_light_action = QAction(QtGui.QIcon("img/traffic-lights.png"), "Traffic light status", self)
         #self.traffic_light_action.setShortcut("Ctrl+Shift")
         self.traffic_light_action.setStatusTip("Add traffic light status to company")
@@ -307,12 +307,12 @@ class FWProofGUI(QMainWindow):
         self.policy_meter_action.triggered.connect(self.policy_meter)
         self.policy_meter_action.setDisabled(True)
 
-        dumb_ai_menu.addAction(self.traffic_light_action)
-        dumb_ai_menu.addAction(self.company_policy_check_action)
-        dumb_ai_menu.addAction(self.fw_policy_check_action)
-        dumb_ai_menu.addAction(self.shift_rules_action)
-        dumb_ai_menu.addAction(self.net_anomalies_action)
-        dumb_ai_menu.addAction(self.policy_meter_action)
+        analytics_menu.addAction(self.traffic_light_action)
+        analytics_menu.addAction(self.company_policy_check_action)
+        analytics_menu.addAction(self.fw_policy_check_action)
+        analytics_menu.addAction(self.shift_rules_action)
+        analytics_menu.addAction(self.net_anomalies_action)
+        analytics_menu.addAction(self.policy_meter_action)
 
         """ 5. Create actions for Report menu """
         self.company_report_action = QAction(QtGui.QIcon("img/report_seo_analysis_pie_chart_icon.png"), "Company report", self)
@@ -616,7 +616,7 @@ class FWProofGUI(QMainWindow):
                 self.windows.addWidget(home)
                 self.windows.setCurrentWidget(home)
     
-    ''' 4- Call functions for Menu: DumbAI '''
+    ''' 4- Call functions for Menu: Analytics '''
     def traffic_light(self):
         button = QMessageBox.information(self, "Traffic lights", f"Feature not implemented yet !", buttons=QMessageBox.StandardButton.Ok)
     
@@ -633,7 +633,6 @@ class FWProofGUI(QMainWindow):
             self.show_firewall()
     
     def net_anomalies(self):
-        #button = QMessageBox.information(self, "Network topology anomalies", f"Feature not implemented yet !", buttons=QMessageBox.StandardButton.Ok)
         if self.firewall:
             #subnet_zone_overlaps(self.firewall)
             net_anomalies_gui = DialogNetTopologyAnomalies(self, self.firewall)
