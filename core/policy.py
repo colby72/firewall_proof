@@ -19,15 +19,26 @@ class FWPolicy():
     def set_default(self, default):
         self.default = default
     
+    def add_rule(self, rule):
+        rule.id = self.next_id()
+        self.rules.append(rule)
+
     def remove_rule(self, rule):
         self.rules.remove(rule)
     
     def sort_rules_by_zone(self):
         self.rules.sort(key=lambda r: (r.src_zone.level, r.dest_zone.level), reverse=True)
+    
+    def next_id(self):
+        max_id = 0
+        for r in self.rules:
+            if r.id > max_id: max_id = r.id
+        return max_id+1
 
 
 class PolicyRule():
     def __init__(self, src_zone, dest_zone, services, vpn, status):
+        self.id = 0
         self.src_zone = src_zone
         self.dest_zone = dest_zone
         self.services = services

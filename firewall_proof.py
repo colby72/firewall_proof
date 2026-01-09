@@ -17,6 +17,7 @@ from gui.core.host import *
 from gui.edit.settings import *
 from gui.algorithms.shift_rules import *
 from gui.algorithms.net_topology_anomalies import *
+from gui.algorithms.policy_meter import *
 from gui.dialogs.add_zone import *
 from gui.dialogs.add_policy import *
 from gui.dialogs.add_firewall import *
@@ -42,6 +43,7 @@ from file.open_file import *
 # import data algorithms
 from algorithms.parse_policy import *
 from algorithms.policy_check import *
+from algorithms.traffic_lights import add_traffic_lights_status
 
 # import reporting functions
 from reporting.company_report import *
@@ -618,13 +620,25 @@ class FWProofGUI(QMainWindow):
     
     ''' 4- Call functions for Menu: Analytics '''
     def traffic_light(self):
-        button = QMessageBox.information(self, "Traffic lights", f"Feature not implemented yet !", buttons=QMessageBox.StandardButton.Ok)
+        if self.company:
+            error = add_traffic_lights_status(self.company)
+            self.show_company()
+            if error:
+                button = QMessageBox.warning(self, "Traffic lights error", f"Some or all of traffic lights status already exist in company {self.company.name} !", buttons=QMessageBox.StandardButton.Ok)
+            else:
+                button = QMessageBox.information(self, "Traffic lights", f"Traffic lights status sccessfully added to company {self.company.name} !", buttons=QMessageBox.StandardButton.Ok)
     
     def company_policy_check(self):
-        button = QMessageBox.information(self, "Compnay policy check", f"Feature not implemented yet !", buttons=QMessageBox.StandardButton.Ok)
+        if self.company:
+            self.company.check_policy()
+            self.show_company()
+            button = QMessageBox.information(self, "Company health check", f"Status update for all firewalls in company {self.company.name} completed !", buttons=QMessageBox.StandardButton.Ok)
     
     def fw_policy_check(self):
-        button = QMessageBox.information(self, "Firewall policy check", f"Feature not implemented yet !", buttons=QMessageBox.StandardButton.Ok)
+        if self.firewall:
+            self.firewall.check_policy()
+            self.show_firewall()
+            button = QMessageBox.information(self, "Firewall health check", f"Status update for firewall {self.firewall.name} completed !", buttons=QMessageBox.StandardButton.Ok)
 
     def shift_rules(self):
         if self.firewall and self.firewall.rules:
@@ -634,12 +648,13 @@ class FWProofGUI(QMainWindow):
     
     def net_anomalies(self):
         if self.firewall:
-            #subnet_zone_overlaps(self.firewall)
             net_anomalies_gui = DialogNetTopologyAnomalies(self, self.firewall)
             net_anomalies_gui.exec()
     
     def policy_meter(self):
-        button = QMessageBox.information(self, "Policy meter", f"Feature not implemented yet !", buttons=QMessageBox.StandardButton.Ok)
+        if self.policy:
+            policy_meter_gui = DialogPolicyMeter(self, self.policy)
+            policy_meter_gui.exec()
 
     ''' 5- Call functions for Menu: Report '''
     def generate_company_report(self):

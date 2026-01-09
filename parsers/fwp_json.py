@@ -45,7 +45,7 @@ def parse_company_json(conf_file):
             dest_zone = get_zone_by_name(company, rule['dest_zone'])
             status = get_status_by_label(company, rule['status'])
             pol_rule = PolicyRule(src_zone, dest_zone, rule['services'], rule['vpn'], status)
-            policy.rules.append(pol_rule)
+            policy.add_rule(pol_rule)
         company.add_policy(policy)
 
     # parse Firewall inventory

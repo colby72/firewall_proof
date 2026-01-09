@@ -78,6 +78,10 @@ class Company():
     def remove_status(self, status):
         self.status_list.remove(status)
     
+    def check_policy(self):
+        for fw in self.fw_inventory:
+            fw.check_policy()
+    
     # stats & reporting functions
     def compliance_rate(self):
         compliant = 0

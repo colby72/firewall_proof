@@ -110,7 +110,7 @@ class DialogAddPolicyRule(QDialog):
         vpn = True if self.vpn.currentText()=="Yes" else False
         status = get_status_by_label(self.policy.company, self.status.currentText())
         new_policy_rule = PolicyRule(src_zone, dest_zone, services, vpn, status)
-        self.policy.rules.append(new_policy_rule)
+        self.policy.add_rule(new_policy_rule)
         self.close()
     
     def when_cancel(self):

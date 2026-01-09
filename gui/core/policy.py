@@ -40,27 +40,28 @@ class PolicyGUI(QWidget):
         rules_layout.setContentsMargins(10, 10, 10, 10)
         rules_layout.setSpacing(20)
         rules.setLayout(rules_layout)
-        headers = ["Source zone", "Destination zone", "Services", "VPN", "Status"]
+        headers = ["ID", "Source zone", "Destination zone", "Services", "VPN", "Status"]
         for i in range(len(headers)):
             label = QLabel(headers[i])
             label.setStyleSheet("font-weight: bold;")
             rules_layout.addWidget(label, 0, i)
         for i, r in enumerate(self.policy.rules):
+            rules_layout.addWidget(QLabel(f"#{r.id}"), i+1, 0)
             src_zone = QLabel(r.src_zone.name)
             src_zone.setStyleSheet(f"color: {r.src_zone.color}")
-            rules_layout.addWidget(src_zone, i+1, 0)
+            rules_layout.addWidget(src_zone, i+1, 1)
             dest_zone = QLabel(r.dest_zone.name)
             dest_zone.setStyleSheet(f"color: {r.dest_zone.color}")
-            rules_layout.addWidget(dest_zone, i+1, 1)
+            rules_layout.addWidget(dest_zone, i+1, 2)
             services = '\n'.join(r.services) if r.services else "all"
-            rules_layout.addWidget(QLabel(services), i+1, 2)
-            rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 3)
+            rules_layout.addWidget(QLabel(services), i+1, 3)
+            rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)
             status_label = QLabel(str(r.status.label))
             status_label.setStyleSheet(f"""
                 color: {r.status.color};
                 font-weight: bold;
             """)
-            rules_layout.addWidget(status_label, i+1, 4)
+            rules_layout.addWidget(status_label, i+1, 5)
             edit_button = QPushButton('Edit')
             edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(
@@ -69,7 +70,7 @@ class PolicyGUI(QWidget):
             )
             edit_button.setFixedSize(120, 30)
             edit_button.setIconSize(QSize(18, 18))
-            rules_layout.addWidget(edit_button, i+1, 5)
+            rules_layout.addWidget(edit_button, i+1, 6)
             remove_button = QPushButton('Remove')
             remove_button.setIcon(QIcon("img/delete.png"))
             remove_button.clicked.connect(
@@ -78,7 +79,7 @@ class PolicyGUI(QWidget):
             )
             remove_button.setFixedSize(120, 30)
             remove_button.setIconSize(QSize(18, 18))
-            rules_layout.addWidget(remove_button, i+1, 6)
+            rules_layout.addWidget(remove_button, i+1, 7)
         
         # add policy rule button
         add_policy_rule_button = QPushButton("Policy Rule")
@@ -87,7 +88,7 @@ class PolicyGUI(QWidget):
         add_policy_rule_button.setFixedSize(140, 40)
         add_policy_rule_button.setIconSize(QSize(20, 20))
         
-        layout.addWidget(rules, 2, 0, 1, 7)
+        layout.addWidget(rules, 2, 0, 1, 8)
         layout.addWidget(add_policy_rule_button, 3, 0, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
