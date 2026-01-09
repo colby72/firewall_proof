@@ -62,6 +62,8 @@ class Information(QDialog):
         package_title.setObjectName('title')
         packages = [
             "PyQt6",
+            "superqt",
+            "ipaddress",
             "json",
             "jsonpickle",
             "colorama",
@@ -84,6 +86,7 @@ class Information(QDialog):
         software_title.setObjectName("title")
         softwares = [
             "pdflatex (Linux)",
+            "MikTeX or any other LaTeX editor (Windows)",
             "libreoffice (Linux)",
             "Microsoft Word (Windows)"
         ]
@@ -144,12 +147,15 @@ class Information(QDialog):
         
         license_1 = f"Firewall Proof {self.main_window.version} - Firewall compliance audit tool"\
             f"\nCopyright (C) {datetime.date.today().year}  Ramy Chemak"
-        license_2 = "This work is licensed under a <a href='https://creativecommons.org/licenses/by-nc-nd/4.0/'>"\
-            "Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International License</a>."
-        license_3 = "For any commercial or professional use, please send an email to "\
+        license_2 = "This work is licensed under the <a href='https://www.gnu.org/licenses/gpl-3.0.html'>"\
+            "GNU General Public License, version 3 or (at your option) any later version</a>."
+        license_3 = "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;"\
+            " without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. "\
+            "See the GNU General Public License for more details."
+        license_4 = "For any commercial or professional use, please first send an email to "\
             "<b>ramy.software@protonmail.com</b>. Commercial use would be allowed in certain situations."
         
-        licenses = [license_1, license_2, license_3]
+        licenses = [license_1, license_2, license_3, license_4]
         for i, p in enumerate(licenses):
             par = QLabel(p)
             par.setWordWrap(True)
