@@ -53,8 +53,8 @@ from reporting.firewall_report import *
 class FWProofGUI(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowIcon(QtGui.QIcon('img/firewall3.png'))
-        self.version = "v1.0.0-beta1"
+        self.setWindowIcon(QtGui.QIcon('img/logo05.png'))
+        self.version = "v1.0.0-beta2"
         self.left = 60
         self.top = 60
         self.width = 1500
@@ -297,7 +297,7 @@ class FWProofGUI(QMainWindow):
         self.shift_rules_action.triggered.connect(self.shift_rules)
         self.shift_rules_action.setDisabled(True)
 
-        self.net_anomalies_action = QAction(QtGui.QIcon("img/identify.png"), "Net anomalies", self)
+        self.net_anomalies_action = QAction(QtGui.QIcon("img/identify.png"), "Network anomalies", self)
         #self.net_anomalies_action.setShortcut("Ctrl+Shift")
         self.net_anomalies_action.setStatusTip("Look for network topology issues")
         self.net_anomalies_action.triggered.connect(self.net_anomalies)

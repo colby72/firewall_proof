@@ -33,7 +33,7 @@ class Information(QDialog):
         
         logo = QLabel()
         logo.resize(150, 150)
-        logo_pixmap = QPixmap('img/firewall3.png')
+        logo_pixmap = QPixmap('img/logo05.png')
         logo_scaled = logo_pixmap.scaled(logo.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
         logo.setPixmap(logo_scaled)
         logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
