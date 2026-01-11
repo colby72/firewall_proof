@@ -208,6 +208,7 @@ __marimo__/
 
 
 # custom
+icons/*
 *.fwp
 count.sh
 reporting/export/*
