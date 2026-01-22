@@ -107,7 +107,7 @@ def generate_firewall_report_latex(firewall):
 def generate_firewall_report_docx(firewall):
     # get context data
     context = get_firewall_data_docx(firewall)
-    chart_file, chart_path = status_pie_chart("", firewall.company, firewall.status_stats())
+    chart_file, chart_path = status_pie_chart("Firewall compliance", firewall.company, firewall.status_stats())
     images = {
         "firewall_chart": chart_path,
         "firewall_chart_width": 75,

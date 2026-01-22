@@ -452,7 +452,7 @@ class FWProofGUI(QMainWindow):
         elif ok_pressed and (project_title==""):
             alert = QMessageBox.critical(self, "New project", "Project name cannot be empty !", buttons=QMessageBox.StandardButton.Ok)
         else:
-            alert = QMessageBox.critical(self, "New project", "Project name entered invalid !", buttons=QMessageBox.StandardButton.Ok)
+            pass
     
     def open_project(self):
         self.open_file_dialog = QFileDialog.getOpenFileName(self, "Open project ...", "", "FwProof files (*.fwp);;All files (*)")

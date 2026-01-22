@@ -61,21 +61,16 @@ class Information(QDialog):
         package_title = QLabel("Python packages")
         package_title.setObjectName('title')
         packages = [
-            "PyQt6",
-            "superqt",
-            "ipaddress",
-            "json",
-            "jsonpickle",
-            "colorama",
-            "shutil",
-            "datetime",
-            "subprocess",
-            "jinja2",
+            "PyQt6 - GNU GPL v3",
+            "superqt - BSD-3-Clause",
+            "jsonpickle - BSD-3-Clause",
+            "colorama - BSD-3-Clause",
+            "jinja2 - BSD-3-Clause",
             "matplotlib",
-            "docxtpl",
-            "docx",
-            "docx2pdf",
-            "xhtml2pdf" 
+            "docxtpl - LGPL v2.1",
+            "docx - MIT license",
+            "docx2pdf - MIT license",
+            "xhtml2pdf - Apache 2.0" 
         ]
         libraries_layout.addWidget(package_title, 0, 0)
         for i, p in enumerate(packages):

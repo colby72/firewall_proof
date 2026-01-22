@@ -6,6 +6,8 @@ from PyQt6.QtCore import *
 from gui.dialogs.add_policy_rule import *
 from gui.dialogs.edit_policy_rule import *
 
+import json
+
 
 class PolicyGUI(QWidget):
     def __init__(self, main_window, policy):
@@ -16,6 +18,9 @@ class PolicyGUI(QWidget):
         # update menu actions
         self.main_window.enable_actions(self.main_window.policy_specific_actions)
         self.main_window.disable_actions(self.main_window.fw_specific_actions)
+        # load common ports dictionary
+        with open("algorithms/common_ports.json", 'r', encoding="utf8") as f:
+            self.common_ports = json.loads(f.read())
         
         # widget design
         layout = QGridLayout()
@@ -47,21 +52,39 @@ class PolicyGUI(QWidget):
             rules_layout.addWidget(label, 0, i)
         for i, r in enumerate(self.policy.rules):
             rules_layout.addWidget(QLabel(f"#{r.id}"), i+1, 0)
+            
             src_zone = QLabel(r.src_zone.name)
             src_zone.setStyleSheet(f"color: {r.src_zone.color}")
             rules_layout.addWidget(src_zone, i+1, 1)
+            
             dest_zone = QLabel(r.dest_zone.name)
             dest_zone.setStyleSheet(f"color: {r.dest_zone.color}")
             rules_layout.addWidget(dest_zone, i+1, 2)
-            services = '\n'.join(r.services) if r.services else "all"
-            rules_layout.addWidget(QLabel(services), i+1, 3)
+
+            services = QWidget()
+            services_layout = QVBoxLayout()
+            services_layout.addStretch(1)
+            services.setLayout(services_layout)
+            if r.services:
+                for j, svc in enumerate(r.services):
+                    label = QLabel(svc)
+                    if svc in self.common_ports.keys():
+                        label.setToolTip(self.common_ports[svc])
+                    services_layout.addWidget(label)
+            else:
+                services_layout.addWidget(QLabel("all"))
+            services_layout.addStretch(1)
+            rules_layout.addWidget(services, i+1, 3)
+            
             rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)
+            
             status_label = QLabel(str(r.status.label))
             status_label.setStyleSheet(f"""
                 color: {r.status.color};
                 font-weight: bold;
             """)
             rules_layout.addWidget(status_label, i+1, 5)
+            
             edit_button = QPushButton('Edit')
             edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(

@@ -93,7 +93,7 @@ class Company():
             for r in fw.rules:
                 if r.status.compliant: compliant += 1
         try:
-            rate = round(compliant/total, 2)
+            rate = round((compliant/total)*100, 2)
         except:
             rate = 0
         return rate

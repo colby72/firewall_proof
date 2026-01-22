@@ -57,6 +57,8 @@ class FirewallGUI(QWidget):
         summary_layout.addWidget(QLabel(f"{len(self.fw.hosts)} ({len(self.fw.groups)})"), 5, 1)
         summary_layout.addWidget(QLabel("Rules : "), 6, 0)
         summary_layout.addWidget(QLabel(str(len(self.fw.rules))), 6, 1)
+        summary_layout.addWidget(QLabel("Compliance rate : "), 7, 0)
+        summary_layout.addWidget(QLabel(f"{self.fw.compliance_rate()}%"), 7, 1)
         summary_layout.setColumnStretch(summary_layout.columnCount(), 1)
         summary_layout.setRowStretch(summary_layout.rowCount(), 1)
 
@@ -170,6 +172,7 @@ class FirewallGUI(QWidget):
             rules_layout.addWidget(label, 0, i)
         for i, r in enumerate(self.fw.rules):
             rules_layout.addWidget(QLabel(str(r.number)), i+1, 0)
+            
             # rule source
             src = QWidget()
             src_layout = QVBoxLayout()
@@ -202,6 +205,7 @@ class FirewallGUI(QWidget):
                 src_layout.addWidget(label)
             src_layout.addStretch(1)
             rules_layout.addWidget(src, i+1, 1)
+            
             # rule destination
             dest = QWidget()
             dest_layout = QVBoxLayout()
@@ -234,23 +238,26 @@ class FirewallGUI(QWidget):
                 dest_layout.addWidget(label)
             dest_layout.addStretch(1)
             rules_layout.addWidget(dest, i+1, 2)
+            
             # rule service
-            if not r.services:
-                rules_layout.addWidget(QLabel("all"), i+1, 3)
-            else:
-                services = QWidget()
-                services_layout = QVBoxLayout()
-                services_layout.addStretch(1)
-                services.setLayout(services_layout)
+            services = QWidget()
+            services_layout = QVBoxLayout()
+            services_layout.addStretch(1)
+            services.setLayout(services_layout)
+            if r.services:
                 for j, svc in enumerate(r.services):
                     label = QLabel(svc)
                     if svc in self.common_ports.keys():
                         label.setToolTip(self.common_ports[svc])
                     services_layout.addWidget(label)
-                services_layout.addStretch(1)
-                rules_layout.addWidget(services, i+1, 3)
+            else:
+                services_layout.addWidget(QLabel("all"))
+            services_layout.addStretch(1)
+            rules_layout.addWidget(services, i+1, 3)
+            
             # rule vpn
             rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)
+            
             # rule status
             status = QLabel(str(r.status.label))
             status.setStyleSheet(f"""
@@ -258,6 +265,7 @@ class FirewallGUI(QWidget):
                 font-weight: bold;
             """)
             rules_layout.addWidget(status, i+1, 5)
+            
             edit_button = QPushButton('Edit')
             edit_button.setIcon(QIcon("img/edit_icon.png"))
             edit_button.clicked.connect(
