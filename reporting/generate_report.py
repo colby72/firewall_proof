@@ -105,7 +105,7 @@ def generate_docx_report(template, context, images, report_name):
             print_success(f"PDF report '{pdf_file}' generated successfully")
             return pdf_file
         if sys.platform == "win32":
-            docx2pdf.convert(f"export/{docx_file}")
+            docx2pdf.convert(docx_file, pdf_file)
             shutil.move(docx_file, f"reporting/export/{docx_file}")
             shutil.move(pdf_file, f"reporting/export/{pdf_file}")
             print_error(f"Error while generating PDF report '{pdf_file}'")
