@@ -19,6 +19,7 @@ class Rule():
         self.services = services # list of authorized ports and services for this flow
         self.vpn = vpn # not used yet
         self.disabled = False # set to True only if rule is DISABLED
+        self.inactive = False # set to True if logs show rule is inactive
 
         # filled in by software
         self.status = None # rule's status (eg. OK, WARNING ...)

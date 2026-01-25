@@ -16,6 +16,7 @@ class Host():
         self.address = address # list of host IP addresses (format: xxx.xxx.xxx.xxx/range)
         self.nat = None # not used yet
         self.group = None # list of refs to object's groups
+        self.category = "desktop" # can be "desktop", "net_device", "server", "hypervisor"
         self.os = None # not used yet
     
     # host management

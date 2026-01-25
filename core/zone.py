@@ -12,6 +12,7 @@ class Zone():
         self.id = 0 # not used yet
         self.name = name # eg. "DMZ", "IIS-SL2", ...
         self.level = level # Purdue level
+        self.trusted = False # zone is 'trusted' or 'untrusted'
         self.description = description # brief description
 
         self.color = color

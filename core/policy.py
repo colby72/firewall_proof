@@ -43,6 +43,7 @@ class PolicyRule():
         self.dest_zone = dest_zone
         self.services = services
         self.vpn = vpn
+        self.range = 24
         self.status = status
     
     def set_src_zone(self, src_zone):
