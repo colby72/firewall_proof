@@ -3,7 +3,9 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
-from algorithms.net_topology_anomalies import subnet_zone_overlaps, direct_it_ot_flows, wrong_zone_attribution
+import json
+
+from algorithms.net_topology_anomalies import subnet_zone_overlaps, direct_it_ot_flows, wrong_zone_attribution, vulnerable_services
 
 
 class DialogNetTopologyAnomalies(QDialog):
@@ -16,6 +18,9 @@ class DialogNetTopologyAnomalies(QDialog):
         self.setMinimumHeight(600)
 
         colors = {"info": "#0000e0", "warning": "#f4bf14", "critical": "#ff0000"}
+        # load common ports dictionary
+        with open("algorithms/common_ports.json", 'r', encoding="utf8") as f:
+            self.common_ports = json.loads(f.read())
         
         # widget design
         main_widget = QWidget()
@@ -61,7 +66,6 @@ class DialogNetTopologyAnomalies(QDialog):
         # direct IT OT flows
         breaches = direct_it_ot_flows(self.fw, True)
         if breaches:
-            print(f"debug> {breaches}")
             direct_box = QGroupBox("Direct IT-OT flows")
             direct_layout = QGridLayout()
             direct_layout.setContentsMargins(10, 10, 10, 10)
@@ -96,12 +100,36 @@ class DialogNetTopologyAnomalies(QDialog):
                     font-weight: bold;
                 """)
                 wrong_layout.addWidget(label, i, 0)
+                for j in range(len(svc_list)): svc_list[j] = self.common_ports[svc_list[j]]
                 applicable_svc = ', '.join(svc_list)
                 msg = f"Host <b>{h.name}</b> classified as an IT asset but uses OT protocols ({applicable_svc}) in rule #{rule_id} suggesting it may be an OT asset instead."
                 wrong_layout.addWidget(QLabel(msg), i, 1)
             wrong_layout.setColumnStretch(wrong_layout.columnCount(), 1)
             wrong_layout.setRowStretch(wrong_layout.rowCount(), 1)
             layout.addWidget(wrong_box, row, 0)
+            row += 1
+        
+        # vulnerables services
+        vuln_services = vulnerable_services(self.fw)
+        if vuln_services:
+            vuln_services_box = QGroupBox("Weak services")
+            vuln_services_layout = QGridLayout()
+            vuln_services_layout.setContentsMargins(10, 10, 10, 10)
+            vuln_services_layout.setSpacing(10)
+            vuln_services_box.setLayout(vuln_services_layout)
+            for i, vuln in enumerate(vuln_services):
+                label = QLabel("WARNING")
+                label.setStyleSheet(f"""
+                    color: {colors["warning"]};
+                    font-weight: bold;
+                """)
+                vuln_services_layout.addWidget(label, i, 0)
+                msg = f"Rule <b>#{vuln[0]}</b> allows weak service <b>{self.common_ports[vuln[1]]} ({vuln[1]})</b>. Please consider using <b>{self.common_ports[vuln[2]]} ({vuln[2]})</b> instead."
+                vuln_services_layout.addWidget(QLabel(msg), i, 1)
+            vuln_services_layout.setColumnStretch(vuln_services_layout.columnCount(), 1)
+            vuln_services_layout.setRowStretch(vuln_services_layout.rowCount(), 1)
+            layout.addWidget(vuln_services_box, row, 0)
+
 
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)

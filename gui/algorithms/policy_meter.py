@@ -3,6 +3,8 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+import json
+
 from algorithms.policy_meter import policy_anomalies
 
 
@@ -17,6 +19,9 @@ class DialogPolicyMeter(QDialog):
 
         anomalies = policy_anomalies(self.policy)
         colors = {"info": "#0000e0", "warning": "#f4bf14", "critical": "#ff0000"}
+        # load common ports dictionary
+        with open("algorithms/common_ports.json", 'r', encoding="utf8") as f:
+            self.common_ports = json.loads(f.read())
 
         # widget design
         main_widget = QWidget()
@@ -91,7 +96,7 @@ class DialogPolicyMeter(QDialog):
                         font-weight: bold;
                     """)
                     layout.addWidget(label, row, 0)
-                    msg = f"Policy rule <b>#{rule[0]}</b> allows weak service {rule[4][j][0]}. Please consider using {rule[4][j][1]} instead."
+                    msg = f"Policy rule <b>#{rule[0]}</b> allows weak service {self.common_ports[rule[4][j][0]]} ({rule[4][j][0]}). Please consider using {self.common_ports[rule[4][j][1]]} ({rule[4][j][1]}) instead."
                     layout.addWidget(QLabel(msg), row, 1)
                     row += 1
 

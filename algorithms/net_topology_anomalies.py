@@ -120,3 +120,17 @@ def wrong_zone_attribution(firewall):
                 if float(h.zone.level) >= 4:
                     suspicious_hosts.append((h, applicable_svc, rule.number, level))
     return suspicious_hosts
+
+def vulnerable_services(firewall):
+    """
+    INPUT: Firewall object
+    OUTPUT: list of tuples [(rule_number, vuln_service)]
+    """
+    vuln_services = []
+    with open('algorithms/vulnerable_ports.json', 'r', encoding="utf8") as f:
+        vulnerable_ports = json.loads(f.read())
+    for rule in firewall.rules:
+        for svc in rule.services:
+            if svc in vulnerable_ports.keys():
+                vuln_services.append((rule.number, svc, vulnerable_ports[svc]))
+    return vuln_services

@@ -17,7 +17,7 @@ class Rule():
         self.src = src # list of refs to source hosts
         self.dest = dest # list of refs to destination hosts
         self.services = services # list of authorized ports and services for this flow
-        self.vpn = vpn # not used yet
+        self.vpn = vpn # True if flow is tunneled
         self.disabled = False # set to True only if rule is DISABLED
         self.inactive = False # set to True if logs show rule is inactive
 
