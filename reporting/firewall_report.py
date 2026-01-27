@@ -95,16 +95,16 @@ def get_firewall_data_docx(firewall):
         context['rules'].append(rule)
     return context
 
-def generate_firewall_report_latex(firewall):
+def generate_firewall_report_latex(firewall, template="firewall_report.tex.j2"):
     # get context data
     context = get_firewall_data(firewall)
     chart_file, chart_path = status_pie_chart("", firewall.company, firewall.status_stats())
     context['firewall_chart'] = chart_path
     # get report template and render it
-    report = generate_latex_report("firewall_report.tex.j2", context, firewall.name)
+    report = generate_latex_report(template, context, firewall.name)
     return report
 
-def generate_firewall_report_docx(firewall):
+def generate_firewall_report_docx(firewall, template="firewall_report.docx.j2"):
     # get context data
     context = get_firewall_data_docx(firewall)
     chart_file, chart_path = status_pie_chart("Firewall compliance", firewall.company, firewall.status_stats())
@@ -114,12 +114,12 @@ def generate_firewall_report_docx(firewall):
         "firewall_chart_height": 75
     }
     # generate report
-    report = generate_docx_report("firewall_report.docx.j2", context, images, firewall.name)
+    report = generate_docx_report(template, context, images, firewall.name)
     return report
 
-def generate_firewall_report_html(firewall):
+def generate_firewall_report_html(firewall, template="firewall_report.html.j2"):
     # get context data
     context = get_firewall_data_docx(firewall)
     # generate report
-    report = generate_html_report("firewall_report.html.j2", context, firewall.name)
+    report = generate_html_report(template, context, firewall.name)
     return report

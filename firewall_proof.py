@@ -84,10 +84,17 @@ class FWProofGUI(QMainWindow):
         self.zone = None
         self.host = None
         self.policy = None
-        # reporting settings
+        # general settings
         self.status_per_row = 3
         self.hosts_per_row = 5
+        # reporting settings
         self.report_format = "Docx"
+        self.company_html_template = "company_report.html.j2"
+        self.company_docx_template = "company_report.docx.j2"
+        self.company_tex_template = "company_report.tex.j2"
+        self.firewall_html_template = "firewall_report.html.j2"
+        self.firewall_docx_template = "firewall_report.docx.j2"
+        self.firewall_tex_template = "firewall_report.tex.j2"
 
     def init_ui(self, parent=None):
         # General layout

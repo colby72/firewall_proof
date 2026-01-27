@@ -56,23 +56,23 @@ def get_company_data(company):
         context['firewalls'].append(firewall)
     return context
 
-def generate_company_report_html(company):
+def generate_company_report_html(company, template="company_report.html.j2"):
     # get context data
     context = get_company_data(company)
     # generate report
-    report = generate_html_report("company_report.html.j2", context, company.name)
+    report = generate_html_report(template, context, company.name)
     return report
 
-def generate_company_report_latex(company):
+def generate_company_report_latex(company, template="company_report.tex.j2"):
     # get context data
     context = get_company_data(company)
     chart_file, chart_path = status_pie_chart("", company, company.status_stats())
     context['company_chart'] = chart_path
     # generate report
-    report = generate_latex_report("company_report.tex.j2", context, company.name)
+    report = generate_latex_report(template, context, company.name)
     return report
 
-def generate_company_report_docx(company):
+def generate_company_report_docx(company, template="company_report.docx.j2"):
     # get context data
     chart_file, chart_path = status_pie_chart("Company compliance", company, company.status_stats())
     context = get_company_data(company)
@@ -82,5 +82,5 @@ def generate_company_report_docx(company):
         "company_chart_height": 75
     }
     # generate report
-    report = generate_docx_report("company_report.docx.j2", context, images, company.name)
+    report = generate_docx_report(template, context, images, company.name)
     return report
