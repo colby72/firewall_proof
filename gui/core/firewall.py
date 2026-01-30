@@ -50,7 +50,8 @@ class FirewallGUI(QWidget):
         summary_layout.addWidget(QLabel("Address : "), 2, 0)
         summary_layout.addWidget(QLabel(self.fw.address), 2, 1)
         summary_layout.addWidget(QLabel("Policy : "), 3, 0)
-        summary_layout.addWidget(QLabel(self.fw.policy.name), 3, 1)
+        label = QLabel(self.fw.policy.name) if self.fw.policy else QLabel("None")
+        summary_layout.addWidget(label, 3, 1)
         summary_layout.addWidget(QLabel("Interfaces : "), 4, 0)
         summary_layout.addWidget(QLabel(str(len(self.fw.interfaces))), 4, 1)
         summary_layout.addWidget(QLabel("Hosts (Groups) : "), 5, 0)
@@ -62,10 +63,13 @@ class FirewallGUI(QWidget):
         summary_layout.setColumnStretch(summary_layout.columnCount(), 1)
         summary_layout.setRowStretch(summary_layout.rowCount(), 1)
 
-        chart_file, chart_path = status_pie_chart("Firewall compliance", self.fw.company, self.fw.status_stats())
         summary_chart = QLabel()
         summary_chart.resize(300, 300)
-        chart_pixmap = QPixmap(chart_path)
+        if self.fw.status_stats().keys():
+            chart_file, chart_path = status_pie_chart("Firewall compliance", self.fw.company, self.fw.status_stats())
+            chart_pixmap = QPixmap(chart_path)
+        else:
+            chart_pixmap = QPixmap("img/no_data.jpg")
         chart_scaled = chart_pixmap.scaled(summary_chart.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
         summary_chart.setPixmap(chart_scaled)
         summary_layout.addWidget(summary_chart, 0, 2, 8, 1)

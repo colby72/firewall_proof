@@ -1,5 +1,5 @@
 # import software's GUI resources
-import sys, os
+import sys, os, shutil
 from PyQt6 import QtGui, QtCore
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
@@ -569,7 +569,7 @@ class FWProofGUI(QMainWindow):
     def show_firewall(self):
         if self.firewall:
             self.policy = self.firewall.policy
-            apply_policy(self.firewall, self.policy)
+            if self.policy: apply_policy(self.firewall, self.policy)
             self.firewall.sort_objects()
             firewall_gui = FirewallGUI(self, self.firewall)
             self.windows.addWidget(firewall_gui)

@@ -52,10 +52,13 @@ class CompanyGUI(QWidget):
         summary_layout.setColumnStretch(summary_layout.columnCount(), 1)
         summary_layout.setRowStretch(summary_layout.rowCount(), 1)
         
-        chart_file, chart_path = status_pie_chart("Company compliance", self.company, self.company.status_stats())
         summary_chart = QLabel()
         summary_chart.resize(300, 300)
-        chart_pixmap = QPixmap(chart_path)
+        if self.company.status_stats().keys():
+            chart_file, chart_path = status_pie_chart("Company compliance", self.company, self.company.status_stats())
+            chart_pixmap = QPixmap(chart_path)
+        else:
+            chart_pixmap = QPixmap("img/no_data.jpg")
         chart_scaled = chart_pixmap.scaled(summary_chart.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
         summary_chart.setPixmap(chart_scaled)
         summary_layout.addWidget(summary_chart, 0, 2, 5, 1)
