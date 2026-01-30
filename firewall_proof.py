@@ -672,6 +672,8 @@ class FWProofGUI(QMainWindow):
             elif self.report_format == "HTML":
                 report = generate_company_report_html(self.company)
             elif self.report_format == "Latex":
+                if not shutil.which("pdflatex"):
+                    button = QMessageBox.warning(self, "Company report", f"It seems pdflatex is not installed.\nReport generation will likely fail !", buttons=QMessageBox.StandardButton.Ok)
                 report = generate_company_report_latex(self.company)
             else:
                 report = None
@@ -689,6 +691,8 @@ class FWProofGUI(QMainWindow):
             elif self.report_format == "HTML":
                 report = generate_firewall_report_html(self.firewall)
             elif self.report_format == "Latex":
+                if not shutil.which("pdflatex"):
+                    button = QMessageBox.warning(self, "Company report", f"It seems pdflatex is not installed.\nReport generation will likely fail !", buttons=QMessageBox.StandardButton.Ok)
                 report = generate_firewall_report_latex(self.firewall)
             else:
                 report = None
