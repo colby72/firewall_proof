@@ -1,10 +1,11 @@
 {
-    "name": "SpaceY",
+    "name": "Test Company",
     "fw_inventory": [
         {
             "name": "IT-OT front Firewall",
             "vendor": "Cisco ASA",
             "address": "10.23.64.51",
+            "policy": "Basic Policy",
             "interfaces": [
                 {
                     "name": "Mgmt",
@@ -132,6 +133,7 @@
             "name": "IT-OT Firewall Back",
             "vendor": "Fortinet",
             "address": "10.52.43.90",
+            "policy": "Basic Policy",
             "interfaces": [],
             "hosts": [],
             "groups": [],
@@ -185,6 +187,49 @@
             "level": 2,
             "description": "PLC assets - Security Level 3",
             "color": "#FF17E4"
+        }
+    ],
+    "policies": [
+        {
+            "name": "Basic Policy",
+            "default": "NOK",
+            "rules": [
+                {
+                    "src_zone": "EIS",
+                    "dest_zone": "DMZ-OT",
+                    "services": ["TCP/3389", "TCP/443"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "DMZ-OT",
+                    "dest_zone": "EIS",
+                    "services": null,
+                    "vpn": false,
+                    "status": "WARNING"
+                },
+                {
+                    "src_zone": "DMZ-OT",
+                    "dest_zone": "IIS-SL1",
+                    "services": ["TCP/3389"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "IIS-SL3",
+                    "dest_zone": "IIS-SL3",
+                    "services": ["TCP/512"],
+                    "vpn": true,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "IIS-SL1",
+                    "dest_zone": "IIS-SL2",
+                    "services": ["TCP/512"],
+                    "vpn": false,
+                    "status": "WARNING"
+                }
+            ]
         }
     ]
 }

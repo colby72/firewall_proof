@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+from utils import *
 from core.rule import *
 from algorithms.policy_check import *
 
@@ -97,11 +98,24 @@ class DialogEditRule(QDialog):
         vpn_default = "Yes" if self.rule.vpn else "No"
         self.rule_vpn.setCurrentText(vpn_default)
         layout.addWidget(self.rule_vpn, 4, 1)
+        # rule status
+        layout.addWidget(QLabel("Status : "), 5, 0)
+        self.status_box = QGroupBox("Manual")
+        self.status_box.setCheckable(True)
+        self.status_box.setChecked(self.rule.manual)
+        self.status_layout = QGridLayout()
+        self.status_box.setLayout(self.status_layout)
+        self.status_list = QComboBox()
+        status_labels = [s.label for s in self.fw.company.status_list]
+        self.status_list.addItems(status_labels)
+        self.status_list.setCurrentText(self.rule.status.label)
+        self.status_layout.addWidget(self.status_list, 0, 0)
+        layout.addWidget(self.status_box, 5, 1)
 
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         self.buttons.accepted.connect(self.when_ok)
         self.buttons.rejected.connect(self.when_cancel)
-        layout.addWidget(self.buttons, 5, 1)
+        layout.addWidget(self.buttons, 6, 1)
     
     def add_service(self, proto):
         self.port = None
@@ -127,10 +141,17 @@ class DialogEditRule(QDialog):
         rule_dest = [self.hosts_list[item.text()] for item in self.rule_dest.selectedItems()]
         rule_services = [self.services_list.item(i).text() for i in range(self.services_list.count())]
         rule_vpn = True if self.rule_vpn.currentText()=="Yes" else False
+        rule_manual = self.status_box.isChecked()
         self.rule.set_src(rule_src)
         self.rule.set_dest(rule_dest)
         self.rule.set_services(rule_services)
         self.rule.set_vpn(rule_vpn)
+        self.rule.set_manual(rule_manual)
+        if rule_manual:
+            status = get_status_by_label(self.fw.company, self.status_list.currentText())
+            self.rule.set_status(status)
+        else:
+            apply_policy(self.fw, self.fw.policy)
         self.close()
     
     def when_cancel(self):

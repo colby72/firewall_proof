@@ -12,6 +12,9 @@ def apply_policy(firewall, policy):
     print_info(f"All rules will be set set to policy default value: {policy.default.label}")
     firewall.policy = policy
     for fw_rule in firewall.rules:
+        # skip rule is status is set manually
+        if fw_rule.manual:
+            continue
         # set status to default value
         fw_rule.set_status(policy.default)
         

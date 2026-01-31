@@ -10,7 +10,7 @@ import time
 
 
 class Rule():
-    def __init__(self, number, src, dest, services, vpn=False):
+    def __init__(self, number, src, dest, services, vpn=False, manual=False):
         # filled in by user
         self.id = 0 # not used yet
         self.number = number # rule's number
@@ -18,6 +18,7 @@ class Rule():
         self.dest = dest # list of refs to destination hosts
         self.services = services # list of authorized ports and services for this flow
         self.vpn = vpn # True if flow is tunneled
+        self.manual = manual # status is set manually
         self.disabled = False # set to True only if rule is DISABLED
         self.inactive = False # set to True if logs show rule is inactive
 
@@ -43,6 +44,10 @@ class Rule():
 
     def set_status(self, status):
         self.status = status
+        self.date = time.strftime("%B %d. %Y")
+    
+    def set_manual(self, manual):
+        self.manual = manual
         self.date = time.strftime("%B %d. %Y")
     
     def disable(self):
