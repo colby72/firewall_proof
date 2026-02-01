@@ -1,0 +1,541 @@
+{
+    "name": "Space Y",
+    "status": [
+        {
+            "label": "OK",
+            "color": "#1ba91c",
+            "compliant": true
+        },
+        {
+            "label": "WARNING",
+            "color": "#f4bf14",
+            "compliant": false
+        },
+        {
+            "label": "NOK",
+            "color": "#e83232",
+            "compliant": false
+        },
+        {
+            "label": "Derogation",
+            "color": "#e832f2",
+            "compliant": false
+        }
+    ],
+    "zones": [
+        {
+            "name": "Internet DMZ",
+            "level": 5,
+            "description": "Corporate Internet DMZ",
+            "color": "#26D189"
+        },
+        {
+            "name": "Remote access",
+            "level": 5,
+            "description": "Vendor remote access",
+            "color": "#A5B34B"
+        },
+        {
+            "name": "Corporate Staff",
+            "level": 4,
+            "description": "Business staff workstations",
+            "color": "#174EFF"
+        },
+        {
+            "name": "Corporate Resources",
+            "level": 4,
+            "description": "Business servers",
+            "color": "#D79AE6"
+        },
+        {
+            "name": "OT DMZ",
+            "level": 3.5,
+            "description": "DMZ segregating IT and OT domains",
+            "color": "#FF17E4"
+        },
+        {
+            "name": "OT Apps",
+            "level": 3,
+            "description": "Plant servers and resources",
+            "color": "#FF17E4"
+        },
+        {
+            "name": "OT Supervisory",
+            "level": 3,
+            "description": "Plant-wide supervisory and control systems",
+            "color": "#FF17E4"
+        },
+        {
+            "name": "OT Engineering",
+            "level": 3,
+            "description": "Engineering workstations",
+            "color": "#FF17E4"
+        },
+        {
+            "name": "Local HMI #1",
+            "level": 2,
+            "description": "Local supervisory systems - Site #1",
+            "color": "#FF17E4"
+        },
+        {
+            "name": "Local HMI #2",
+            "level": 2,
+            "description": "Local supervisory systems - Site #2",
+            "color": "#FF17E4"
+        },
+        {
+            "name": "Control #1",
+            "level": 2,
+            "description": "Control systems - Site #1",
+            "color": "#FF17E4"
+        },
+        {
+            "name": "Control #2",
+            "level": 2,
+            "description": "Control systems - Site #2",
+            "color": "#FF17E4"
+        }
+    ],
+    "policies": [
+        {
+            "name":"IT Policy",
+            "default": "WARNING",
+            "rules": [
+                {
+                    "src_zone": "Corporate Staff",
+                    "dest_zone": "Internet DMZ",
+                    "services": ["TCP/80", "TCP/443", "TCP/25"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "Corporate Staff",
+                    "dest_zone": "OT DMZ",
+                    "services": ["TCP/22", "TCP/3389", "TCP/5432"],
+                    "vpn": false,
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "name": "OT Policy",
+            "default": "NOK",
+            "rules": [
+                {
+                    "src_zone": "OT DMZ",
+                    "dest_zone": "OT Supervisory",
+                    "services": ["TCP/443"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "OT Supervisory",
+                    "dest_zone": "OT DMZ",
+                    "services": ["TCP/5432"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "OT Engineering",
+                    "dest_zone": "OT DMZ",
+                    "services": ["TCP/22"],
+                    "vpn": false,
+                    "status": "WARNING"
+                },
+                {
+                    "src_zone": "OT Engineering",
+                    "dest_zone": "OT Supervisory",
+                    "services": ["TCP/443", "TCP/1433"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "OT Engineering",
+                    "dest_zone": "Control #1",
+                    "services": ["TCP/502", "TCP/2404"],
+                    "vpn": false,
+                    "status": "WARNING"
+                }
+            ]
+        }
+    ],
+    "fw_inventory": [
+        {
+            "name": "IT Domain",
+            "vendor": "Fortinet",
+            "address": "10.52.43.98",
+            "policy": "IT Policy",
+            "interfaces": [],
+            "hosts": [
+                {
+                    "name": "Web Server",
+                    "address": "10.10.0.4/29",
+                    "zone": "Internet DMZ"
+                },
+                {
+                    "name": "Email Server",
+                    "address": "10.10.0.5/29",
+                    "zone": "Internet DMZ"
+                },
+                {
+                    "name": "WSUS Server",
+                    "address": "10.10.0.6/29",
+                    "zone": "Internet DMZ"
+                },
+                {
+                    "name": "Active Directory",
+                    "address": "192.168.10.9/24",
+                    "zone": "Corporate Resources"
+                },
+                {
+                    "name": "File Server",
+                    "address": "192.168.10.10/24",
+                    "zone": "Corporate Resources"
+                },
+                {
+                    "name": "WKS-01",
+                    "address": "192.168.10.11/24",
+                    "zone": "Corporate Staff"
+                },
+                {
+                    "name": "WKS-02",
+                    "address": "192.168.10.12/24",
+                    "zone": "Corporate Staff"
+                },
+                {
+                    "name": "Rebound-01",
+                    "address": "192.168.4.6/28",
+                    "zone": "OT DMZ"
+                },
+                {
+                    "name": "Rebound-02",
+                    "address": "192.168.4.7/28",
+                    "zone": "OT DMZ"
+                },
+                {
+                    "name": "Historian-Rep",
+                    "address": "192.168.4.8/28",
+                    "zone": "OT DMZ"
+                }
+            ],
+            "groups": [],
+            "rules": [
+                {
+                    "number": 2,
+                    "src": ["WKS-01", "WKS-02"],
+                    "dest": ["File Server"],
+                    "services": ["TCP/139", "TCP/445"]
+                },
+                {
+                    "number": 3,
+                    "src": ["WKS-01", "WKS-02"],
+                    "dest": ["Rebound-01", "Rebound-02"],
+                    "services": ["TCP/3389"]
+                },
+                {
+                    "number": 4,
+                    "src": ["WKS-02"],
+                    "dest": ["Historian-Rep"],
+                    "services": ["UDP/3306"]
+                },
+                {
+                    "number": 5,
+                    "src": ["Active Directory"],
+                    "dest": ["WSUS Server"],
+                    "services": ["TCP/445"]
+                }
+            ]
+        },
+        {
+            "name": "OT Domain",
+            "vendor": "Fortinet",
+            "address": "10.52.43.97",
+            "policy":"OT Policy",
+            "interfaces": [],
+            "hosts": [
+                {
+                    "name": "Rebound-01",
+                    "address": "192.168.4.6/28",
+                    "zone": "OT DMZ"
+                },
+                {
+                    "name": "Rebound-02",
+                    "address": "192.168.4.7/28",
+                    "zone": "OT DMZ"
+                },
+                {
+                    "name": "Historian-Rep",
+                    "address": "192.168.4.8/28",
+                    "zone": "OT DMZ"
+                },
+                {
+                    "name": "Domain Controller",
+                    "address": "172.16.10.11/28",
+                    "zone": "OT Apps"
+                },
+                {
+                    "name": "AV Server",
+                    "address": "172.16.10.10/28",
+                    "zone": "OT Apps"
+                },
+                {
+                    "name": "Printer",
+                    "address": "172.16.10.12/28",
+                    "zone": "OT Apps"
+                },
+                {
+                    "name": "Historian",
+                    "address": "172.16.20.9/24",
+                    "zone": "OT Supervisory"
+                },
+                {
+                    "name": "Alarm Server",
+                    "address": "172.16.20.10/24",
+                    "zone": "OT Supervisory"
+                },
+                {
+                    "name": "DB Server",
+                    "address": "172.16.20.11/24",
+                    "zone": "OT Supervisory"
+                },
+                {
+                    "name": "EWS-01",
+                    "address": "172.16.20.12/24",
+                    "zone": "OT Engineering"
+                }
+            ],
+            "groups": [],
+            "rules": [
+                {
+                    "number": 2,
+                    "src": ["Domain Controller"],
+                    "dest": ["AV Server", "Historian", "Alarm Server", "DB Server", "EWS-01"],
+                    "services": ["UDP/53", "UDP/123"]
+                },
+                {
+                    "number": 3,
+                    "src": ["Rebound-01", "Rebound-02"],
+                    "dest": ["Historian", "Alarm Server"],
+                    "services": ["TCP/80", "TCP/443"]
+                },
+                {
+                    "number": 4,
+                    "src": ["Rebound-01", "Rebound-02"],
+                    "dest": ["EWS-01"],
+                    "services": ["TCP/5900"]
+                },
+                {
+                    "number": 5,
+                    "src": ["Rebound-01", "Rebound-02"],
+                    "dest": ["DB Server"],
+                    "services": ["TCP/1433"]
+                },
+                {
+                    "number": 6,
+                    "src": ["Historian-Rep"],
+                    "dest": ["Historian"],
+                    "services": ["TCP/3306"]
+                },
+                {
+                    "number": 7,
+                    "src": ["EWS-01"],
+                    "dest": ["DB Server"],
+                    "services": ["TCP/5432"]
+                }
+            ]
+        },
+        {
+            "name": "FW-Site1",
+            "vendor": "Palo Alto",
+            "address": "10.52.10.100",
+            "policy":"OT Policy",
+            "interfaces": [],
+            "hosts": [
+                {
+                    "name": "Historian",
+                    "address": "172.16.20.9/24",
+                    "zone": "OT Supervisory"
+                },
+                {
+                    "name": "Alarm Server",
+                    "address": "172.16.20.10/24",
+                    "zone": "OT Supervisory"
+                },
+                {
+                    "name": "DB Server",
+                    "address": "172.16.20.11/24",
+                    "zone": "OT Supervisory"
+                },
+                {
+                    "name": "EWS-01",
+                    "address": "172.16.20.12/24",
+                    "zone": "OT Engineering"
+                },
+                {
+                    "name": "HMI-01",
+                    "address": "172.10.0.6/24",
+                    "zone": "Local HMI #1"
+                },
+                {
+                    "name": "OWS-01",
+                    "address": "172.10.0.7/24",
+                    "zone": "Local HMI #1"
+                },
+                {
+                    "name": "RTU-GE-01",
+                    "address": "172.10.0.8/24",
+                    "zone": "Control #1"
+                },
+                {
+                    "name": "PLC-Schneider-01",
+                    "address": "172.10.0.9/24",
+                    "zone": "Control #1"
+                },
+                {
+                    "name": "Provider GE",
+                    "address": "102.13.47.28/32",
+                    "zone": "Remote access"
+                }
+            ],
+            "groups": [],
+            "rules": [
+                {
+                    "number": 2,
+                    "src": ["Provider GE"],
+                    "dest": ["RTU-GE-01"],
+                    "services": ["TCP/23", "TCP/443"]
+                },
+                {
+                    "number": 3,
+                    "src": ["OWS-01"],
+                    "dest": ["HMI-01"],
+                    "services": ["TCP/443"]
+                },
+                {
+                    "number": 4,
+                    "src": ["RTU-GE-01"],
+                    "dest": ["HMI-01"],
+                    "services": ["TCP/18245"]
+                },
+                {
+                    "number": 5,
+                    "src": ["PLC-Schneider-01"],
+                    "dest": ["HMI-01"],
+                    "services": ["TCP/502"]
+                },
+                {
+                    "number": 6,
+                    "src": ["PLC-Schneider-01"],
+                    "dest": ["Historian", "Alarm Server", "DB Server"],
+                    "services": ["TCP/502"]
+                },
+                {
+                    "number": 7,
+                    "src": ["EWS-01"],
+                    "dest": ["RTU-GE-01"],
+                    "services": ["TCP/23"]
+                },
+                {
+                    "number": 8,
+                    "src": ["EWS-01"],
+                    "dest": ["PLC-Schneider-01"],
+                    "services": ["TCP/22"]
+                },
+                {
+                    "number": 9,
+                    "src": ["RTU-GE-01", "PLC-Schneider-01"],
+                    "dest": ["Historian"],
+                    "services": ["UDP/161", "UDP/162"]
+                },
+                {
+                    "number": 6,
+                    "src": ["RTU-GE-01"],
+                    "dest": ["Historian", "Alarm Server", "DB Server"],
+                    "services": ["TCP/18245"]
+                }
+            ]
+        },
+        {
+            "name": "FW-Site2",
+            "vendor": "Palo Alto",
+            "address": "10.52.20.200",
+            "policy":"OT Policy",
+            "interfaces": [],
+            "hosts": [
+                {
+                    "name": "Historian",
+                    "address": "172.16.20.9/24",
+                    "zone": "OT Supervisory"
+                },
+                {
+                    "name": "Alarm Server",
+                    "address": "172.16.20.10/24",
+                    "zone": "OT Supervisory"
+                },
+                {
+                    "name": "DB Server",
+                    "address": "172.16.20.11/24",
+                    "zone": "OT Supervisory"
+                },
+                {
+                    "name": "EWS-01",
+                    "address": "172.16.20.12/24",
+                    "zone": "OT Engineering"
+                },
+                {
+                    "name": "HMI-02",
+                    "address": "172.20.0.11/24",
+                    "zone": "Local HMI #2"
+                },
+                {
+                    "name": "OWS-02",
+                    "address": "172.20.0.12/24",
+                    "zone": "Local HMI #2"
+                },
+                {
+                    "name": "PLC-Siemens-01",
+                    "address": "172.20.0.13/24",
+                    "zone": "Control #2"
+                },
+                {
+                    "name": "PLC-Siemens-02",
+                    "address": "172.20.0.14/24",
+                    "zone": "Control #2"
+                }
+            ],
+            "groups": [],
+            "rules": [
+                {
+                    "number": 2,
+                    "src": ["OWS-02"],
+                    "dest": ["HMI-02"],
+                    "services": ["TCP/443"]
+                },
+                {
+                    "number": 3,
+                    "src": ["OWS-02"],
+                    "dest": ["PLC-Siemens-01", "PLC-Siemens-02"],
+                    "services": ["TCP/102"]
+                },
+                {
+                    "number": 4,
+                    "src": ["PLC-Siemens-01", "PLC-Siemens-02"],
+                    "dest": ["Historian", "Alarm Server", "DB Server"],
+                    "services": ["TCP/102"]
+                },
+                {
+                    "number": 5,
+                    "src": ["EWS-01"],
+                    "dest": ["PLC-Siemens-01", "PLC-Siemens-02"],
+                    "services": ["TCP/23"]
+                },
+                {
+                    "number": 6,
+                    "src": ["PLC-Siemens-01", "PLC-Siemens-02"],
+                    "dest": ["HMI-02"],
+                    "services": ["TCP/102"]
+                }
+            ]
+        }
+    ]
+}
