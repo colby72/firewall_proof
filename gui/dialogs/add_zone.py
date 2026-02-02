@@ -19,7 +19,7 @@ class DialogAddZone(QDialog):
 
         layout.addWidget(QLabel("Name : "), 0, 0)
         self.zone_name = QLineEdit()
-        self.zone_name.setMaxLength(10)
+        self.zone_name.setMaxLength(50)
         self.zone_name.setPlaceholderText("Policy name ...")
         layout.addWidget(self.zone_name, 0, 1, 1, 2)
         layout.addWidget(QLabel("Purdue Level : "), 1, 0)
@@ -28,7 +28,7 @@ class DialogAddZone(QDialog):
         layout.addWidget(self.purdue_level, 1, 1, 1, 2)
         layout.addWidget(QLabel("Description : "), 2, 0)
         self.zone_desc = QLineEdit()
-        self.zone_desc.setMaxLength(60)
+        self.zone_desc.setMaxLength(100)
         self.zone_desc.setPlaceholderText("Zone description ...")
         layout.addWidget(self.zone_desc, 2, 1, 1, 2)
         layout.addWidget(QLabel("Color : "), 3, 0)

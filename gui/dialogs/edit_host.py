@@ -21,7 +21,7 @@ class DialogEditHost(QDialog):
 
         layout.addWidget(QLabel("Name : "), 0, 0)
         self.host_name = QLineEdit()
-        self.host_name.setMaxLength(20)
+        self.host_name.setMaxLength(50)
         self.host_name.setText(self.host.name)
         self.host_name.setPlaceholderText("Host name ...")
         layout.addWidget(self.host_name, 0, 1)

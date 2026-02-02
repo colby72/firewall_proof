@@ -20,6 +20,7 @@
     "TCP/445": "SMB",
     "TCP/464": "Kerberos",
     "TCP/465": "SMTPS",
+    "TCP/515": "Line Printer",
     "TCP/563": "NNTPS",
     "TCP/587": "SMTP",
     "TCP/593": "Microsoft DCOM",

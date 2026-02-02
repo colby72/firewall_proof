@@ -17,7 +17,7 @@
             "compliant": false
         },
         {
-            "label": "Derogation",
+            "label": "DEROGATION",
             "color": "#e832f2",
             "compliant": false
         }
@@ -27,7 +27,7 @@
             "name": "Internet DMZ",
             "level": 5,
             "description": "Corporate Internet DMZ",
-            "color": "#26D189"
+            "color": "#986a44"
         },
         {
             "name": "Remote access",
@@ -39,67 +39,67 @@
             "name": "Corporate Staff",
             "level": 4,
             "description": "Business staff workstations",
-            "color": "#174EFF"
+            "color": "#e01b24"
         },
         {
             "name": "Corporate Resources",
             "level": 4,
             "description": "Business servers",
-            "color": "#D79AE6"
+            "color": "#ff14af"
         },
         {
             "name": "OT DMZ",
             "level": 3.5,
             "description": "DMZ segregating IT and OT domains",
-            "color": "#FF17E4"
+            "color": "#e66100"
         },
         {
             "name": "OT Apps",
             "level": 3,
             "description": "Plant servers and resources",
-            "color": "#FF17E4"
+            "color": "#813d9c"
         },
         {
             "name": "OT Supervisory",
             "level": 3,
             "description": "Plant-wide supervisory and control systems",
-            "color": "#FF17E4"
+            "color": "#2a50ea"
         },
         {
             "name": "OT Engineering",
             "level": 3,
             "description": "Engineering workstations",
-            "color": "#FF17E4"
+            "color": "#3584e4"
         },
         {
             "name": "Local HMI #1",
             "level": 2,
             "description": "Local supervisory systems - Site #1",
-            "color": "#FF17E4"
+            "color": "#208b2c"
         },
         {
             "name": "Local HMI #2",
             "level": 2,
             "description": "Local supervisory systems - Site #2",
-            "color": "#FF17E4"
+            "color": "#208b2c"
         },
         {
             "name": "Control #1",
             "level": 2,
             "description": "Control systems - Site #1",
-            "color": "#FF17E4"
+            "color": "#57e389"
         },
         {
             "name": "Control #2",
             "level": 2,
             "description": "Control systems - Site #2",
-            "color": "#FF17E4"
+            "color": "#57e389"
         }
     ],
     "policies": [
         {
             "name":"IT Policy",
-            "default": "WARNING",
+            "default": "NOK",
             "rules": [
                 {
                     "src_zone": "Corporate Staff",
@@ -111,7 +111,28 @@
                 {
                     "src_zone": "Corporate Staff",
                     "dest_zone": "OT DMZ",
-                    "services": ["TCP/22", "TCP/3389", "TCP/5432"],
+                    "services": ["TCP/3389", "TCP/3306"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "Corporate Resources",
+                    "dest_zone": "Internet DMZ",
+                    "services": ["TCP/445"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "OT DMZ",
+                    "dest_zone": "Corporate Staff",
+                    "services": ["TCP/3306"],
+                    "vpn": false,
+                    "status": "WARNING"
+                },
+                {
+                    "src_zone": "Corporate Staff",
+                    "dest_zone": "Corporate Resources",
+                    "services": ["TCP/636", "TCP/88", "TCP/139", "TCP/445", "UDP/53"],
                     "vpn": false,
                     "status": "OK"
                 }
@@ -124,37 +145,107 @@
                 {
                     "src_zone": "OT DMZ",
                     "dest_zone": "OT Supervisory",
-                    "services": ["TCP/443"],
+                    "services": ["TCP/443", "TCP/1433", "TCP/3306"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "OT Apps",
+                    "dest_zone": "OT Apps",
+                    "services": ["UDP/53", "UDP/123"],
                     "vpn": false,
                     "status": "OK"
                 },
                 {
                     "src_zone": "OT Supervisory",
-                    "dest_zone": "OT DMZ",
-                    "services": ["TCP/5432"],
+                    "dest_zone": "OT Apps",
+                    "services": ["UDP/53", "UDP/123"],
                     "vpn": false,
                     "status": "OK"
                 },
                 {
                     "src_zone": "OT Engineering",
-                    "dest_zone": "OT DMZ",
-                    "services": ["TCP/22"],
+                    "dest_zone": "OT Apps",
+                    "services": ["TCP/445", "TCP/9100"],
                     "vpn": false,
-                    "status": "WARNING"
+                    "status": "OK"
                 },
                 {
                     "src_zone": "OT Engineering",
                     "dest_zone": "OT Supervisory",
-                    "services": ["TCP/443", "TCP/1433"],
+                    "services": ["TCP/443", "TCP/5432"],
                     "vpn": false,
                     "status": "OK"
                 },
                 {
                     "src_zone": "OT Engineering",
                     "dest_zone": "Control #1",
-                    "services": ["TCP/502", "TCP/2404"],
+                    "services": ["TCP/22"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "OT Engineering",
+                    "dest_zone": "Control #1",
+                    "services": ["TCP/23"],
                     "vpn": false,
                     "status": "WARNING"
+                },
+                {
+                    "src_zone": "OT Engineering",
+                    "dest_zone": "Control #2",
+                    "services": ["TCP/22"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "OT Engineering",
+                    "dest_zone": "Control #2",
+                    "services": ["TCP/23"],
+                    "vpn": false,
+                    "status": "WARNING"
+                },
+                {
+                    "src_zone": "Control #1",
+                    "dest_zone": "OT Supervisory",
+                    "services": ["UDP/161", "UDP/162"],
+                    "vpn": false,
+                    "status": "WARNING"
+                },
+                {
+                    "src_zone": "Control #2",
+                    "dest_zone": "OT Supervisory",
+                    "services": ["UDP/161", "UDP/162"],
+                    "vpn": false,
+                    "status": "WARNING"
+                },
+                {
+                    "src_zone": "Control #1",
+                    "dest_zone": "Local HMI #1",
+                    "services": ["TCP/502", "TCP/18245"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "Local HMI #1",
+                    "dest_zone": "Local HMI #1",
+                    "services": ["TCP/443"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "Local HMI #2",
+                    "dest_zone": "Local HMI #2",
+                    "services": ["TCP/443"],
+                    "vpn": false,
+                    "status": "OK"
+                },
+                {
+                    "src_zone": "Local HMI #2",
+                    "dest_zone": "Control #2",
+                    "services": ["TCP/102"],
+                    "vpn": false,
+                    "status": "OK"
                 }
             ]
         }
@@ -243,6 +334,24 @@
                     "src": ["Active Directory"],
                     "dest": ["WSUS Server"],
                     "services": ["TCP/445"]
+                },
+                {
+                    "number": 6,
+                    "src": ["WKS-01", "WKS-02"],
+                    "dest": ["Web Server"],
+                    "services": ["TCP/443"]
+                },
+                {
+                    "number": 7,
+                    "src": ["WKS-01", "WKS-02"],
+                    "dest": ["Email Server"],
+                    "services": ["TCP/25"]
+                },
+                {
+                    "number": 8,
+                    "src": ["WKS-01", "WKS-02"],
+                    "dest": ["Active Directory"],
+                    "services": ["TCP/636", "TCP/88", "TCP/139", "UDP/53"]
                 }
             ]
         },
@@ -341,6 +450,12 @@
                     "src": ["EWS-01"],
                     "dest": ["DB Server"],
                     "services": ["TCP/5432"]
+                },
+                {
+                    "number": 7,
+                    "src": ["EWS-01"],
+                    "dest": ["Printer"],
+                    "services": ["TCP/9100"]
                 }
             ]
         },
