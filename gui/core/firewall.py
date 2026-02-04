@@ -119,6 +119,8 @@ class FirewallGUI(QWidget):
 
         # collapsible hosts box
         hosts_collapse = QCollapsible("List of hosts")
+        hosts_collapse.setCollapsedIcon(QIcon("img/right-chevron.png"))
+        hosts_collapse.setExpandedIcon(QIcon("img/down-chevron.png"))
         hosts_widget = QWidget()
         hosts_layout = QGridLayout()
         hosts_layout.setSpacing(10)
