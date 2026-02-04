@@ -65,10 +65,11 @@ class FWProofGUI(QMainWindow):
 
         # Related sub windows
         self.windows = QStackedWidget()
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setWidget(self.windows)
-        self.setCentralWidget(self.scroll_area)
+        #self.scroll_area = QScrollArea()
+        #self.scroll_area.setWidgetResizable(True)
+        #self.scroll_area.setWidget(self.windows)
+        #self.setCentralWidget(self.scroll_area)
+        self.setCentralWidget(self.windows)
         self.default = DefaultGUI(self)
         self.windows.addWidget(self.default)
 
@@ -530,8 +531,13 @@ class FWProofGUI(QMainWindow):
     def show_home(self):
         if self.project:
             home = HomeGUI(self, self.project)
-            self.windows.addWidget(home)
-            self.windows.setCurrentWidget(home)
+            scroll_area = QScrollArea()
+            scroll_area.setWidgetResizable(True)
+            scroll_area.setWidget(home)
+            #self.windows.addWidget(home)
+            #self.windows.setCurrentWidget(home)
+            self.windows.addWidget(scroll_area)
+            self.windows.setCurrentWidget(scroll_area)
     
     def add_company(self):
         if self.project:
@@ -545,8 +551,13 @@ class FWProofGUI(QMainWindow):
         if self.company:
             self.company.sort_zones_by_level()
             company_gui = CompanyGUI(self)
-            self.windows.addWidget(company_gui)
-            self.windows.setCurrentWidget(company_gui)
+            scroll_area = QScrollArea()
+            scroll_area.setWidgetResizable(True)
+            scroll_area.setWidget(company_gui)
+            self.windows.addWidget(scroll_area)
+            #self.windows.addWidget(company_gui)
+            self.windows.setCurrentWidget(scroll_area)
+            #self.windows.setCurrentWidget(company_gui)
     
     def add_firewall(self):
         if self.company:
@@ -572,8 +583,13 @@ class FWProofGUI(QMainWindow):
             if self.policy: apply_policy(self.firewall, self.policy)
             self.firewall.sort_objects()
             firewall_gui = FirewallGUI(self, self.firewall)
-            self.windows.addWidget(firewall_gui)
-            self.windows.setCurrentWidget(firewall_gui)
+            scroll_area = QScrollArea()
+            scroll_area.setWidgetResizable(True)
+            scroll_area.setWidget(firewall_gui)
+            #self.windows.addWidget(firewall_gui)
+            #self.windows.setCurrentWidget(firewall_gui)
+            self.windows.addWidget(scroll_area)
+            self.windows.setCurrentWidget(scroll_area)
     
     def add_interface(self):
         if self.firewall:
@@ -603,8 +619,13 @@ class FWProofGUI(QMainWindow):
         if self.policy:
             self.policy.sort_rules_by_zone()
             policy_gui = PolicyGUI(self, self.policy)
-            self.windows.addWidget(policy_gui)
-            self.windows.setCurrentWidget(policy_gui)
+            scroll_area = QScrollArea()
+            scroll_area.setWidgetResizable(True)
+            scroll_area.setWidget(policy_gui)
+            #self.windows.addWidget(policy_gui)
+            #self.windows.setCurrentWidget(policy_gui)
+            self.windows.addWidget(scroll_area)
+            self.windows.setCurrentWidget(scroll_area)
     
     def add_policy_rule(self):
         if self.policy:
