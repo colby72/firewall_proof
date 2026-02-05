@@ -1,5 +1,5 @@
 # import software's GUI resources
-import sys, os, shutil
+import sys, os, shutil, io
 from PyQt6 import QtGui, QtCore
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
@@ -765,6 +765,11 @@ class FWProofGUI(QMainWindow):
         self.windows.addWidget(home)
         self.windows.setCurrentWidget(home)
 
+
+buffer = io.StringIO()
+sys.stdout = sys.stderr = buffer
+#sys.stdout = open("stdout.log", "w")
+#sys.stderr = open("stderr.log", "w")
 
 app = QApplication(sys.argv)
 

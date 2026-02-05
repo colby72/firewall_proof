@@ -1,8 +1,8 @@
 from jinja2 import Environment, FileSystemLoader
 from xhtml2pdf import pisa
-import os, shutil, datetime, docxtpl, subprocess, glob
+import os, shutil, datetime, docxtpl, subprocess, glob, docx2pdf, sys
 from docx.shared import Mm
-from spire.doc import Document, FileFormat
+#from spire.doc import Document, FileFormat
 
 from cli.logger import *
 from utils import *
@@ -99,13 +99,22 @@ def generate_docx_report(template, context, images, report_name):
         return None'''
     # save PDF report
     try:
-        document = Document()
-        document.LoadFromFile(docx_file)
-        document.SaveToFile(pdf_file, FileFormat.PDF)
-        shutil.move(docx_file, f"reporting/export/{docx_file}")
-        shutil.move(pdf_file, f"reporting/export/{pdf_file}")
-        print_success(f"PDF report '{pdf_file}' generated successfully")
-        return pdf_file
+        if sys.platform == "linux":
+            subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', docx_file])
+            shutil.move(docx_file, f"reporting/export/{docx_file}")
+            shutil.move(pdf_file, f"reporting/export/{pdf_file}")
+            print_success(f"PDF report '{pdf_file}' generated successfully")
+            return pdf_file
+        if sys.platform == "win32":
+            #buffer = io.StringIO()
+            #sys.stdout = sys.stderr = buffer
+            #sys.stdout = open("stdout.log", "w")
+            #sys.stderr = open("stderr.log", "w")
+            docx2pdf.convert(docx_file, pdf_file)
+            shutil.move(docx_file, f"reporting/export/{docx_file}")
+            shutil.move(pdf_file, f"reporting/export/{pdf_file}")
+            print_success(f"PDF report '{pdf_file}' generated successfully")
+            return pdf_file
     except:
         print_error(f"Error while generating PDF report '{report_name}'")
         return None
