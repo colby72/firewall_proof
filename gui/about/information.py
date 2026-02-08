@@ -66,10 +66,10 @@ class Information(QDialog):
             "jsonpickle - BSD-3-Clause",
             "colorama - BSD-3-Clause",
             "jinja2 - BSD-3-Clause",
-            "matplotlib",
+            "matplotlib - BSD-style license",
             "docxtpl - LGPL v2.1",
             "docx - MIT license",
-            "spire-doc free - e-iceblue",
+            "docx2pdf - MIT license",
             "xhtml2pdf - Apache 2.0" 
         ]
         libraries_layout.addWidget(package_title, 0, 0)
@@ -82,6 +82,8 @@ class Information(QDialog):
         softwares = [
             "pdflatex (Linux)",
             "MikTeX or any other LaTeX editor (Windows)",
+            "libreoffice (Linux)",
+            "Microsoft Word (Windows)"
         ]
         libraries_layout.addWidget(software_title, 0, 1)
         for i, s in enumerate(softwares):

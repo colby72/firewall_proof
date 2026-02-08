@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2026-02-08
+
+First official release.
+
+### Fixed
+
+- Edit collapsible Hosts widget's icon
+- Fix bug when converting Docx reports into PDF using `docx2pdf`
+- Fix bug with scroll bar slider's not resetting position
+
+## Updated
+
+- JSON-formatted services and OT services list
+
 ## [1.0.0-beta3] - 2026-02-01
 
 Beta version icorporating fixes amid feedback from beta testers.

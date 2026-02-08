@@ -14,11 +14,13 @@ For an efficient secure network filtering, a Firewall shall at least be configur
 
 ## Installation
 
-*TODO*
+No installation required. **Firewall Proof** is distributed as a portable standalone executable.
 
 ## Usage
 
-*TODO*
+- Download the appropriate ZIP archive as per your OS (Windows or Linux)
+- Uncompress the archive
+- Run the **Firewall Proof** executable
 
 ## Why I started this project ?
 
@@ -40,6 +42,15 @@ This led me to start this project, a free alternative that would be:
 
 But most importantly, I'm doing it to learn, sharpen my programming skills, practice my hobby  ... and to have fun.
 
+## Development status and Roadmap
+
+The software is still in its early development stage. At this point, and in addition to bug fixes, there are several software features that can be either improved or added. Some of these, to mention a few:
+
+- The **Reporting** feature is working. Nevertheless, reports templates are still primitive and to be further developed.
+- The **Analytics** feature already implement some basic algorithms. But these are yet yet to be polished and further advanced algorithms are to be implemented.
+- GUI design to be polished, especially through QSS stylesheets.
+- Statistics plots to be improved.
+
 ## License
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -52,7 +63,19 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 For any commercial or professional use, please first send an email to ramy.software@protonmail.com. Commercial use would be allowed in certain situations.
 
-## Contribution
+### Commercial and professional use
+
+In case:
+
+- You wish to use this software for commercial purposes, or in a professional environment
+- You need more custom reporting features or report templates templates (Microsoft Word, HTML, LaTeX)
+- You require technical assistance with the software usage
+- Need technical advice on how to define and fine-tune an effective policy for your architecture
+- You want to add custom analytics features to the software
+
+Please send an email to ramy.software@protonmail.com and I shall be happy to help as I can.
+
+### Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the license above, shall be

@@ -54,10 +54,10 @@ class FWProofGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowIcon(QtGui.QIcon('img/logo05.png'))
-        self.version = "v1.0.0-beta3"
+        self.version = "v1.0.0"
         self.left = 60
         self.top = 60
-        self.width = 1500
+        self.width = 1280
         self.height = 900
         self.toolbar_icon_size = 30
         self.init_ui()

@@ -10,7 +10,7 @@ class Settings(QDialog):
         self.main_window = main_window
         self.setWindowTitle(f"Settings - Firewall Proof {self.main_window.version}")
         self.setWindowIcon(QIcon("img/screwdriver_wrench_icon.png"))
-        self.resize(400, 410)
+        self.resize(450, 410)
 
         # widget design
         layout = QVBoxLayout()
