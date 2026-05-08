@@ -766,10 +766,8 @@ class FWProofGUI(QMainWindow):
         self.windows.setCurrentWidget(home)
 
 
-buffer = io.StringIO()
-sys.stdout = sys.stderr = buffer
-#sys.stdout = open("stdout.log", "w")
-#sys.stderr = open("stderr.log", "w")
+#buffer = io.StringIO()
+#sys.stdout = sys.stderr = buffer
 
 app = QApplication(sys.argv)
 
