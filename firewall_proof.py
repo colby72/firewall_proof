@@ -1,9 +1,9 @@
 # import software's GUI resources
 import sys, os, shutil, io
-from PyQt6 import QtGui, QtCore
-from PyQt6.QtWidgets import *
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
+from PySide6 import QtGui, QtCore
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtCore import *
 
 from project import *
 
@@ -550,13 +550,13 @@ class FWProofGUI(QMainWindow):
     def show_company(self):
         if self.company:
             self.company.sort_zones_by_level()
-            company_gui = CompanyGUI(self)
-            scroll_area = QScrollArea()
-            scroll_area.setWidgetResizable(True)
-            scroll_area.setWidget(company_gui)
-            self.windows.addWidget(scroll_area)
+            self.company_gui = CompanyGUI(self, self.company)
+            self.scroll_area = QScrollArea()
+            self.scroll_area.setWidgetResizable(True)
+            self.scroll_area.setWidget(self.company_gui)
+            self.windows.addWidget(self.scroll_area)
             #self.windows.addWidget(company_gui)
-            self.windows.setCurrentWidget(scroll_area)
+            self.windows.setCurrentWidget(self.scroll_area)
             #self.windows.setCurrentWidget(company_gui)
     
     def add_firewall(self):

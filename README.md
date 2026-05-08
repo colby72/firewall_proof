@@ -1,5 +1,4 @@
 ![Python 3](https://img.shields.io/badge/python-3.x-blue.svg)
-![PyQt6](https://img.shields.io/badge/PyQt6-available-brightgreen)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # Firewall Proof

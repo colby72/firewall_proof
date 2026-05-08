@@ -1,7 +1,7 @@
-from PyQt6 import QtGui, QtCore
-from PyQt6.QtWidgets import *
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
+from PySide6 import QtGui, QtCore
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtCore import *
 
 from gui.dialogs.add_interface import *
 from gui.dialogs.edit_interface import *
@@ -70,8 +70,8 @@ class FirewallGUI(QWidget):
             chart_pixmap = QPixmap(chart_path)
         else:
             chart_pixmap = QPixmap("img/no_data.jpg")
-        chart_scaled = chart_pixmap.scaled(summary_chart.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
-        summary_chart.setPixmap(chart_scaled)
+        chart_pixmap = chart_pixmap.scaled(summary_chart.size(), QtCore.Qt.KeepAspectRatio)
+        summary_chart.setPixmap(chart_pixmap)
         summary_layout.addWidget(summary_chart, 0, 2, 8, 1)
 
         # interface box

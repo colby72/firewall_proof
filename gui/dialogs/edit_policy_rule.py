@@ -1,7 +1,7 @@
-from PyQt6 import QtGui, QtCore
-from PyQt6.QtWidgets import *
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
+from PySide6 import QtGui, QtCore
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtCore import *
 
 from utils import *
 from core.policy import *

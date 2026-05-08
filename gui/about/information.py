@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import *
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtCore import *
 
 import datetime
 from utils import *
@@ -34,8 +34,8 @@ class Information(QDialog):
         logo = QLabel()
         logo.resize(150, 150)
         logo_pixmap = QPixmap('img/logo05.png')
-        logo_scaled = logo_pixmap.scaled(logo.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
-        logo.setPixmap(logo_scaled)
+        logo_pixmap = logo_pixmap.scaled(logo.size(), Qt.KeepAspectRatio)
+        logo.setPixmap(logo_pixmap)
         logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
         software_banner = QLabel(f"Firewall Proof {self.main_window.version}")
         software_banner.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -61,7 +61,7 @@ class Information(QDialog):
         package_title = QLabel("Python packages")
         package_title.setObjectName('title')
         packages = [
-            "PyQt6 - GNU GPL v3",
+            "PySide6 - LGPL v3.0",
             "superqt - BSD-3-Clause",
             "jsonpickle - BSD-3-Clause",
             "colorama - BSD-3-Clause",
@@ -70,7 +70,7 @@ class Information(QDialog):
             "docxtpl - LGPL v2.1",
             "docx - MIT license",
             "docx2pdf - MIT license",
-            "xhtml2pdf - Apache 2.0" 
+            "weasyprint - BSD-3-Clause" 
         ]
         libraries_layout.addWidget(package_title, 0, 0)
         for i, p in enumerate(packages):

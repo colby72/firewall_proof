@@ -1,7 +1,7 @@
-from PyQt6 import QtGui, QtCore
-from PyQt6.QtWidgets import *
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
+from PySide6 import QtGui, QtCore
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtCore import *
 
 from gui.dialogs.add_zone import *
 from gui.dialogs.edit_zone import *
@@ -17,10 +17,10 @@ from utils import *
 
 
 class CompanyGUI(QWidget):
-    def __init__(self, main_window):
+    def __init__(self, main_window, company):
         QWidget.__init__(self)
         self.main_window = main_window
-        self.company = self.main_window.company
+        self.company = company
         self.main_window.setWindowTitle(f"{self.company.name} - Firewall Proof {self.main_window.version}")
         # update menu actions
         #enabled_actions = [self.main_window.company_submenu, self.main_window.company_report_action]
@@ -34,6 +34,7 @@ class CompanyGUI(QWidget):
         layout = QGridLayout()
         layout.setContentsMargins(10, 10, 10, 10)
         layout.setSpacing(20)
+        self.setLayout(layout)
 
         # summary box
         summary = QGroupBox("Company summary")
@@ -59,8 +60,8 @@ class CompanyGUI(QWidget):
             chart_pixmap = QPixmap(chart_path)
         else:
             chart_pixmap = QPixmap("img/no_data.jpg")
-        chart_scaled = chart_pixmap.scaled(summary_chart.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
-        summary_chart.setPixmap(chart_scaled)
+        chart_pixmap = chart_pixmap.scaled(summary_chart.size(), QtCore.Qt.KeepAspectRatio)
+        summary_chart.setPixmap(chart_pixmap)
         summary_layout.addWidget(summary_chart, 0, 2, 5, 1)
 
         # zones box
@@ -278,7 +279,6 @@ class CompanyGUI(QWidget):
         layout.addWidget(add_fw_button, 8, 0, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
-        self.setLayout(layout)
         #self.setStyleSheet(get_stylesheet("main.qss"))
     
     def view_policy(self, policy):
