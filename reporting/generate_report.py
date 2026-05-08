@@ -1,5 +1,5 @@
 from jinja2 import Environment, FileSystemLoader
-from xhtml2pdf import pisa
+from weasyprint import HTML
 import os, shutil, datetime, docxtpl, subprocess, glob, docx2pdf, sys
 from docx.shared import Mm
 #from spire.doc import Document, FileFormat
@@ -25,10 +25,9 @@ def generate_html_report(template, context, report_name):
         print_error(f"Error while generating HTML report '{report_name}'")
         return None
     try:
-        with open(f"reporting/export/{pdf_file}", 'wb') as f:
-            pisa_status = pisa.CreatePDF(html_content, dest=f)
-        print_success(f"PDF report '{report_name}' generated successfully")
-    except:
+        html_wrapper = HTML(filename=f"reporting/export/{html_file}")
+        html_wrapper.write_pdf(f"reporting/export/{pdf_file}")
+    except Exception as e:
         print_error(f"Error while generating PDF report '{report_name}'")
         return None
     return pdf_file
