@@ -14,8 +14,10 @@ class Rule():
         # filled in by user
         self.id = 0 # not used yet
         self.number = number # rule's number
-        self.src = src # list of refs to source hosts
-        self.dest = dest # list of refs to destination hosts
+        self.src = src # list of refs to source hosts and groups
+        self.dest = dest # list of refs to destination hosts and groups
+        self.src_ifce = None # ref to Firewall interface
+        self.dest_ifce = None # ref to Firewall interface
         self.services = services # list of authorized ports and services for this flow
         self.vpn = vpn # True if flow is tunneled
         self.manual = manual # status is set manually

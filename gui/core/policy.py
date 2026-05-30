@@ -67,9 +67,9 @@ class PolicyGUI(QWidget):
             services.setLayout(services_layout)
             if r.services:
                 for j, svc in enumerate(r.services):
-                    label = QLabel(svc)
-                    if svc in self.common_ports.keys():
-                        label.setToolTip(self.common_ports[svc])
+                    label = QLabel(svc.label)
+                    if svc.name:
+                        label.setToolTip(svc.name)
                     services_layout.addWidget(label)
             else:
                 services_layout.addWidget(QLabel("all"))

@@ -19,6 +19,8 @@ class Firewall():
 
         # firewall's components & elements
         self.interfaces = [] # list of refs to FW's interfaces
+        self.services = [] # list of refs FW's services
+        self.svc_groups = [] # list of refs FW's service groups
         self.hosts = [] # list of refs to FW's hosts
         self.groups = [] # list of refs to FW's object groups
         self.rules = [] # list of refs to FW's rules
@@ -44,6 +46,26 @@ class Firewall():
     
     def remove_interface(self, interface):
         self.interfaces.remove(interface)
+    
+    def add_service(self, service):
+        # verify if service already exists
+        for s in self.services:
+            if s.name == service.name:
+                print_warning(f"Service '{s.name}' already exists in Firewall '{self.name}'")
+                return None
+        # add service
+        self.services.append(service)
+        return service
+    
+    def add_svc_group(self, svc_group):
+        # verify if service group already exists
+        for grp in self.svc_groups:
+            if grp.name == svc_group.name:
+                print_warning(f"Service group '{grp.name}' already exists in Firewall '{self.name}'")
+                return None
+        # add service group
+        self.svc_groups.append(svc_group)
+        return svc_group
     
     def add_host(self, host):
         # verify if host already exists

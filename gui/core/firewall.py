@@ -237,8 +237,15 @@ class FirewallGUI(QWidget):
                     self.edit_host(h)
                 )
                 label = QLabel(host.name)
-                label.setToolTip(f"Zone: {host.zone.name}\n{host.address}")
-                label.setStyleSheet(f"color: {host.zone.color}")
+                if isinstance(host, Host):
+                    label.setStyleSheet(f"color: {host.zone.color}")
+                    label.setToolTip(f"Zone: {host.zone.name}\n{host.address}")
+                if isinstance(host, ObjGroup):
+                    tooltip = "\n".join([f"[+] {x.name}: {x.address}" for x in host.hosts])
+                    if host.zone:
+                        tooltip = f"Zone: {host.zone.name}\n{tooltip}"
+                        label.setStyleSheet(f"color: {host.zone.color}")
+                    label.setToolTip(tooltip)
                 #dest_layout.addWidget(view_button, j, 0)
                 #dest_layout.addWidget(edit_button, j, 1)
                 dest_layout.addWidget(label)
@@ -252,9 +259,12 @@ class FirewallGUI(QWidget):
             services.setLayout(services_layout)
             if r.services:
                 for j, svc in enumerate(r.services):
-                    label = QLabel(svc)
-                    if svc in self.common_ports.keys():
-                        label.setToolTip(self.common_ports[svc])
+                    #label = QLabel(svc)
+                    label = QLabel(svc.label)
+                    if svc.name:
+                        label.setToolTip(svc.name)
+                    #if svc in self.common_ports.keys():
+                        #label.setToolTip(self.common_ports[svc])
                     services_layout.addWidget(label)
             else:
                 services_layout.addWidget(QLabel("all"))

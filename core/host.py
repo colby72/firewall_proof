@@ -8,12 +8,14 @@ from cli.logger import *
 
 
 class Host():
-    def __init__(self, firewall, name, zone, address=["127.0.0.1/32"]):
+    def __init__(self, firewall, name, zone, address=["127.0.0.1/32"], fqdn=[], ifce=None):
         self.id = 0 # not used yet
         self.name = name
         self.firewall = firewall # ref to parent Firewall
         self.zone = zone # ref to zone
-        self.address = address # list of host IP addresses (format: xxx.xxx.xxx.xxx/range)
+        self.address = address # list of host IP addresses (format: a.b.c.d/range)
+        self.fqdn = fqdn # list of fqdn names
+        self.interface = ifce
         self.nat = None # not used yet
         self.group = None # list of refs to object's groups
         self.category = "desktop" # can be "desktop", "net_device", "server", "hypervisor"
@@ -42,11 +44,10 @@ class Host():
 
 
 class ObjGroup():
-    def __init__(self, name, zone):
-        self.id = 0
+    def __init__(self, name, zone=None):
         self.name = name
-        self.zone = zone
-        self.hosts = []
+        self.zone = zone # ref to zone
+        self.hosts = [] # list of refs to hosts
     
     def set_name(self, name):
         self.name = name
@@ -58,4 +59,12 @@ class ObjGroup():
         if not host in self.hosts:
             self.hosts.append(host)
             host.add_to_group(self)
-        
+    
+    def auto_set_zone(self):
+        if not self.hosts:
+            self.zone = None
+        zone = self.hosts[0].zone
+        for h in self.hosts:
+            if zone.name != h.zone.name:
+                self.zone = None
+        self.zone = zone
