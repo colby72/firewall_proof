@@ -1,3 +1,4 @@
+from core.service import *
 from cli.logger import *
 
 
@@ -123,7 +124,12 @@ def apply_policy(firewall, policy):
             # are services compliant ?
             service_compliant = True
             for sr in fw_rule.services:
-                comparaisons  = [compare_service(sr, sp) for sp in pol_rule.services]
+                if isinstance(sr, Service):
+                    comparaisons = [compare_service(sr, sp) for sp in pol_rule.services]
+                if isinstance(sr, ServiceGroup):
+                    comparaisons = []
+                    for x in sr.services:
+                        comparaisons.extend([compare_service(x, sp) for sp in pol_rule.services])
                 if any(comparaisons):
                     continue
                 else:

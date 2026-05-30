@@ -259,12 +259,16 @@ class FirewallGUI(QWidget):
             services.setLayout(services_layout)
             if r.services:
                 for j, svc in enumerate(r.services):
-                    #label = QLabel(svc)
-                    label = QLabel(svc.label)
-                    if svc.name:
-                        label.setToolTip(svc.name)
-                    #if svc in self.common_ports.keys():
-                        #label.setToolTip(self.common_ports[svc])
+                    if isinstance(svc, Service):
+                        if svc.name:
+                            label = QLabel(svc.name)
+                            label.setToolTip(svc.label)
+                        else:
+                            label = QLabel(svc.label)
+                    if isinstance(svc, ServiceGroup):
+                        label = QLabel(svc.name)
+                        tooltip = '\n'.join([f"[+] {x.label} ({x.name})" if x.name else x.label for x in svc.services])
+                        label.setToolTip(tooltip)
                     services_layout.addWidget(label)
             else:
                 services_layout.addWidget(QLabel("all"))

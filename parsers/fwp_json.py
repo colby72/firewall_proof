@@ -210,7 +210,7 @@ def parse_company_json(conf_file):
                     continue
                 # try fetch defined service group
                 grp = get_svc_grp_by_name(firewall, s)
-                if svc:
+                if grp:
                     services.append(grp)
                     continue
                 # try parse raw service labels
