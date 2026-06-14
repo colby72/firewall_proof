@@ -151,8 +151,9 @@ class FirewallGUI(QWidget):
                 self.edit_host(host)
             )
             label = QLabel(h.name)
-            label.setToolTip(f"Zone: {h.zone.name}\n{h.address}")
-            label.setStyleSheet(f"color: {h.zone.color}")
+            label.setToolTip(h.get_tooltip())
+            if h.zone:
+                label.setStyleSheet(f"color: {h.zone.color}")
             host_layout.addWidget(view_button, 0, 0)
             host_layout.addWidget(edit_button, 0, 1)
             host_layout.addWidget(label, 0, 2)
@@ -184,31 +185,35 @@ class FirewallGUI(QWidget):
             src_layout = QVBoxLayout()
             src_layout.addStretch(1)
             src.setLayout(src_layout)
-            for j, host in enumerate(r.src):
-                view_button = QPushButton('')
-                view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
-                view_button.setIconSize(QSize(16, 16))
-                view_button.setFixedSize(16, 16)
-                view_button.setToolTip("View Host")
-                view_button.clicked.connect(
-                    lambda checked, h=host:
-                    self.show_host(h)
-                )
-                edit_button = QPushButton('')
-                edit_button.setIcon(QIcon("img/edit_icon.png"))
-                edit_button.setIconSize(QSize(16, 16))
-                edit_button.setFixedSize(16, 16)
-                edit_button.setToolTip("Edit Host")
-                edit_button.clicked.connect(
-                    lambda checked, h=host:
-                    self.edit_host(h)
-                )
-                label = QLabel(host.name)
-                label.setToolTip(f"Zone: {host.zone.name}\n{host.address}")
-                label.setStyleSheet(f"color: {host.zone.color}")
-                #src_layout.addWidget(view_button, j, 0)
-                #src_layout.addWidget(edit_button, j, 1)
-                src_layout.addWidget(label)
+            if r.src:
+                for j, host in enumerate(r.src):
+                    view_button = QPushButton('')
+                    view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
+                    view_button.setIconSize(QSize(16, 16))
+                    view_button.setFixedSize(16, 16)
+                    view_button.setToolTip("View Host")
+                    view_button.clicked.connect(
+                        lambda checked, h=host:
+                        self.show_host(h)
+                    )
+                    edit_button = QPushButton('')
+                    edit_button.setIcon(QIcon("img/edit_icon.png"))
+                    edit_button.setIconSize(QSize(16, 16))
+                    edit_button.setFixedSize(16, 16)
+                    edit_button.setToolTip("Edit Host")
+                    edit_button.clicked.connect(
+                        lambda checked, h=host:
+                        self.edit_host(h)
+                    )
+                    label = QLabel(host.name)
+                    label.setToolTip(host.get_tooltip())
+                    if host.zone:
+                        label.setStyleSheet(f"color: {host.zone.color}")
+                    #src_layout.addWidget(view_button, j, 0)
+                    #src_layout.addWidget(edit_button, j, 1)
+                    src_layout.addWidget(label)
+            else:
+                src_layout.addWidget(QLabel("any"))
             src_layout.addStretch(1)
             rules_layout.addWidget(src, i+1, 1)
             
@@ -217,38 +222,35 @@ class FirewallGUI(QWidget):
             dest_layout = QVBoxLayout()
             dest_layout.addStretch(1)
             dest.setLayout(dest_layout)
-            for j, host in enumerate(r.dest):
-                view_button = QPushButton('')
-                view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
-                view_button.setIconSize(QSize(16, 16))
-                view_button.setFixedSize(16, 16)
-                view_button.setToolTip("View Host")
-                view_button.clicked.connect(
-                    lambda checked, h=host:
-                    self.show_host(h)
-                )
-                edit_button = QPushButton('')
-                edit_button.setIcon(QIcon("img/edit_icon.png"))
-                edit_button.setIconSize(QSize(16, 16))
-                edit_button.setFixedSize(16, 16)
-                edit_button.setToolTip("Edit Host")
-                edit_button.clicked.connect(
-                    lambda checked, h=host:
-                    self.edit_host(h)
-                )
-                label = QLabel(host.name)
-                if isinstance(host, Host):
-                    label.setStyleSheet(f"color: {host.zone.color}")
-                    label.setToolTip(f"Zone: {host.zone.name}\n{host.address}")
-                if isinstance(host, ObjGroup):
-                    tooltip = "\n".join([f"[+] {x.name}: {x.address}" for x in host.hosts])
+            if r.dest:
+                for j, host in enumerate(r.dest):
+                    view_button = QPushButton('')
+                    view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
+                    view_button.setIconSize(QSize(16, 16))
+                    view_button.setFixedSize(16, 16)
+                    view_button.setToolTip("View Host")
+                    view_button.clicked.connect(
+                        lambda checked, h=host:
+                        self.show_host(h)
+                    )
+                    edit_button = QPushButton('')
+                    edit_button.setIcon(QIcon("img/edit_icon.png"))
+                    edit_button.setIconSize(QSize(16, 16))
+                    edit_button.setFixedSize(16, 16)
+                    edit_button.setToolTip("Edit Host")
+                    edit_button.clicked.connect(
+                        lambda checked, h=host:
+                        self.edit_host(h)
+                    )
+                    label = QLabel(host.name)
+                    label.setToolTip(host.get_tooltip())
                     if host.zone:
-                        tooltip = f"Zone: {host.zone.name}\n{tooltip}"
                         label.setStyleSheet(f"color: {host.zone.color}")
-                    label.setToolTip(tooltip)
-                #dest_layout.addWidget(view_button, j, 0)
-                #dest_layout.addWidget(edit_button, j, 1)
-                dest_layout.addWidget(label)
+                    #dest_layout.addWidget(view_button, j, 0)
+                    #dest_layout.addWidget(edit_button, j, 1)
+                    dest_layout.addWidget(label)
+            else:
+                dest_layout.addWidget(QLabel("any"))
             dest_layout.addStretch(1)
             rules_layout.addWidget(dest, i+1, 2)
             
@@ -279,11 +281,14 @@ class FirewallGUI(QWidget):
             rules_layout.addWidget(QLabel(str(r.vpn)), i+1, 4)
             
             # rule status
-            status = QLabel(str(r.status.label))
-            status.setStyleSheet(f"""
-                color: {r.status.color};
-                font-weight: bold;
-            """)
+            if r.status:
+                status = QLabel(str(r.status.label))
+                status.setStyleSheet(f"""
+                    color: {r.status.color};
+                    font-weight: bold;
+                """)
+            else:
+                status = QLabel("N/A")
             rules_layout.addWidget(status, i+1, 5)
             
             edit_button = QPushButton('Edit')

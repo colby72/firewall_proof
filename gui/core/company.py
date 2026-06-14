@@ -267,6 +267,13 @@ class CompanyGUI(QWidget):
         add_fw_button.setIconSize(QSize(20, 20))
         #firewall_layout.addWidget(add_fw_button, len(self.company.fw_inventory)+1 ,0)
 
+        import_fortigate_button = QPushButton("Fortigate")
+        import_fortigate_button.setIcon(QIcon("img/add_sign_icon.png"))
+        import_fortigate_button.clicked.connect(self.main_window.import_fortigate_fw)
+        import_fortigate_button.setObjectName("add_button")
+        import_fortigate_button.setFixedSize(140, 40)
+        import_fortigate_button.setIconSize(QSize(20, 20))
+
         layout.addWidget(summary, 0, 0, 1, 2)
         #layout.addWidget(summary_chart, 0, 2)
         layout.addWidget(zone, 1, 0, 1, 5)
@@ -277,6 +284,7 @@ class CompanyGUI(QWidget):
         layout.addWidget(add_policy_button, 6, 0, 1, 1)
         layout.addWidget(firewall, 7, 0, 1, 8)
         layout.addWidget(add_fw_button, 8, 0, 1, 1)
+        layout.addWidget(import_fortigate_button, 8, 1, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
         #self.setStyleSheet(get_stylesheet("main.qss"))

@@ -43,6 +43,7 @@ class Firewall():
     def add_interface(self, name, address):
         interface = FwInterface(name, address)
         self.interfaces.append(interface)
+        return interface
     
     def remove_interface(self, interface):
         self.interfaces.remove(interface)
@@ -124,6 +125,8 @@ class Firewall():
         stats = {}
         #stats['total'] = len(self.rules)
         for r in self.rules:
+            if not r.status:
+                break
             if r.status.label in stats.keys():
                 stats[r.status.label] += 1
             else:
@@ -131,10 +134,16 @@ class Firewall():
         return stats
     
     def sort_rules_by_number(self):
-        self.rules.sort(key=lambda r: r.number)
+        try:
+            self.rules.sort(key=lambda r: r.number)
+        except:
+            pass
     
     def sort_hosts_by_zone(self):
-        self.hosts.sort(key=lambda h: (h.zone.level, h.name))
+        try:
+            self.hosts.sort(key=lambda h: (h.zone.level, h.name))
+        except:
+            pass
     
     def sort_objects(self):
         self.sort_rules_by_number()

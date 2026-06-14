@@ -30,13 +30,18 @@ class Service():
         return None
     
     def auto_set_label(self):
+        if not self.protocol:
+            return None
         self.label = self.protocol
-        if self.is_range and (self.port_start and self.port_end):
+        if all([self.is_range, self.port_start, self.port_end]):
             self.label += f"/{self.port_start}-{self.port_end}"
         else:
             if self.port:
                 self.label += f"/{self.port}"
         return self.label
+    
+    def set_name(self, name):
+        self.name = name
     
     def set_protocol(self, protocol):
         self.protocol = protocol

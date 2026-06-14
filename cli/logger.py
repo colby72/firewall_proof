@@ -3,7 +3,7 @@ from colorama import Fore, Style
 
 
 def print_info(text):
-    print(f"{Fore.WHITE} [+] {text}")
+    print(f"{Fore.WHITE} [*] {text}")
     print(Style.RESET_ALL, end="")
 
 def print_success(text):
@@ -11,7 +11,7 @@ def print_success(text):
     print(Style.RESET_ALL, end="")
 
 def print_error(text):
-    print(f"{Fore.RED} [/!\] {text}")
+    print(f"{Fore.RED} [-] {text}")
     print(Style.RESET_ALL, end="")
 
 def print_warning(text):

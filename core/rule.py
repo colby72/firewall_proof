@@ -16,8 +16,8 @@ class Rule():
         self.number = number # rule's number
         self.src = src # list of refs to source hosts and groups
         self.dest = dest # list of refs to destination hosts and groups
-        self.src_ifce = None # ref to Firewall interface
-        self.dest_ifce = None # ref to Firewall interface
+        self.src_ifce = [] # list of refs to Firewall interface
+        self.dest_ifce = [] # list of refs to Firewall interface
         self.services = services # list of authorized ports and services for this flow
         self.vpn = vpn # True if flow is tunneled
         self.manual = manual # status is set manually
@@ -34,6 +34,14 @@ class Rule():
 
     def set_dest(self, dest):
         self.dest = dest
+        self.date = time.strftime("%B %d. %Y")
+    
+    def set_src_ifce(self, src_ifce):
+        self.src_ifce = src_ifce[:]
+        self.date = time.strftime("%B %d. %Y")
+    
+    def set_dest_ifce(self, dest_ifce):
+        self.dest_ifce = dest_ifce[:]
         self.date = time.strftime("%B %d. %Y")
 
     def set_services(self, services):

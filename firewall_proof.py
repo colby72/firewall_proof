@@ -40,6 +40,9 @@ from core.zone import *
 from file.save_file import *
 from file.open_file import *
 
+# import Firewall parsers
+from parsers.fortigate import parse_fortigate_config
+
 # import data algorithms
 from algorithms.parse_policy import *
 from algorithms.policy_check import *
@@ -645,6 +648,15 @@ class FWProofGUI(QMainWindow):
                 home = HomeGUI(self, self.project)
                 self.windows.addWidget(home)
                 self.windows.setCurrentWidget(home)
+    
+    def import_fortigate_fw(self):
+        if self.company:
+            self.open_file_dialog = QFileDialog.getOpenFileName(self, "Select config file ...", "", "Config files (*.conf);;All files (*)")
+            selected_file = self.open_file_dialog[0]
+            if selected_file:
+                firewall = parse_fortigate_config(selected_file)
+                self.company.add_firewall(firewall)
+                self.show_company()
     
     ''' 4- Call functions for Menu: Analytics '''
     def traffic_light(self):
