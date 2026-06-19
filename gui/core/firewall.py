@@ -164,6 +164,146 @@ class FirewallGUI(QWidget):
         add_host_button.clicked.connect(self.add_host)
         add_host_button.setFixedSize(140, 40)
         add_host_button.setIconSize(QSize(20, 20))
+        
+        # collapsible host groups box
+        host_grp_collapse = QCollapsible("List of host groups")
+        host_grp_collapse.setCollapsedIcon(QIcon("img/right-chevron.png"))
+        host_grp_collapse.setExpandedIcon(QIcon("img/down-chevron.png"))
+        host_grp_widget = QWidget()
+        host_grp_layout = QGridLayout()
+        host_grp_layout.setSpacing(10)
+        host_grp_widget.setLayout(host_grp_layout)
+        host_grp_collapse.addWidget(host_grp_widget)
+
+        host_grp_per_row = 3
+        for i, g in enumerate(self.fw.groups):
+            grp_widget = QWidget()
+            grp_layout = QGridLayout()
+            grp_widget.setLayout(grp_layout)
+            view_button = QPushButton('')
+            view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
+            view_button.setIconSize(QSize(16, 16))
+            view_button.setFixedSize(16, 16)
+            view_button.setToolTip("View host group")
+            view_button.clicked.connect(
+                lambda checked, grp=g:
+                self.show_host_group(grp)
+            )
+            edit_button = QPushButton('')
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
+            edit_button.setIconSize(QSize(16, 16))
+            edit_button.setFixedSize(16, 16)
+            edit_button.setToolTip("Edit host group")
+            edit_button.clicked.connect(
+                lambda checked, grp=g:
+                self.edit_host_group(grp)
+            )
+            label = QLabel(g.name)
+            label.setToolTip(g.get_tooltip())
+            if g.zone:
+                label.setStyleSheet(f"color: {g.zone.color}")
+            grp_layout.addWidget(view_button, 0, 0)
+            grp_layout.addWidget(edit_button, 0, 1)
+            grp_layout.addWidget(label, 0, 2)
+            host_grp_layout.addWidget(grp_widget, i//host_grp_per_row, i%host_grp_per_row)
+
+        add_host_grp_button = QPushButton("Host Group")
+        add_host_grp_button.setIcon(QIcon("img/add_sign_icon.png"))
+        add_host_grp_button.clicked.connect(self.add_host_group)
+        add_host_grp_button.setFixedSize(140, 40)
+        add_host_grp_button.setIconSize(QSize(20, 20))
+
+        # collapsible service box
+        service_collapse = QCollapsible("List of services")
+        service_collapse.setCollapsedIcon(QIcon("img/right-chevron.png"))
+        service_collapse.setExpandedIcon(QIcon("img/down-chevron.png"))
+        service_widget = QWidget()
+        service_layout = QGridLayout()
+        service_layout.setSpacing(10)
+        service_widget.setLayout(service_layout)
+        service_collapse.addWidget(service_widget)
+
+        svc_per_row = 4
+        for i, s in enumerate(self.fw.services):
+            svc_widget = QWidget()
+            svc_layout = QGridLayout()
+            svc_widget.setLayout(svc_layout)
+            view_button = QPushButton('')
+            view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
+            view_button.setIconSize(QSize(16, 16))
+            view_button.setFixedSize(16, 16)
+            view_button.setToolTip("View service")
+            view_button.clicked.connect(
+                lambda checked, svc=s:
+                self.show_service(svc)
+            )
+            edit_button = QPushButton('')
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
+            edit_button.setIconSize(QSize(16, 16))
+            edit_button.setFixedSize(16, 16)
+            edit_button.setToolTip("Edit service")
+            edit_button.clicked.connect(
+                lambda checked, svc=s:
+                self.edit_service(svc)
+            )
+            label = QLabel(s.name)
+            label.setToolTip(s.label)
+            svc_layout.addWidget(view_button, 0, 0)
+            svc_layout.addWidget(edit_button, 0, 1)
+            svc_layout.addWidget(label, 0, 2)
+            service_layout.addWidget(svc_widget, i//svc_per_row, i%svc_per_row)
+        
+        add_svc_button = QPushButton("Service")
+        add_svc_button.setIcon(QIcon("img/add_sign_icon.png"))
+        add_svc_button.clicked.connect(self.add_service)
+        add_svc_button.setFixedSize(140, 40)
+        add_svc_button.setIconSize(QSize(20, 20))
+        
+        # collapsible service groups box
+        svc_grp_collapse = QCollapsible("List of service groups")
+        svc_grp_collapse.setCollapsedIcon(QIcon("img/right-chevron.png"))
+        svc_grp_collapse.setExpandedIcon(QIcon("img/down-chevron.png"))
+        svc_grp_widget = QWidget()
+        svc_grp_layout = QGridLayout()
+        svc_grp_layout.setSpacing(10)
+        svc_grp_widget.setLayout(svc_grp_layout)
+        svc_grp_collapse.addWidget(svc_grp_widget)
+
+        svc_grp_per_row = 3
+        for i, g in enumerate(self.fw.svc_groups):
+            grp_widget = QWidget()
+            grp_layout = QGridLayout()
+            grp_widget.setLayout(grp_layout)
+            view_button = QPushButton('')
+            view_button.setIcon(QIcon("img/business_eye_focus_internet_security_icon.png"))
+            view_button.setIconSize(QSize(16, 16))
+            view_button.setFixedSize(16, 16)
+            view_button.setToolTip("View service group")
+            view_button.clicked.connect(
+                lambda checked, grp=g:
+                self.show_svc_group(grp)
+            )
+            edit_button = QPushButton('')
+            edit_button.setIcon(QIcon("img/edit_icon.png"))
+            edit_button.setIconSize(QSize(16, 16))
+            edit_button.setFixedSize(16, 16)
+            edit_button.setToolTip("Edit service group")
+            edit_button.clicked.connect(
+                lambda checked, grp=g:
+                self.edit_svc_group(grp)
+            )
+            label = QLabel(g.name)
+            label.setToolTip(g.get_tooltip())
+            grp_layout.addWidget(view_button, 0, 0)
+            grp_layout.addWidget(edit_button, 0, 1)
+            grp_layout.addWidget(label, 0, 2)
+            svc_grp_layout.addWidget(grp_widget, i//svc_grp_per_row, i%svc_grp_per_row)
+
+        add_svc_grp_button = QPushButton("Service Group")
+        add_svc_grp_button.setIcon(QIcon("img/add_sign_icon.png"))
+        add_svc_grp_button.clicked.connect(self.add_svc_group)
+        add_svc_grp_button.setFixedSize(140, 40)
+        add_svc_grp_button.setIconSize(QSize(20, 20))
 
         # rules box
         rules = QGroupBox("Firewall rules")
@@ -269,8 +409,7 @@ class FirewallGUI(QWidget):
                             label = QLabel(svc.label)
                     if isinstance(svc, ServiceGroup):
                         label = QLabel(svc.name)
-                        tooltip = '\n'.join([f"[+] {x.label} ({x.name})" if x.name else x.label for x in svc.services])
-                        label.setToolTip(tooltip)
+                        label.setToolTip(svc.get_tooltip())
                     services_layout.addWidget(label)
             else:
                 services_layout.addWidget(QLabel("all"))
@@ -323,8 +462,14 @@ class FirewallGUI(QWidget):
         layout.addWidget(add_iface_button, 2, 0, 1, 1)
         layout.addWidget(hosts_collapse, 3, 0, 1, 3)
         layout.addWidget(add_host_button, 4, 0, 1, 1)
-        layout.addWidget(rules, 5, 0, 1, 8)
-        layout.addWidget(add_rule_button, 6, 0, 1, 1)
+        layout.addWidget(host_grp_collapse, 5, 0, 1, 3)
+        layout.addWidget(add_host_grp_button, 6, 0, 1, 1)
+        layout.addWidget(service_collapse, 7, 0, 1, 3)
+        layout.addWidget(add_svc_button, 8, 0, 1, 1)
+        layout.addWidget(svc_grp_collapse, 9, 0, 1, 3)
+        layout.addWidget(add_svc_grp_button, 10, 0, 1, 1)
+        layout.addWidget(rules, 11, 0, 1, 8)
+        layout.addWidget(add_rule_button, 12, 0, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
     
@@ -356,6 +501,33 @@ class FirewallGUI(QWidget):
         self.edit_host_dialog = DialogEditHost(self.main_window, self.fw, host)
         self.edit_host_dialog.exec()
         self.main_window.show_firewall()
+    
+    def add_host_group(self, host_grp):
+        pass
+    
+    def show_host_group(self, host_grp):
+        pass
+    
+    def edit_host_group(self, host_grp):
+        pass
+    
+    def add_service(self, service):
+        pass
+    
+    def show_service(self, service):
+        pass
+    
+    def edit_service(self, service):
+        pass
+    
+    def add_svc_group(self, svc_group):
+        pass
+    
+    def show_svc_group(self, svc_group):
+        pass
+    
+    def edit_svc_group(self, svc_group):
+        pass
     
     def add_rule(self):
         self.add_rule_dialog = DialogAddRule(self.main_window, self.fw)

@@ -86,9 +86,10 @@ class ObjGroup():
     def auto_set_zone(self):
         if not self.hosts:
             self.zone = None
+            return None
         zone = self.hosts[0].zone
         for h in self.hosts:
-            if zone.name != h.zone.name:
+            if (not h.zone) or (zone.name != h.zone.name):
                 self.zone = None
         self.zone = zone
     

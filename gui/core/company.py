@@ -274,6 +274,13 @@ class CompanyGUI(QWidget):
         import_fortigate_button.setFixedSize(140, 40)
         import_fortigate_button.setIconSize(QSize(20, 20))
 
+        import_json_button = QPushButton("JSON")
+        import_json_button.setIcon(QIcon("img/add_sign_icon.png"))
+        import_json_button.clicked.connect(self.main_window.import_json_fw)
+        import_json_button.setObjectName("add_button")
+        import_json_button.setFixedSize(140, 40)
+        import_json_button.setIconSize(QSize(20, 20))
+
         layout.addWidget(summary, 0, 0, 1, 2)
         #layout.addWidget(summary_chart, 0, 2)
         layout.addWidget(zone, 1, 0, 1, 5)
@@ -285,6 +292,7 @@ class CompanyGUI(QWidget):
         layout.addWidget(firewall, 7, 0, 1, 8)
         layout.addWidget(add_fw_button, 8, 0, 1, 1)
         layout.addWidget(import_fortigate_button, 8, 1, 1, 1)
+        layout.addWidget(import_json_button, 8, 2, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
         #self.setStyleSheet(get_stylesheet("main.qss"))

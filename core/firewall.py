@@ -75,6 +75,7 @@ class Firewall():
                 print_warning(f"Host '{h.name}' already exists in Firewall '{self.name}'")
                 return None
         # add host
+        host.firewall = self
         self.hosts.append(host)
         return host
     

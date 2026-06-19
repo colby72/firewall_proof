@@ -91,3 +91,10 @@ class ServiceGroup():
         # add service
         self.services.append(service)
         return service
+    
+    # GUI properties
+    def get_tooltip(self):
+        tooltip = ""
+        for s in self.services:
+            tooltip += f"[+] {s.label} ({s.name})\n" if s.name else f"{s.label}\n"
+        return tooltip.strip('\n')

@@ -42,6 +42,7 @@ from file.open_file import *
 
 # import Firewall parsers
 from parsers.fortigate import parse_fortigate_config
+from parsers.firewall_json import parse_firewall_json
 
 # import data algorithms
 from algorithms.parse_policy import *
@@ -655,6 +656,15 @@ class FWProofGUI(QMainWindow):
             selected_file = self.open_file_dialog[0]
             if selected_file:
                 firewall = parse_fortigate_config(selected_file)
+                self.company.add_firewall(firewall)
+                self.show_company()
+    
+    def import_json_fw(self):
+        if self.company:
+            self.open_file_dialog = QFileDialog.getOpenFileName(self, "Select JSON config file ...", "", "JSON files (*.json);;All files (*)")
+            selected_file = self.open_file_dialog[0]
+            if selected_file:
+                firewall = parse_firewall_json(selected_file, self.company)
                 self.company.add_firewall(firewall)
                 self.show_company()
     

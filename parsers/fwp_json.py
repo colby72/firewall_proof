@@ -176,7 +176,7 @@ def parse_company_json(conf_file):
                 group = ObjGroup(g['name'], g['zone'])
             else:
                 group = ObjGroup(g['name'])
-            firewall.add_group(group)
+            #firewall.add_group(group)
             for h in firewall.hosts:
                 if h.name in g['hosts']:
                     group.add_host(h)
