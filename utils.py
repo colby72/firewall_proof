@@ -57,6 +57,13 @@ def get_host_by_name(firewall, host_name):
     print_error(f"Host '{host_name}' not found in Firewall '{firewall.name}'")
     return None
 
+def get_host_by_address(firewall, addr):
+    for host in firewall.hosts:
+        if host.address == addr:
+            return host
+    print_error(f"No host with address '{addr}' found in Firewall '{firewall.name}'")
+    return None
+
 def get_host_grp_by_name(firewall, grp_name):
     for grp in firewall.groups:
         if grp.name == grp_name:
@@ -129,6 +136,26 @@ def mask_to_cidr(mask):
 
 def cidr_to_mask(prefix):
     return str(ipaddress.IPv4Network(f"0.0.0.0/{prefix}").netmask)
+
+def is_ip(ip):
+    try:
+        x = ipaddress.ip_address(ip)
+    except:
+        print_warning(f"'{ip}' is not recognized as a valid IP address")
+        return False
+    return True
+
+def get_port_by_name(svc_name):
+    """
+    INPUT: Service name: 'RFB/VNC Server', 'Kaspersky AV', 'timestamp'
+    OUTPUT: Port label: UDP/5900, TCP/8086, ICMP/13
+    """
+    with open('algorithms/common_ports.json', 'r', encoding="utf8") as f:
+        common_ports = json.loads(f.read())
+        for p, s in common_ports.items():
+            if s == svc_name:
+                return p
+    return None
 
 def text_to_tex(text):
     """

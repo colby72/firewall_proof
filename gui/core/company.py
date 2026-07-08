@@ -281,6 +281,13 @@ class CompanyGUI(QWidget):
         import_json_button.setFixedSize(140, 40)
         import_json_button.setIconSize(QSize(20, 20))
 
+        import_zyxel_button = QPushButton("Zyxel")
+        import_zyxel_button.setIcon(QIcon("img/add_sign_icon.png"))
+        import_zyxel_button.clicked.connect(self.main_window.import_zyxel_fw)
+        import_zyxel_button.setObjectName("add_button")
+        import_zyxel_button.setFixedSize(140, 40)
+        import_zyxel_button.setIconSize(QSize(20, 20))
+
         layout.addWidget(summary, 0, 0, 1, 2)
         #layout.addWidget(summary_chart, 0, 2)
         layout.addWidget(zone, 1, 0, 1, 5)
@@ -293,6 +300,7 @@ class CompanyGUI(QWidget):
         layout.addWidget(add_fw_button, 8, 0, 1, 1)
         layout.addWidget(import_fortigate_button, 8, 1, 1, 1)
         layout.addWidget(import_json_button, 8, 2, 1, 1)
+        layout.addWidget(import_zyxel_button, 8, 3, 1, 1)
         layout.setColumnStretch(layout.columnCount(), 1)
         layout.setRowStretch(layout.rowCount(), 1)
         #self.setStyleSheet(get_stylesheet("main.qss"))
