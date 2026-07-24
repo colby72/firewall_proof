@@ -211,6 +211,7 @@ __marimo__/
 *.fwp
 count.sh
 icons/*
+samples/*
 reporting/export/*
 reporting/templates/*.html
 reporting/templates/*.tex
