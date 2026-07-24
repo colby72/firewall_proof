@@ -78,9 +78,9 @@ class Service():
 
 
 class ServiceGroup():
-    def __init__(self, name, services=[]):
+    def __init__(self, name):
         self.name = name
-        self.services = services # list of ref to services
+        self.services = [] # list of ref to services
     
     def add_service(self, service):
         # verify if service already exists

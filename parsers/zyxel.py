@@ -1,3 +1,7 @@
+'''import os, sys
+parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+sys.path.insert(0, parent_dir)'''
+
 from core.firewall import *
 from core.rule import *
 from core.service import *
